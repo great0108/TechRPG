@@ -1,0 +1,14 @@
+{
+    "123456":{
+        "name":"sender",
+        "inven":[],
+        "location":"base",
+        "map":{"base":{"type":"base","coord":[0,0]}},
+        "busy":false,
+        "busyTime":1635581528349,
+        "state":null,
+        "stateInfo":{"message":{},"choice":{"inven":[]}},
+        "target":null,
+        "handItem":{}
+    }
+}
