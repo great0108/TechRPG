@@ -2,6 +2,7 @@
     "use strict"
     const Dao = require("./Dao")
     const File = require("../Util/File")
+    const Copy = require("../Util/Copy")
 
     const BiomeDao = {
         data : File.load("Biome"),
@@ -9,7 +10,7 @@
             if(!this.data[name]) {
                 throw new Error("이런 이름의 바이옴은 존재하지 않습니다.")
             }
-            return this.data[name]
+            return Copy.deepcopy(this.data[name])
         },
         write : function(name, biome) {
             this.data[name] = biome
