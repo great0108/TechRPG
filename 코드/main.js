@@ -37,6 +37,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
             result = Presenter.MyInfo(msg, sender, hash)
         } else if(msg == "인벤정보") {
             result = Presenter.InvenInfo(msg, sender, hash)
+        } else if(msg == "맵정보") {
+            result = Presenter.MapInfo(msg, sender, hash)
         } else if(msg.startsWith("아이템 수집")) {
             result = Presenter.CollectItem(msg, sender, hash)
         } else if(msg.startsWith("아이템 회수")) {

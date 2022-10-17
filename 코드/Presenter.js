@@ -1,17 +1,15 @@
 (function() {
     "use strict"
     const View = require("./View")
+    const UserHandler = require("./Model/UserHandler")
     const UserRepository = require("./Repository/UserRepository")
-    const HashDto = require("./Dto/HashDto")
     const SenderDto = require("./Dto/SenderDto")
-    const UserDto = require("./Dto/UserDto")
     
 
     const Presenter = {
         SignUp : function(msg, sender, hash) {
-            let hashDto = new HashDto(hash)
-            let isExistDto = UserRepository.isExist(hashDto)
-            if(isExistDto.isExist) {
+            let user = new UserHandler(hash)
+            if(user.isExist) {
                 return View.AlreadySignUp()
             }
 
@@ -23,9 +21,8 @@
             return View.Command()
         },
         MyInfo : function(msg, sender, hash) {
-            let hashDto = new HashDto(hash)
-            let isExistDto = UserRepository.isExist(hashDto)
-            if(!isExistDto.isExist) {
+            let user = new UserHandler(hash)
+            if(user.isExist) {
                 return View.NotSignUp()
             }
 
@@ -33,6 +30,12 @@
             return View.MyInfo(userDto)
         },
         InvenInfo : function(msg, sender, hash) {
+            let user = new UserHandler(hash)
+            if(user.isExist) {
+                return View.NotSignUp()
+            }
+        },
+        MapInfo : function(msg, sender, hash) {
 
         },
         CollectItem : function(msg, sender, hash) {
