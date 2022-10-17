@@ -1,2 +1,2 @@
-const a = require("./module.js")
-let b = 1
+const File = require("./코드/Util/File")
+console.log(File.load("User"))
