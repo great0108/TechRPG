@@ -2,26 +2,11 @@
     "use strict"
 
     const View = {
-        SignUp : function(room, msg, sender, hash) {
-
+        AlreadySignUp : function() {
+            return "이미 회원가입이 되어 있습니다."
         },
-        Command : function(room, msg, sender, hash) {
-
-        },
-        MyInfo : function(room, msg, sender, hash) {
-
-        },
-        InvenInfo : function(room, msg, sender, hash) {
-
-        },
-        CollectItem : function(room, msg, sender, hash) {
-
-        },
-        RetrieveItem : function(room, msg, sender, hash) {
-
-        },
-        DumpItem : function(room, msg, sender, hash) {
-
+        SignUp : function() {
+            return "회원가입이 완료되었습니다."
         }
     }
 
