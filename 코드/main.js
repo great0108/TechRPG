@@ -40,11 +40,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
         } else if(msg == "맵정보") {
             result = Presenter.MapInfo(msg, sender, hash)
         } else if(msg.startsWith("아이템 수집")) {
-            result = Presenter.CollectItem(msg, sender, hash)
+            result = Presenter.CollectItem(msg.slice(6), sender, hash)
         } else if(msg.startsWith("아이템 회수")) {
-            result = Presenter.RetrieveItem(msg, sender, hash)
+            result = Presenter.RetrieveItem(msg.slice(6), sender, hash)
         } else if(msg.startsWith("아이템 버림")) {
-            result = Presenter.DumpItem(msg, sender, hash)
+            result = Presenter.DumpItem(msg.slice(6), sender, hash)
         }
     } catch(e) {
         console.log(e)

@@ -1,2 +1,2 @@
-const File = require("./코드/Util/File")
-console.log(File.load("User"))
+let a = {a : 1, b : 2}
+console.log(Object.assign(a, {a:3}))
