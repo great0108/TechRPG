@@ -58,6 +58,22 @@
             return View.MapInfo(map.mapInfo())
         },
         CollectItem : function(msg, sender, hash) {
+            if(notExistUser(hash)) {
+                return View.NotSignUp()
+            }
+
+            msg = msg.split(" ")
+            let item = msg[0]
+            let number = Number(msg[1])
+            let withItem = msg[2]
+
+            let hashDto = new HashDto(hash)
+            let invenDto = UserRepository.getInven(hashDto)
+            let inven = new Inven(invenDto.inven)
+            let mapDto = UserRepository.getMap(hashDto)
+            let map = new Map(mapDto.map, mapDto.location)
+
+            
 
         },
         RetrieveItem : function(msg, sender, hash) {
