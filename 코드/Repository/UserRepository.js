@@ -1,6 +1,5 @@
 (function() {
     "use strict"
-    const User = require("../Model/User")
     const UserDao = require("../Dao/UserDao")
     const IsExistDto = require("../Dto/IsExistDto")
     const MyInfoDto = require("../Dto/MyInfoDto")
@@ -11,9 +10,8 @@
             let result = UserDao.isExist(hashDto.hash)
             return new IsExistDto(result)
         },
-        newUser : function(senderDto) {
-            let user = new User(senderDto.sender)
-            UserDao.write(senderDto.hash, user)
+        newUser : function(makeUserDto) {
+            UserDao.write(makeUserDto.hash, makeUserDto.user)
             UserDao.save()
         },
         getMyInfo : function(hashDto) {
@@ -25,8 +23,10 @@
             return new InvenDto(user.inven)
         },
         getMap : function(hashDto) {
-
+            let user = UserDao.read(hashDto.hash)
+            return new InvenDto(user.map, user.location)
         }
     }
+    
     module.exports = UserRepository
 })()

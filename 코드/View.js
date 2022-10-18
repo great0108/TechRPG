@@ -32,6 +32,9 @@
             return "인벤 정보입니다.\n" +
             "현재 공간 : " + invenSpace + " / " + invenlimit + "\n" +
             "아이템\n" + itemInfo
+        },
+        MapInfo : function(mapInfo) {
+            return "맵 정보입니다.\n" + mapInfo
         }
 
     }

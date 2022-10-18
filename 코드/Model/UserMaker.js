@@ -1,7 +1,7 @@
 (function() {
     "use strict"
 
-    const User = function(name) {
+    const UserMaker = function(name) {
         this.name = name
         this.inven = []
         this.location = "base"
@@ -11,5 +11,5 @@
         this.messageState = null
     }
     
-    module.exports = User
+    module.exports = UserMaker
 })()

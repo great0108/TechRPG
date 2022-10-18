@@ -1,10 +1,12 @@
 (function() {
     "use strict"
     const View = require("./View")
+    const UserMaker = require("./Model/UserMaker")
     const Inven = require("./Model/Inven")
+    const Map = require("./Model/Map")
     const UserRepository = require("./Repository/UserRepository")
     const HashDto = require("./Dto/HashDto")
-    const SenderDto = require("./Dto/SenderDto")
+    const MakeUserDto = require("./Dto/MakeUserDto")
 
     const notExistUser = function(hash) {
         let hashDto = new HashDto(hash)
@@ -18,8 +20,9 @@
                 return View.AlreadySignUp()
             }
 
-            let senderDto = new SenderDto(sender, hash)
-            UserRepository.newUser(senderDto)
+            let user = new UserMaker(sender)
+            let makeUserDto = new MakeUserDto(hash, user)
+            UserRepository.newUser(makeUserDto)
             return View.SignUp()
         },
         Command : function(msg, sender, hash) {
@@ -51,7 +54,8 @@
 
             let hashDto = new HashDto(hash)
             let mapDto = UserRepository.getMap(hashDto)
-            return View.MapInfo(mapDto)
+            let map = new Map(mapDto.map, mapDto.location)
+            return View.MapInfo(map.mapInfo())
         },
         CollectItem : function(msg, sender, hash) {
 
