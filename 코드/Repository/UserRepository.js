@@ -3,7 +3,8 @@
     const User = require("../Model/User")
     const UserDao = require("../Dao/UserDao")
     const IsExistDto = require("../Dto/IsExistDto")
-    const UserDto = require("../Dto/UserDto")
+    const MyInfoDto = require("../Dto/MyInfoDto")
+    const InvenDto = require("../Dto/InvenDto")
 
     const UserRepository = {
         isExist : function(hashDto) {
@@ -15,9 +16,16 @@
             UserDao.write(senderDto.hash, user)
             UserDao.save()
         },
-        getUser : function(hashDto) {
+        getMyInfo : function(hashDto) {
             let user = UserDao.read(hashDto.hash)
-            return new UserDto(user)
+            return new MyInfoDto(user.name, user.location, user.busy)
+        },
+        getInven : function(hashDto) {
+            let user = UserDao.read(hashDto.hash)
+            return new InvenDto(user.inven)
+        },
+        getMap : function(hashDto) {
+
         }
     }
     module.exports = UserRepository

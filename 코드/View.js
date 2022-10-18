@@ -21,12 +21,17 @@
             "아이템 회수 (아이템) (개수) [with item] - 버린 아이템을 수집 함\n" +
             "아이템 버림 (아이템) (개수) [in 아이템] - 아이템을 버림"
         },
-        MyInfo : function(user) {
+        MyInfo : function(name, location, busy) {
             return "내 정보입니다.\n" +
-            "이름 : " + user.name + "\n" +
-            "위치 : " + user.location + "\n" +
-            "바쁨 : " + (user.busy ? "예" : "아니오") + "\n\n" +
+            "이름 : " + name + "\n" +
+            "위치 : " + location + "\n" +
+            "바쁨 : " + (busy ? "예" : "아니오") + "\n\n" +
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
+        },
+        InvenInfo : function(itemInfo, invenlimit, invenSpace) {
+            return "인벤 정보입니다.\n" +
+            "현재 공간 : " + invenSpace + " / " + invenlimit + "\n" +
+            "아이템\n" + itemInfo
         }
 
     }
