@@ -18,5 +18,6 @@
             File.save("Log", log.slice(-n))
         }
     }
+    
     module.exports = Log
 })

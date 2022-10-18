@@ -11,5 +11,6 @@
             return JSON.parse(data) 
         }
     }
+    
     module.exports = File
 })()

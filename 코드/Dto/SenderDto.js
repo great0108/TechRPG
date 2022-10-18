@@ -5,5 +5,6 @@
         this.sender = sender
         this.hash = hash
     }
+    
     module.exports = SenderDto
 })()
