@@ -15,7 +15,7 @@
     "돌 칼" : {"stack" : 1, "durability" : 50, "class" : "sword", "damage" : 4, "type" : "tool"},
     "돌 작업칼" : {"stack" : 1, "durability" : 50, "type" : "tool"},
     "돌 괭이" : {"stack" : 1, "durability" : 50, "class" : "hoe", "tier" : 1, "speed" : 2, "type" : "tool"},
-    "조약돌" : {"hardness" : 1000, "effective" : "pickaxe", "tier" : 1, "type" : "gather"},
+    "조약돌" : {"hardness" : 10, "effective" : "pickaxe", "tier" : 1, "type" : "gather"},
     "조약돌 반블럭" : {"type" : "item"},
     "점토" : {"hardness" : 2, "effective" : "shovel", "tier" : 0, "type" : "gather"},
     "나무 판자" : {"heat" : 1, "type" : "item"},
@@ -33,6 +33,6 @@
     "세라믹 병" : {"stack" : 1, "inven" : {"size" : 1, "includetype" : ["물"]}, "type" : "hold"},
     "세라믹 항아리" : {"stack" : 1, "inven" : {"size" : 4, "canItem" : true}, "type" : "hold"},
     "세라믹 도끼 틀" : {"stack" : 1, "type" : "item"},
-    "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10000}, "type" : "install"},
-    "물" : {"stack" : 1000, "type" : "liquid"}
+    "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10}, "type" : "install"},
+    "물" : {"stack" : 1, "type" : "liquid"}
 }

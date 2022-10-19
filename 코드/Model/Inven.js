@@ -2,22 +2,26 @@
     "use strict"
     const Copy = require("../Util/Copy")
     const ItemMaker = require("./ItemMaker")
+    const Item = require("./Item")
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
     
-    const DefaultSetting = {
+    const Inven = function(inven, setting) {
+        this.inven = inven
+        this.setting = Object.assign({}, this.defaultSetting, setting)
+        this.invenLimit = this.setting.invenLimit
+    }
+    Inven.prototype.itemInfo = function() {
+        return ""
+    }
+    Inven.prototype.defaultSetting = {
         canItem : true,
         canLiquid : false,
         includeItem : [],
         excludeItem : [],
+        invenLimit : 10
         // itemStack : 20,
-        // liquidStack : 1000
-    }
-
-    const Inven = function(inven, invenLimit, setting) {
-        this.inven = inven
-        this.invenLimit = invenLimit
-        this.setting = Object.assign({}, DefaultSetting, setting)
+        // liquidStack : 1
     }
     Inven.prototype.invenSpace = function() {
         let count = 0
@@ -40,9 +44,6 @@
         }
         return count
     }
-    Inven.prototype.itemInfo = function() {
-        return ""
-    }
     Inven.prototype.isExist = function(name) {
         return this.inven.some(v => v.name === name)
     }
@@ -61,7 +62,7 @@
         return this.invenCal() > this.invenlimit
     }
     Inven.prototype.getItems = function(names, nums) {
-        let inven = new Inven(Copy.deepcopy(this.inven), this.invenLimit, this.setting)
+        let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         for(let i = 0; i < names.length; i++) {
             let findItem = inven.findItem(names[i])
             if(!findItem) {
@@ -91,7 +92,7 @@
         return inven
     }
     Inven.prototype.putItems = function(names, nums, metas) {
-        let inven = new Inven(Copy.deepcopy(this.inven), this.invenLimit, this.setting)
+        let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         for(let i = 0; i < names.length; i++) {
             let nameDto = new NameDto(names[i])
             let basicItemDto = ItemRepository.getBasicInfo(nameDto)
