@@ -11,7 +11,7 @@
     const notExistUser = function(hash) {
         let hashDto = new HashDto(hash)
         let isExistDto = UserRepository.isExist(hashDto)
-        return isExistDto.isExist
+        return !isExistDto.isExist
     }
 
     const Presenter = {
@@ -73,7 +73,7 @@
             let mapDto = UserRepository.getMap(hashDto)
             let map = new Map(mapDto.map, mapDto.location)
 
-            
+
 
         },
         RetrieveItem : function(msg, sender, hash) {

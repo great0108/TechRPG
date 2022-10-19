@@ -1,5 +1,7 @@
 (function() {
     "use strict"
+    const Copy = require("../Util/Copy")
+    const ItemMaker = require("./ItemMaker")
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
     
@@ -7,24 +9,28 @@
         canItem : true,
         canLiquid : false,
         includeItem : [],
-        excludeItem : []
+        excludeItem : [],
+        // itemStack : 20,
+        // liquidStack : 1000
     }
 
-    const Inven = function(inven, setting) {
+    const Inven = function(inven, invenLimit, setting) {
         this.inven = inven
-        this.invenLimit = 10
-        this.setting = setting || DefaultSetting
+        this.invenLimit = invenLimit
+        this.setting = Object.assign({}, DefaultSetting, setting)
     }
     Inven.prototype.invenSpace = function() {
         let count = 0
         for(let item of this.inven) {
-            let nameDto = new NameDto(item.name)
-            let basicItemDto = ItemRepository.getBasicInfo(nameDto)
             let stack = null
-            if(basicItemDto.type === "liquid" && this.setting.canLiquid) {
-                stack = basicItemDto.stack
+            if(item.type === "liquid" && this.setting.canLiquid) {
+                stack = this.setting.liquidStack || item.stack
             } else if(this.setting.canItem) {
-                stack = basicItemDto.stack
+                stack = this.setting.itemStack || item.stack
+            }
+
+            if(item.stack === 1) {
+                stack = 1
             }
 
             if(!stack) {
@@ -55,75 +61,65 @@
         return this.invenCal() > this.invenlimit
     }
     Inven.prototype.getItems = function(names, nums) {
-        let inven = new Inven(Utils.copy(this.inven), this.invenlimit)
+        let inven = new Inven(Copy.deepcopy(this.inven), this.invenLimit, this.setting)
         for(let i = 0; i < names.length; i++) {
-            let iteminfo = ItemRepository.read(names[i])
-            let finditem = inven.findAnyItem(names[i], true)
-            let choice = null
-            if(finditem.length > 1) {
-                if(this.invenchoice[0]) {
-                    choice = invenchoice-1
-                    finditem = finditem[invenchoice]
-                    this.invenchoice.shift()
-                } else {
-                    return finditem;  //User에서 처리
-                }
-            } else if(finditem.length === 1) {
-                finditem = finditem[0]
+            let findItem = inven.findItem(names[i])
+            if(!findItem) {
+                return false
             }
-            if(iteminfo.islap) {
-                if(finditem.number < nums[i]) {
-                    ErrorHandler.throw("아이템 개수가 부족합니다.")
-                }
-                if(finditem.number > nums[i]) {
-                    finditem.number -= nums[i]
-                } else {
-                    inven.splice(inven.findItemIndex(names[i]), 1)
+
+            findItem = findItem[0]
+            if(findItem.stack === 1) {
+                for(let j = 0; j < nums[i]; j++) {
+                    let index = inven.findItemIndex(names[i])
+                    if(index === -1) {
+                        return false
+                    }
+                    inven.inven.splice(index, 1)
                 }
             } else {
-                let index = 0
-                let count = -1
-                for(; index < inven.length; index++) {
-                    if(inven[index].name == names[i]) {
-                        count++
-                    }
-                    if(count === choice) {
-                        break;
-                    }
-                }
-                inven.splice(index, 1)
-                if(nums[i] > 1) {
-                  nums[i]--
-                  i--
+                if(findItem.number < nums[i]) {
+                    return false
+                } else if(findItem.number === nums[i]) {
+                    let index = inven.findItemIndex(names[i])
+                    inven.inven.splice(index, 1)
+                } else {
+                    findItem.number -= nums[i]
                 }
             }
         }
         return inven
     }
     Inven.prototype.putItems = function(names, nums, metas) {
-        let inven = new Inven(Utils.copy(this.inven), this.invenlimit)
+        let inven = new Inven(Copy.deepcopy(this.inven), this.invenLimit, this.setting)
         for(let i = 0; i < names.length; i++) {
-            let iteminfo = ItemRepository.read(names[i])
-            metas[i] = metas[i] || iteminfo.meta
-            if(iteminfo.type === "liquid" && !this.lapNum.liquid) {
-                ErrorHandler.throw("액체를 담을 수 없는 공간입니다.")
-            } else if(iteminfo.type !== "liquid" && !this.lapNum.item) {
-                ErrorHandler.throw("일반 아이템을 담을 수 없는 공간입니다.")
+            let nameDto = new NameDto(names[i])
+            let basicItemDto = ItemRepository.getBasicInfo(nameDto)
+
+            if(basicItemDto.type === "liquid" && !this.setting.canLiquid) {
+                throw new Error("액체를 담을 수 없는 공간입니다.")
+            } else if(!this.setting.itemLiquid) {
+                throw new Error("일반 아이템을 담을 수 없는 공간입니다.")
             }
-            if(iteminfo.islap) {
-                let finditem = inven.findItem(names[i]).find(v => Utils.equal(v.metas, metas[i]))
-                if(finditem) {
-                    finditem.number += nums[i]
-                } else {
-                    inven.push(new ItemMaker(names[i], nums[i], metas[i]))
+
+            if(basicItemDto.stack === 1) {
+                for(let j = 0; j < nums[i]; j++) {
+                    inven.inven.push(new ItemMaker(names[i], 1, basicItemDto.type, basicItemDto.stack, metas[i]))
                 }
             } else {
-                for(let j = 0; j < nums[i]; j++) {
-                    inven.push(new ItemMaker(names[i], 1, metas[i]))
+                let findItem = inven.findItem(names[i])[0]
+                if(findItem) {
+                    findItem.number += nums[i]
+                } else {
+                    inven.inven.push(new ItemMaker(names[i], nums[i], basicItemDto.type, basicItemDto.stack))
                 }
             }
         }
+        if(inven.isOverLimit()) {
+            return false
+        }
+        return inven
     }
-    
+
     module.exports = Inven
 })()

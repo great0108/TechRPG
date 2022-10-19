@@ -1,5 +1,5 @@
 "use strict"
-const Presenter = require("Presenter")
+const Presenter = require("./Presenter")
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
     function reply(msg) {
@@ -53,3 +53,5 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     //reply(result)
     console.log(result)
 }
+
+module.exports = response
