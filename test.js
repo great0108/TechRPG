@@ -1,2 +1,2 @@
-let a = {a : 1, b : 2}
-console.log(Object.values(a))
+let [a, b] = [1]
+console.log(a, b)

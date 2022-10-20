@@ -17,6 +17,9 @@
         NotNumber : function() {
             return "숫자를 제대로 입력하세요."
         },
+        NotRangeNumber : function() {
+            return "숫자가 너무 크거나 작습니다."
+        },
         LackMapItem : function() {
             return "맵에 아이템이 없거나 부족합니다."
         },
@@ -60,13 +63,15 @@
         CollectItem : function(item, number, time, tool, withItem) {
             return [
                 [
-                    tool && (tool.nick + "을(를) 사용해서") + item + "을(를) " + withItem && (withItem + "에 ") + number + "개 수집합니다.\n" +
+                    tool && (tool.nick + "을(를) 사용해서") + item + "을(를) " + withItem && (withItem + "에다 ") + number + "개 수집합니다.\n" +
                     "아이템을 수집하는데 " + time + "초가 걸립니다.",
                     1
                 ],
                 ["아이템을 모두 수집했습니다.", time*1000]
             ]
-
+        },
+        DumpItem : function(item, number, withItem) {
+            return withItem && (withItem + "에 있는 ") + item + "을(를) " + number + "개 버립니다."
         }
 
     }

@@ -70,7 +70,9 @@
             if(notExistUser(hash)) {
                 return View.NotSignUp()
             }
-            if(busyUser(hash)) {
+            let hashDto = new HashDto(hash)
+            let user = UserRepository.getUser(hashDto).user
+            if(user.busyTime >= Date.now()) {
                 return View.NowBusy()
             }
 
@@ -85,6 +87,9 @@
             }
             if(isNaN(number)) {
                 return View.NotNumber()
+            }
+            if(number <= 0 || number > user.tier * 10 + 10) {
+                return View.NotRangeNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -104,7 +109,7 @@
                 itemInven = new Inven(inven.findItem(withItem).inven, setting)
             }
 
-            let mapInven = map.getItems([item], [number])
+            let [mapInven, _] = map.getItems([item], [number])
             if(mapInven === false) {
                 return View.LackMapItem()
             }
@@ -130,7 +135,7 @@
             if(!tool) {
                 inven2 = (withItem ? itemInven : inven).putItems([item], [number])
             } else if(tool.durability === number) {
-                let tempInven = inven.getItems([tool.nick], [1])
+                let [tempInven, _] = inven.getItems([tool.nick], [1])
                 inven2 = (withItem ? itemInven : tempInven).putItems([item], [number])
             } else {
                 inven.findItem(tool.nick).durability -= number
@@ -152,6 +157,7 @@
                               .setInven(inven.inven)
                               .setMap(map.map)
                               .setBusyTime(Date.now() + time*1000)
+
             UserRepository.setUser(userDataDto)
             return View.CollectItem(item, number, time, tool, withItem)
 
@@ -160,11 +166,67 @@
             if(notExistUser(hash)) {
                 return View.NotSignUp()
             }
-            if(busyUser(hash)) {
+            let hashDto = new HashDto(hash)
+            let user = UserRepository.getUser(hashDto).user
+            if(user.busyTime >= Date.now()) {
                 return View.NowBusy()
             }
 
-            
+            msg = msg.split(" ")
+            let item = msg[0]
+            let number = Number(msg[1])
+            let withItem = msg[2]
+
+            let nameDto = new NameDto(item)
+            if(!ItemRepository.isExist(nameDto)) {
+                return View.NotExistItem()
+            }
+            if(isNaN(number)) {
+                return View.NotNumber()
+            }
+            if(number <= 0 || number > user.tier * 10 + 10) {
+                return View.NotRangeNumber()
+            }
+
+            let invenDto = UserRepository.getInven(hashDto)
+            let inven = new Inven(invenDto.inven)
+            let mapDto = UserRepository.getMap(hashDto)
+            let map = new Map(mapDto.map, mapDto.location)
+
+            if(withItem) {
+                let nameDto2 = new NameDto(withItem)
+                if(!ItemRepository.isExist(nameDto2)) {
+                    return View.NotExistItem()
+                }
+                if(!inven.isExist(withItem)) {
+                    return View.NotHaveItem()
+                }
+                let setting = ItemRepository.getInvenInfo(nameDto2)
+                itemInven = new Inven(inven.findItem(withItem).inven, setting)
+            }
+
+            [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
+            if(inven2 === false) {
+                return View.LackInvenSpace()
+            }
+
+            for(let item of outItems) {
+                let dumpItems = map.dumpItems([item.name], [item.number], [item.meta])
+                map.setDumpItems(dumpItems)
+            }
+
+            if(withItem) {
+                inven.findItem(withItem).inven = inven2
+            } else {
+                inven.inven = inven2
+            }
+
+            let userDataDto = new UserDataDto(hash)
+                              .setInven(inven.inven)
+                              .setMap(map.map)
+
+            UserRepository.setUser(userDataDto)
+            return View.DumpItem(item, number, withItem)
 
         },
         RetrieveItem : function(msg, sender, hash) {

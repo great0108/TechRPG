@@ -77,7 +77,7 @@
         for(let i = 0; i < names.length; i++) {
             let findItem = inven.findItem(names[i])
             if(!findItem) {
-                return false
+                return [false]
             }
 
             findItem = findItem[0]
@@ -85,13 +85,13 @@
                 for(let j = 0; j < nums[i]; j++) {
                     let index = inven.findItemIndex(names[i])
                     if(index === -1) {
-                        return false
+                        return [false]
                     }
                     inven.inven.splice(index, 1)
                 }
             } else {
                 if(findItem.number < nums[i]) {
-                    return false
+                    return [false]
                 } else if(findItem.number === nums[i]) {
                     let index = inven.findItemIndex(names[i])
                     inven.inven.splice(index, 1)
@@ -100,7 +100,7 @@
                 }
             }
         }
-        return inven.inven
+        return [inven.inven, items]
     }
     Inven.prototype.putItems = function(names, nums, metas) {
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
