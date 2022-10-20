@@ -14,5 +14,3 @@ Presender → Model
  ↓ --- ↓ -------------------------
  ↓     ↓
 view response     View 계층
-
-

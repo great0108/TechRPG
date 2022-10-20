@@ -45,24 +45,35 @@
         return count
     }
     Inven.prototype.isExist = function(name) {
-        return this.inven.some(v => v.name === name)
+        return this.inven.some(v => v.name === name || v.nick === name)
+    }
+    Inven.prototype.filter = function(fn) {
+        return this.inven.filter(fn)
     }
     Inven.prototype.findItem = function(name) {
-        let items = this.inven.filter(v => v.name === name)
+        let items = this.inven.filter(v => v.name === name || v.nick === name)
         if(items.length === 0) {
             return null
         }
         return items
     }
     Inven.prototype.findItemIndex = function(name) {
-        let index = this.inven.findIndex(v => v.name === name)
+        let index = this.inven.findIndex(v => v.name === name || v.nick === name)
         return index
     }
     Inven.prototype.isOverLimit = function() {
         return this.invenCal() > this.invenlimit
     }
+    Inven.prototype.makeNick = function(name) {
+        let num = 1
+        while(this.isExist(name + num)) {
+            num++
+        }
+        return name + num
+    }
     Inven.prototype.getItems = function(names, nums) {
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
+        let items = []
         for(let i = 0; i < names.length; i++) {
             let findItem = inven.findItem(names[i])
             if(!findItem) {
@@ -89,7 +100,7 @@
                 }
             }
         }
-        return inven
+        return inven.inven
     }
     Inven.prototype.putItems = function(names, nums, metas) {
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
@@ -105,7 +116,7 @@
 
             if(basicItemDto.stack === 1) {
                 for(let j = 0; j < nums[i]; j++) {
-                    inven.inven.push(new ItemMaker(names[i], 1, metas[i]))
+                    inven.inven.push(new ItemMaker(names[i], 1, this.makeNick(names[i]), metas[i]))
                 }
             } else {
                 let findItem = inven.findItem(names[i])[0]
@@ -119,7 +130,7 @@
         if(inven.isOverLimit()) {
             return false
         }
-        return inven
+        return inven.inven
     }
 
     module.exports = Inven

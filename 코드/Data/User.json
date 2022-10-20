@@ -4,7 +4,6 @@
         "inven":[],
         "location":"base",
         "map":{"base":{"type":"base","coord":[0,0],"dumpItem":[]}},
-        "busy":false,
         "busyTime":1635581528349,
         "messageState":null
     }

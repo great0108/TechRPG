@@ -3,7 +3,7 @@
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
 
-    const ItemMaker = function(name, number, meta) {
+    const ItemMaker = function(name, number, nick, meta) {
         this.name = name
         this.number = number
 
@@ -18,7 +18,11 @@
             let toolItemDto = ItemRepository.getToolInfo(nameDto)
             this.meta = Object.assign(toolItemDto, meta)
         } else {
-            this.meta = meta || {}
+            this.meta = meta
+        }
+
+        if(this.meta) {
+            this.nick = nick
         }
     }
 

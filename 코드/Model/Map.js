@@ -30,20 +30,27 @@
         return Boolean(this.map[name])
     }
     Map.prototype.getLocate = function(name) {
-        let locate = Object.keys(this.map).filter(v => this.map[v].name === name)
-        if(locate.length === 0) ErrorHandler.throw("이런 바이옴의 장소는 없습니다.")
-        return locate
+        if(!this.map[name]) {
+            throw new Error("이런 이름의 장소는 없습니다.")
+        }
+        return this.map[name]
     }
     Map.prototype.putLocate = function(biomename, coord) {
         let name = this.makeName(biomename)
-        this.map[nick] = new LocateMaker(name, coord)
+        this.map[nick] = new MapMaker(name, coord)
     }
     Map.prototype.getItems = function(names, nums) {
-
+        let inven = new Inven(this.map[this.location].items)
+        return inven.getItems(names, nums)
     }
     Map.prototype.dumpItems = function(names, nums, metas) {
-
+        let inven = new Inven(this.map[this.location].dumpItems)
+        return inven.putItems(names, nums, metas)
+    },
+    Map.prototype.setItems = function(items) {
+        this.map[this.location].items = items
     }
+
     
     module.exports = Map
 })()
