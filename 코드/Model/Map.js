@@ -1,5 +1,7 @@
 (function() {
     "use strict"
+    const MapMaker = require("./MapMaker")
+    const Inven = require("./Inven")
 
     const Map = function(map, location) {
         this.map = map

@@ -105,14 +105,14 @@
 
             if(basicItemDto.stack === 1) {
                 for(let j = 0; j < nums[i]; j++) {
-                    inven.inven.push(new ItemMaker(names[i], 1, basicItemDto.type, basicItemDto.stack, metas[i]))
+                    inven.inven.push(new ItemMaker(names[i], 1, metas[i]))
                 }
             } else {
                 let findItem = inven.findItem(names[i])[0]
                 if(findItem) {
                     findItem.number += nums[i]
                 } else {
-                    inven.inven.push(new ItemMaker(names[i], nums[i], basicItemDto.type, basicItemDto.stack))
+                    inven.inven.push(new ItemMaker(names[i], nums[i]))
                 }
             }
         }

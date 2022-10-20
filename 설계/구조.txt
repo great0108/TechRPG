@@ -1,0 +1,18 @@
+Data
+ ↑                Data 계층
+Dao
+ ↓ -------------------------------
+ ↓
+DaoInterface
+ ↑                Repository 계층
+Repository
+ ↓ -------------------------------
+ ↓
+Dto ←----------
+ ↑            ↑   Model 계층
+Presender → Model
+ ↓ --- ↓ -------------------------
+ ↓     ↓
+view response     View 계층
+
+
