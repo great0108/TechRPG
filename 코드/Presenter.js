@@ -17,12 +17,6 @@
         return !isExistDto.isExist
     }
 
-    const busyUser = function(hash) {
-        let hashDto = new HashDto(hash)
-        let user = UserRepository.getUser(hashDto).user
-        return user.busyTime >= Date.now()
-    }
-
     const Presenter = {
         SignUp : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -43,8 +37,8 @@
             }
 
             let hashDto = new HashDto(hash)
-            let userDto = UserRepository.getUser(hashDto)
-            return View.MyInfo(userDto.name, userDto.location, userDto.busy)
+            let basicUserDto = UserRepository.getBasicInfo(hashDto)
+            return View.MyInfo(basicUserDto.name, basicUserDto.location, basicUserDto.busyTime > Date.now(), basicUserDto.tier)
         },
         InvenInfo : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -54,7 +48,7 @@
             let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
-            return View.invenInfo(inven.itemInfo(), inven.invenLimit, inven.invenSpace())
+            return View.invenInfo(inven.invenInfo(), inven.invenLimit, inven.invenSpace())
         },
         MapInfo : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -71,7 +65,7 @@
                 return View.NotSignUp()
             }
             let hashDto = new HashDto(hash)
-            let user = UserRepository.getUser(hashDto).user
+            let user = UserRepository.getBasicInfo(hashDto)
             if(user.busyTime >= Date.now()) {
                 return View.NowBusy()
             }
@@ -106,7 +100,7 @@
                     return View.NotHaveItem()
                 }
                 let setting = ItemRepository.getInvenInfo(nameDto2)
-                itemInven = new Inven(inven.findItem(withItem).inven, setting)
+                itemInven = new Inven(inven.findItem(withItem).meta.inven, setting)
             }
 
             let [mapInven, _] = map.getItems([item], [number])
@@ -115,13 +109,13 @@
             }
             
             let collectItemDto = ItemRepository.getCollectInfo(nameDto)
-            let tools = inven.filter(v => v.type === collectItemDto.effective).sort((a, b) => b.tier - a.tier)
+            let tools = inven.findTool(collectItemDto.effective)
             let i = 0
-            while(tools.length > i) {
-                if(tools[i].tier < collectItemDto.tier) {
+            while(tools && tools.length > i) {
+                if(tools[i].meta.tier < collectItemDto.tier) {
                     break
                 }
-                if(tools[i].durability >= number) {
+                if(tools[i].meta.durability >= number) {
                     tool = tools[i]
                     break
                 }
@@ -134,11 +128,11 @@
             let inven2 = null
             if(!tool) {
                 inven2 = (withItem ? itemInven : inven).putItems([item], [number])
-            } else if(tool.durability === number) {
+            } else if(tool.meta.durability === number) {
                 let [tempInven, _] = inven.getItems([tool.nick], [1])
                 inven2 = (withItem ? itemInven : tempInven).putItems([item], [number])
             } else {
-                inven.findItem(tool.nick).durability -= number
+                inven.findItem(tool.nick).meta.durability -= number
                 inven2 = (withItem ? itemInven : inven).putItems([item], [number])
             }
 
@@ -148,7 +142,7 @@
 
             map.setItems(mapInven)
             if(withItem) {
-                inven.findItem(withItem).inven = inven2
+                inven.findItem(withItem).meta.inven = inven2
             } else {
                 inven.inven = inven2
             }
@@ -167,7 +161,7 @@
                 return View.NotSignUp()
             }
             let hashDto = new HashDto(hash)
-            let user = UserRepository.getUser(hashDto).user
+            let user = UserRepository.getBasicInfo(hashDto)
             if(user.busyTime >= Date.now()) {
                 return View.NowBusy()
             }
@@ -202,7 +196,7 @@
                     return View.NotHaveItem()
                 }
                 let setting = ItemRepository.getInvenInfo(nameDto2)
-                itemInven = new Inven(inven.findItem(withItem).inven, setting)
+                itemInven = new Inven(inven.findItem(withItem).meta.inven, setting)
             }
 
             [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
@@ -216,7 +210,7 @@
             }
 
             if(withItem) {
-                inven.findItem(withItem).inven = inven2
+                inven.findItem(withItem).meta.inven = inven2
             } else {
                 inven.inven = inven2
             }

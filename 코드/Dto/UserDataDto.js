@@ -20,8 +20,8 @@
         this.busyTime = busyTime
         return this
     }
-    UserDataDto.prototype.SetMessageState = function(messageState) {
-        this.messageState = messageState
+    UserDataDto.prototype.setTier = function(tier) {
+        this.tier = tier
         return this
     }
 

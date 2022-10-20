@@ -1,2 +1,2 @@
-let [a, b] = [1]
-console.log(a, b)
+let a = [3,4,2,1]
+console.log(a.sort((a, b) => b - a))

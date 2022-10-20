@@ -11,6 +11,9 @@
         this.setting = Object.assign({}, this.defaultSetting, setting)
         this.invenLimit = this.setting.invenLimit
     }
+    Inven.prototype.invenInfo = function() {
+        return ""
+    }
     Inven.prototype.itemInfo = function() {
         return ""
     }
@@ -56,6 +59,13 @@
             return null
         }
         return items
+    }
+    Inven.prototype.findTool = function(effective) {
+        let items = this.inven.filter(v => v.type === "tool" && v.meta.class === effective)
+        if(items.length === 0) {
+            return null
+        }
+        return items.sort((a, b) => b.meta.tier - a.meta.tier)
     }
     Inven.prototype.findItemIndex = function(name) {
         let index = this.inven.findIndex(v => v.name === name || v.nick === name)

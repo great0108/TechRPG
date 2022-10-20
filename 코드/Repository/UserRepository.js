@@ -3,7 +3,7 @@
     const UserDao = require("../Dao/UserDao")
     const IsExistDto = require("../Dto/IsExistDto")
     const InvenDto = require("../Dto/InvenDto")
-    const UserDto = require("../Dto/UserDto")
+    const BasicUserDto = require("../Dto/BasicUserDto")
 
     const UserRepository = {
         isExist : function(hashDto) {
@@ -22,9 +22,9 @@
             let user = UserDao.read(hashDto.hash)
             return new InvenDto(user.map, user.location)
         },
-        getUser : function(hashDto) {
+        getBasicInfo : function(hashDto) {
             let user = UserDao.read(hashDto.hash)
-            return new UserDto(user)
+            return new BasicUserDto(user.name, user.location, user.busyTime, user.tier)
         },
         setUser : function(userDataDto) {
             let user = UserDao.read(userDataDto.hash)
