@@ -2,7 +2,6 @@
     "use strict"
     const Copy = require("../Util/Copy")
     const ItemMaker = require("./ItemMaker")
-    const Item = require("./Item")
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
     
@@ -10,6 +9,15 @@
         this.inven = inven
         this.setting = Object.assign({}, this.defaultSetting, setting)
         this.invenLimit = this.setting.invenLimit
+    }
+    Inven.splitItemInfo = function(items) {
+        let names = [], numbers = [], metas = []
+        for(let item of outItems) {
+            names.push(item.name)
+            numbers.push(item.number)
+            metas.push(item.meta)
+        }
+        return [names, numbers, metas]
     }
     Inven.prototype.invenInfo = function() {
         return ""

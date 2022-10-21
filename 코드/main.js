@@ -1,24 +1,25 @@
 "use strict"
 const Presenter = require("./Presenter")
+const admin = [123456]
 
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
-    function reply(msg) {
+    function reply(msg, room) {
         if([undefined, null, ""].includes(msg)) return ""
         if(!Array.isArray(msg)) {
-            replier.reply(msg)
+            Api.replyRoom(room, msg)
             return ""
         }
         if(Array.isArray(msg[0])) {
             for(m of msg) {
                 if(m[1]) {
                     java.lang.Thread.sleep(m[1])
-                    replier.reply(m[1] + "time")
+                    Api.replyRoom(room, m[1] + "time")
                 }
-                replier.reply(m[0])
+                Api.replyRoom(room, m[0])
             }
         } else {
             for(m of msg) {
-                replier.reply(m)
+                Api.replyRoom(room, m)
             }
         }
     }
@@ -29,6 +30,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     let result;
 
     try {
+        if(admin.includes(hash)) {
+            if(msg.startsWith("아이템 가져오기")) {
+                result = Presenter.BringItem(msg.slice(8), sender, hash)
+            }
+        }
+
         if(msg == "회원가입") {
             result = Presenter.SignUp(msg, sender, hash)
         } else if(msg == "명령어") {
@@ -43,14 +50,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
             result = Presenter.CollectItem(msg.slice(6), sender, hash)
         } else if(msg.startsWith("아이템 회수")) {
             result = Presenter.RetrieveItem(msg.slice(6), sender, hash)
-        } else if(msg.startsWith("아이템 버림")) {
-            result = Presenter.DumpItem(msg.slice(6), sender, hash)
+        } else if(msg.startsWith("아이템 버리기")) {
+            result = Presenter.DumpItem(msg.slice(7), sender, hash)
+        } else if(msg.startsWith("아이템 꺼내기")) {
+            result = Presenter.GetItem(msg.slice(7), sender, hash)
+        } else if(msg.startsWith("아이템 넣기")) {
+            result = Presenter.PutItem(msg.slice(6), sender, hash)
         }
     } catch(e) {
         console.log(e)
     }
 
-    //reply(result)
+    //reply(result, room)
     console.log(result)
 }
 

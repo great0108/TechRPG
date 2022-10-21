@@ -47,8 +47,9 @@
         let inven = new Inven(this.map[this.location].dumpItems)
         return inven.putItems(names, nums, metas)
     },
-    Map.prototype.retrieveItems = function(names, nums, metas) {
-        return
+    Map.prototype.retrieveItems = function(names, nums) {
+        let inven = new Inven(this.map[this.location].dumpItems)
+        return inven.getItems(names, nums)
     }
     Map.prototype.setItems = function(items) {
         this.map[this.location].items = items
