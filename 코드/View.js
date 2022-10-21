@@ -47,17 +47,19 @@
             "명령어 - 명령어 목록을 띄움\n" +
             "내정보 - 내정보 창을 띄움\n" +
             "인벤정보 - 인벤정보 창을 띄움\n" +
+            "맵정보 - 맵정보 창을 띄움\n" +
             "아이템 수집 (아이템) (개수) [with item] - 아이템을 수집 함\n" +
             "아이템 회수 (아이템) (개수) [with item] - 버린 아이템을 수집 함\n" +
             "아이템 버림 (아이템) (개수) [in 아이템] - 아이템을 버림\n" +
-            "아이템 꺼내기 (아이템) (개수) (in 아이템) [with item]\n" +
-            "아이템 넣기 (아이템) (개수) (to 아이템) [in item]\n"
+            "아이템 꺼내기 (아이템) (개수) (in 아이템) [with item] - 저장공간에서 아이템을 꺼냄\n" +
+            "아이템 넣기 (아이템) (개수) (to 아이템) [in item] - 저장공간에 아이템을 넣음\n"
         },
-        MyInfo : function(name, location, busy) {
+        MyInfo : function(name, location, busy, tier) {
             return "내 정보입니다.\n" +
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
-            "바쁨 : " + (busy ? "예" : "아니오") + "\n\n" +
+            "바쁨 : " + (busy ? "예" : "아니오") + "\n" +
+            "티어 : " + tier + "\n\n" +
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
         },
         InvenInfo : function(itemInfo, invenlimit, invenSpace) {

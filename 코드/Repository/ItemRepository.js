@@ -1,5 +1,3 @@
-const CollectItemDto = require("../Dto/CollectItemDto")
-
 (function() {
     "use strict"
     const ItemDao = require("../Dao/ItemDao")
@@ -7,6 +5,7 @@ const CollectItemDto = require("../Dto/CollectItemDto")
     const InvenSettingDto = require("../Dto/InvenSettingDto")
     const ToolItemDto = require("../Dto/ToolItemDto")
     const IsExistDto = require("../Dto/IsExistDto")
+    const CollectItemDto = require("../Dto/CollectItemDto")
 
     const ItemRepository = {
         getBasicInfo : function(nameDto) {
@@ -40,4 +39,4 @@ const CollectItemDto = require("../Dto/CollectItemDto")
     }
 
     module.exports = ItemRepository
-})
+})()

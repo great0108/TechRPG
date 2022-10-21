@@ -6,7 +6,8 @@
         this.name = name
         this.inven = []
         this.location = "base"
-        this.map = {"base" : new MapMaker("base", [0,0])}
+        let base = new MapMaker("base", [0,0])
+        this.map = {"base" : base}
         this.busyTime = Date.now()
         this.tier = 0
     }

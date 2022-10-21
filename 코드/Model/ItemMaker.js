@@ -12,9 +12,9 @@
         this.type = basicItemDto.type
         this.stack = basicItemDto.stack
 
-        if(type === "hold") {
+        if(basicItemDto.type === "hold") {
             this.meta = Object.assign({inven : []}, meta)
-        } else if(type === "tool") {
+        } else if(basicItemDto.type === "tool") {
             let toolItemDto = ItemRepository.getToolInfo(nameDto)
             this.meta = Object.assign(toolItemDto, meta)
         } else {
@@ -27,4 +27,4 @@
     }
 
     module.exports = ItemMaker
-})
+})()

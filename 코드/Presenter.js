@@ -45,7 +45,7 @@
 
     const Presenter = {
         SignUp : function(msg, sender, hash) {
-            if(notExistUser(hash)) {
+            if(!notExistUser(hash)) {
                 return View.AlreadySignUp()
             }
 
@@ -74,7 +74,7 @@
             let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
-            return View.invenInfo(inven.invenInfo(), inven.invenLimit, inven.invenSpace())
+            return View.InvenInfo(inven.invenInfo(), inven.invenLimit, inven.invenSpace())
         },
         MapInfo : function(msg, sender, hash) {
             if(notExistUser(hash)) {
