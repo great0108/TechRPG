@@ -11,7 +11,7 @@
         let inven = new Inven(this.map[location].items, this.invenSetting)
         let dumpInven = new Inven(this.map[location].dumpItems, this.invenSetting)
         return "아이템\n" + inven.invenInfo() + 
-        this.location === location ? "\n\n" + "버린 아이템\n" + dumpInven.invenInfo() : ""
+        (this.location === location ? "\n\n" + "버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "")
     }
     Map.prototype.invenSetting = {
         canItem : true,

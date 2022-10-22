@@ -68,42 +68,42 @@
         },
         InvenInfo : function(itemInfo, invenlimit, invenSpace) {
             return "인벤 정보입니다.\n" +
-            "현재 공간 : " + invenSpace + " / " + invenlimit + "\n" +
-            "아이템\n" + itemInfo
+            "현재 공간 : " + invenSpace + " / " + invenlimit + "\n\n" +
+            "아이템\n" + (itemInfo || "없음")
         },
         MapInfo : function(location, coord, biome, mapInfo) {
             return "맵 정보입니다.\n" +
             "장소 이름 : " + location + "\n" +
             "좌표 : " + coord + "\n" +
-            "바이옴 : " + biome + "\n" + mapInfo
+            "바이옴 : " + biome + "\n\n" + mapInfo
         },
         CollectItem : function(item, number, time, tool, withItem) {
             return [
                 [
-                    tool && (tool.nick + "을(를) 사용해서") + item + "을(를) " + withItem && (withItem + "에다 ") + number + "개 수집합니다.\n" +
+                    (tool ? (tool.nick + " 을(를) 사용해서") : "") + item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 수집합니다.\n" +
                     "아이템을 수집하는데 " + time + "초가 걸립니다."
                 ],
                 ["아이템을 모두 수집했습니다.", time*1000]
             ]
         },
         DumpItem : function(item, number, withItem) {
-            return withItem && (withItem + "에 있는 ") + item + "을(를) " + number + "개 버립니다."
+            return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + number + "개 버립니다."
         },
         RetrieveItem : function(item, number, withItem) {
-            return item + "을(를) " + withItem && (withItem + "에다 ") + number + "개 회수합니다."
+            return item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 회수합니다."
         },
         GetItem : function(item, number, store, withItem) {
             if(withItem) {
-                return store + "에 있는 " + item + "을(를) " + number + "개 꺼내서 " + withItem + "에 넣습니다."
+                return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼내서 " + withItem + " 에 넣습니다."
             }
-            return store + "에 있는 " + item + "을(를) " + number + "개 꺼냅니다."
+            return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼냅니다."
         },
         PutItem : function(item, number, store, withItem) {
-            return withItem && (withItem + "에 있는 ") + item + "을(를) " + store + "에다 " + number + "개 넣습니다."
+            return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + store + " 에다 " + number + "개 넣습니다."
         },
         BringItem : function(item, number, withItem) {
             return "[어드민 명령어]\n" +
-            item + "을(를) " + withItem && (withItem + "에다 ") + number + "개 가져옵니다."
+            item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 가져옵니다."
         }
     }
 

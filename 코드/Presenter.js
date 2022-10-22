@@ -18,29 +18,13 @@
     }
 
     const withItemInven = function(withItem, inven) {
-        let nameDto2 = new NameDto(withItem)
-        if(!ItemRepository.isExist(nameDto2)) {
-            return View.NotExistItem()
-        }
-        if(!inven.isExist(withItem)) {
+        if(!inven.isExist(withItem) || inven.findItems(withItem).length > 1) {
             return View.NotHaveItem()
         }
-        let setting = ItemRepository.getInvenInfo(nameDto2)
-        return new Inven(inven.findItem(withItem).meta.inven, setting)
-    }
-
-    const checkItemAndNumber = function(item, number, tier) {
-        let nameDto = new NameDto(item)
-        if(!ItemRepository.isExist(nameDto)) {
-            return View.NotExistItem()
-        }
-        if(isNaN(number)) {
-            return View.NotNumber()
-        }
-        if(number <= 0 || number > tier * 10 + 10) {
-            return View.NotRangeNumber()
-        }
-        return false
+        let item = inven.findItem(withItem)
+        let nameDto = new NameDto(item.name)
+        let setting = ItemRepository.getInvenInfo(nameDto)
+        return new Inven(item.meta.inven, setting)
     }
 
     const Presenter = {
@@ -92,7 +76,7 @@
             let mapDto = UserRepository.getMap(hashDto)
             let map = new Map(mapDto.map, mapDto.location)
             let location = msg || map.location
-            if(!map.isExist(locate)) {
+            if(!map.isExist(location)) {
                 return View.NotExistMap()
             }
 
@@ -109,14 +93,16 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
+            }
+            if(number <= 0 || number > user.tier * 10 + 10) {
+                return View.NotRangeNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -137,6 +123,7 @@
             let nameDto = new NameDto(item)
             let collectItemDto = ItemRepository.getCollectInfo(nameDto)
             let tools = inven.findTool(collectItemDto.effective)
+            let tool = null
             let i = 0
             while(tools && tools.length > i) {
                 if(tools[i].meta.tier < collectItemDto.tier) {
@@ -193,14 +180,13 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -213,7 +199,7 @@
                 return itemInven
             }
 
-            [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
+            let [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
             if(inven2 === false) {
                 return View.LackInvenItem()
             }
@@ -246,14 +232,13 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -272,7 +257,7 @@
             }
 
             let [names, numbers, metas] = Inven.splitItemInfo(outItems)
-            [inven2, _] = (withItem ? itemInven : inven).putItems(names, numbers, metas)
+            let inven2 = (withItem ? itemInven : inven).putItems(names, numbers, metas)
             if(inven2 === false) {
                 return View.LackInvenSpace()
             }
@@ -289,7 +274,7 @@
                               .setMap(map.map)
 
             UserRepository.setUser(userDataDto)
-            return View.retrieveItem(item, number, withItem)
+            return View.RetrieveItem(item, number, withItem)
         },
         GetItem : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -301,15 +286,14 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let store = msg[2]
             let withItem = msg[3]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -325,23 +309,23 @@
                 return itemInven
             }
 
-            [storeInven2, outItems] = storeInven.getItems([item], [number])
+            let [storeInven2, outItems] = storeInven.getItems([item], [number])
             if(storeInven2 === false) {
                 return View.LackInvenItem()
             }
 
             let [names, numbers, metas] = Inven.splitItemInfo(outItems)
-            [inven2, _] = (withItem ? itemInven : inven).putItems(names, numbers, metas)
+            let inven2 = (withItem ? itemInven : inven).putItems(names, numbers, metas)
             if(inven2 === false) {
                 return View.LackInvenSpace()
             }
 
-            inven.findItem(store).meta.inven = storeInven2
             if(withItem) {
                 inven.findItem(withItem).meta.inven = inven2
             } else {
                 inven.inven = inven2
             }
+            inven.findItem(store).meta.inven = storeInven2
 
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven.inven)
@@ -359,15 +343,14 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let store = msg[2]
             let withItem = msg[3]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -383,23 +366,23 @@
                 return itemInven
             }
 
-            [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
+            let [inven2, outItems] = (withItem ? itemInven : inven).getItems([item], [number])
             if(inven2 === false) {
                 return View.LackInvenItem()
             }
 
             let [names, numbers, metas] = Inven.splitItemInfo(outItems)
-            [storeInven2, _] = storeInven.putItems(names, numbers, metas)
+            let storeInven2 = storeInven.putItems(names, numbers, metas)
             if(storeInven2 === false) {
                 return View.LackInvenSpace()
             }    
 
-            inven.findItem(store).meta.inven = storeInven2
             if(withItem) {
                 inven.findItem(withItem).meta.inven = inven2
             } else {
                 inven.inven = inven2
             }
+            inven.findItem(store).meta.inven = storeInven2
 
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven.inven)
@@ -417,14 +400,13 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split(" ")
+            msg = msg.split("/")
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
 
-            let result = checkItemAndNumber(item, number, user.tier)
-            if(result) {
-                return result
+            if(isNaN(number)) {
+                return View.NotNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -435,7 +417,7 @@
                 return itemInven
             }
 
-            [inven2, _] = (withItem ? itemInven : inven).putItems([item], [number])
+            let inven2 = (withItem ? itemInven : inven).putItems([item], [number])
             if(inven2 === false) {
                 return View.LackInvenSpace()
             }
@@ -448,7 +430,6 @@
 
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven.inven)
-                              .setMap(map.map)
 
             UserRepository.setUser(userDataDto)
             return View.BringItem(item, number, withItem)

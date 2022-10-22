@@ -22,21 +22,22 @@
     Inven.prototype.invenInfo = function(space) {
         space = space === undefined ? 0 : space
         let result = []
-        for(let item in this.inven) {
-            result.push(" ".repeat(space) + this.itemInfo(item))
+        for(let item of this.inven) {
+            result.push(this.itemInfo(item, space))
         }
-        return result.join("\n\n")
+        return result.join("\n")
     }
-    Inven.prototype.itemInfo = function(item) {
-        let result = "이름 : " + item.nick || item.name + " 개수 : " + item.number
+    Inven.prototype.itemInfo = function(item, space) {
+        space = space === undefined ? "" : " ".repeat(space)
+        let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
         if(item.type === "hold") {
             let nameDto = new NameDto(item.name)
             let invenSetting = ItemRepository.getInvenInfo(nameDto)
             let itemInven = new Inven(item.meta.inven, invenSetting)
-            result += "\n" + "아이템 인벤 공간 : " + itemInven.invenSpace + " / " + itemInven.invenLimit + "\n" +
-                      itemInven.invenInfo(2)
+            result += "\n" + "  아이템 인벤 공간 : " + itemInven.invenSpace() + " / " + itemInven.invenLimit + "\n" +
+                      "  아이템\n" + (itemInven.invenInfo(2) || "  없음")
         } else if(item.type === "tool") {
-            result += "\n" + "내구도 : " + item.meta.durability + " 속도 : " + item.meta.speed + " 데미지 : " + item.meta.damage || "없음"
+            result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + item.meta.damage || "없음"
         }
         return result
     }
@@ -77,6 +78,10 @@
         return this.inven.filter(fn)
     }
     Inven.prototype.findItem = function(name) {
+        let item = this.inven.find(v => v.name === name || v.nick === name)
+        return item
+    }
+    Inven.prototype.findItems = function(name) {
         let items = this.inven.filter(v => v.name === name || v.nick === name)
         if(items.length === 0) {
             return null
@@ -95,7 +100,7 @@
         return index
     }
     Inven.prototype.isOverLimit = function() {
-        return this.invenCal() > this.invenlimit
+        return this.invenSpace() > this.invenlimit
     }
     Inven.prototype.makeNick = function(name) {
         let num = 1
@@ -113,29 +118,30 @@
                 return [false]
             }
 
-            findItem = findItem[0]
             if(findItem.stack === 1) {
                 for(let j = 0; j < nums[i]; j++) {
                     let index = inven.findItemIndex(names[i])
                     if(index === -1) {
                         return [false]
                     }
-                    inven.inven.splice(index, 1)
+                    items.push(inven.inven.splice(index, 1)[0])
                 }
             } else {
                 if(findItem.number < nums[i]) {
                     return [false]
                 } else if(findItem.number === nums[i]) {
                     let index = inven.findItemIndex(names[i])
-                    inven.inven.splice(index, 1)
+                    items.push(inven.inven.splice(index, 1)[0])
                 } else {
                     findItem.number -= nums[i]
+                    items.push(new ItemMaker(names[i], nums[i]))
                 }
             }
         }
         return [inven.inven, items]
     }
     Inven.prototype.putItems = function(names, nums, metas) {
+        metas = metas === undefined ? [] : metas
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         for(let i = 0; i < names.length; i++) {
             let nameDto = new NameDto(names[i])
@@ -147,17 +153,17 @@
                 }
                 if(basicItemDto.type === "liquid" && !this.setting.canLiquid) {
                     throw new Error("액체를 담을 수 없는 공간입니다.")
-                } else if(!this.setting.itemLiquid) {
+                } else if(!this.setting.canItem) {
                     throw new Error("일반 아이템을 담을 수 없는 공간입니다.")
                 }
             }
 
             if(basicItemDto.stack === 1) {
                 for(let j = 0; j < nums[i]; j++) {
-                    inven.inven.push(new ItemMaker(names[i], 1, this.makeNick(names[i]), metas[i]))
+                    inven.inven.push(new ItemMaker(names[i], 1, inven.makeNick(names[i]), metas[i]))
                 }
             } else {
-                let findItem = inven.findItem(names[i])[0]
+                let findItem = inven.findItem(names[i])
                 if(findItem) {
                     findItem.number += nums[i]
                 } else {

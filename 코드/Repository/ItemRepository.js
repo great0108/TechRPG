@@ -15,13 +15,13 @@
         getInvenInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
             return new InvenSettingDto(
-                item.size,
-                item.canItem || false, 
-                item.canLiquid || false, 
-                item.includeItem || [], 
-                item.excludeItem || [], 
-                item.itemStack, 
-                item.liquidStack
+                item.inven.size,
+                item.inven.canItem || false, 
+                item.inven.canLiquid || false, 
+                item.inven.includeItem || [], 
+                item.inven.excludeItem || [], 
+                item.inven.itemStack, 
+                item.inven.liquidStack
             )
         },
         getToolInfo : function(nameDto) {

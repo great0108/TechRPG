@@ -1,5 +1,5 @@
 {
-    "base" : {
+    "plane" : {
         "items" : {
             "풀" : {"number" : [50, 100]},
             "나무" : {"number" : [10, 20], "exist" : 0.7},

@@ -44,17 +44,17 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
             result = Presenter.MyInfo(msg, sender, hash)
         } else if(msg == "인벤정보") {
             result = Presenter.InvenInfo(msg, sender, hash)
-        } else if(msg.startsWith("맵정보 ")) {
+        } else if(msg.startsWith("맵정보")) {
             result = Presenter.MapInfo(msg.slice(4), sender, hash)
-        } else if(msg.startsWith("아이템 수집 ")) {
+        } else if(msg.startsWith("아이템 수집")) {
             result = Presenter.CollectItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 회수 ")) {
+        } else if(msg.startsWith("아이템 회수")) {
             result = Presenter.RetrieveItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 버리기 ")) {
+        } else if(msg.startsWith("아이템 버리기")) {
             result = Presenter.DumpItem(msg.slice(8), sender, hash)
-        } else if(msg.startsWith("아이템 꺼내기 ")) {
+        } else if(msg.startsWith("아이템 꺼내기")) {
             result = Presenter.GetItem(msg.slice(8), sender, hash)
-        } else if(msg.startsWith("아이템 넣기 ")) {
+        } else if(msg.startsWith("아이템 넣기")) {
             result = Presenter.PutItem(msg.slice(7), sender, hash)
         }
     } catch(e) {
