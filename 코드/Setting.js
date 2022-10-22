@@ -2,7 +2,8 @@
     "use strict"
 
     const Setting = {
-        dataSeperator : "/"
+        dataSeperator : "/",
+        nodeJS : true
     }
     
     module.exports = Setting

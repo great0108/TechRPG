@@ -1,8 +1,8 @@
 "use strict"
+const Setting = require("./Setting")
 const Presenter = require("./Presenter")
-const admin = [123456]
 
-function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
+function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {
     function reply(msg, room) {
         if([undefined, null, ""].includes(msg)) return ""
         if(!Array.isArray(msg)) {
@@ -26,8 +26,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 
     if(!msg.startsWith("/")) return
     msg = msg.slice(1)
-    let hash = 123456
-    //let hash = java.lang.String(imageDB.getProfileImage()).hashCode();
+    let hash = Setting.nodeJS ? 123456 : imageDB.getProfileHash()
+    admin = Setting.nodeJS ? [123456] : admin
     let result;
 
     try {
@@ -61,9 +61,12 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     } catch(e) {
         console.log(e)
     }
-
-    //reply(result, room)
-    console.log(result)
+    
+    if(Setting.nodeJS) {
+        console.log(result)
+    } else {
+        reply(result, room)
+    }
 }
 
 module.exports = response
