@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const Setting = require("./Setting")
     const View = require("./View")
     const UserMaker = require("./Model/UserMaker")
     const Inven = require("./Model/Inven")
@@ -93,7 +94,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
@@ -180,7 +181,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
@@ -232,7 +233,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]
@@ -286,7 +287,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let store = msg[2]
@@ -343,7 +344,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let store = msg[2]
@@ -400,7 +401,7 @@
                 return View.NowBusy()
             }
 
-            msg = msg.split("/")
+            msg = msg.split(Setting.dataSeperator)
             let item = msg[0]
             let number = Number(msg[1])
             let withItem = msg[2]

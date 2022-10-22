@@ -27,6 +27,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     if(!msg.startsWith("/")) return
     msg = msg.slice(1)
     let hash = 123456
+    //let hash = java.lang.String(imageDB.getProfileImage()).hashCode();
     let result;
 
     try {
