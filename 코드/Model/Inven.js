@@ -12,18 +12,33 @@
     }
     Inven.splitItemInfo = function(items) {
         let names = [], numbers = [], metas = []
-        for(let item of outItems) {
+        for(let item of items) {
             names.push(item.name)
             numbers.push(item.number)
             metas.push(item.meta)
         }
         return [names, numbers, metas]
     }
-    Inven.prototype.invenInfo = function() {
-        return ""
+    Inven.prototype.invenInfo = function(space) {
+        space = space === undefined ? 0 : space
+        let result = []
+        for(let item in this.inven) {
+            result.push(" ".repeat(space) + this.itemInfo(item))
+        }
+        return result.join("\n\n")
     }
-    Inven.prototype.itemInfo = function() {
-        return ""
+    Inven.prototype.itemInfo = function(item) {
+        let result = "이름 : " + item.nick || item.name + " 개수 : " + item.number
+        if(item.type === "hold") {
+            let nameDto = new NameDto(item.name)
+            let invenSetting = ItemRepository.getInvenInfo(nameDto)
+            let itemInven = new Inven(item.meta.inven, invenSetting)
+            result += "\n" + "아이템 인벤 공간 : " + itemInven.invenSpace + " / " + itemInven.invenLimit + "\n" +
+                      itemInven.invenInfo(2)
+        } else if(item.type === "tool") {
+            result += "\n" + "내구도 : " + item.meta.durability + " 속도 : " + item.meta.speed + " 데미지 : " + item.meta.damage || "없음"
+        }
+        return result
     }
     Inven.prototype.defaultSetting = {
         canItem : true,
@@ -38,9 +53,9 @@
         let count = 0
         for(let item of this.inven) {
             let stack = null
-            if(item.type === "liquid" && this.setting.canLiquid) {
+            if(item.type === "liquid" && (this.setting.canLiquid || this.setting.includeItem.includes(item))) {
                 stack = this.setting.liquidStack || item.stack
-            } else if(this.setting.canItem) {
+            } else if(this.setting.canItem || this.setting.includeItem.includes(item)) {
                 stack = this.setting.itemStack || item.stack
             }
 
@@ -126,10 +141,15 @@
             let nameDto = new NameDto(names[i])
             let basicItemDto = ItemRepository.getBasicInfo(nameDto)
 
-            if(basicItemDto.type === "liquid" && !this.setting.canLiquid) {
-                throw new Error("액체를 담을 수 없는 공간입니다.")
-            } else if(!this.setting.itemLiquid) {
-                throw new Error("일반 아이템을 담을 수 없는 공간입니다.")
+            if(!this.setting.includeItem.includes(names[i])) {
+                if(this.setting.excludeItem.includes(names[i])) {
+                    throw new Error("이 아이템은 담을 수 없습니다.")
+                }
+                if(basicItemDto.type === "liquid" && !this.setting.canLiquid) {
+                    throw new Error("액체를 담을 수 없는 공간입니다.")
+                } else if(!this.setting.itemLiquid) {
+                    throw new Error("일반 아이템을 담을 수 없는 공간입니다.")
+                }
             }
 
             if(basicItemDto.stack === 1) {

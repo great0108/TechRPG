@@ -7,10 +7,13 @@
         this.map = map
         this.location = location
     }
-    Map.prototype.mapInfo = function() {
-        return ""
+    Map.prototype.mapInfo = function(location) {
+        let inven = new Inven(this.map[location].items, this.invenSetting)
+        let dumpInven = new Inven(this.map[location].dumpItems, this.invenSetting)
+        return "아이템\n" + inven.invenInfo() + 
+        this.location === location ? "\n\n" + "버린 아이템\n" + dumpInven.invenInfo() : ""
     }
-    Map.prototype.InvenSetting = {
+    Map.prototype.invenSetting = {
         canItem : true,
         canLiquid : true,
         includeItem : [],
@@ -40,15 +43,15 @@
         this.map[nick] = new MapMaker(name, coord)
     }
     Map.prototype.getItems = function(names, nums) {
-        let inven = new Inven(this.map[this.location].items)
+        let inven = new Inven(this.map[this.location].items, this.invenSetting)
         return inven.getItems(names, nums)
     }
     Map.prototype.dumpItems = function(names, nums, metas) {
-        let inven = new Inven(this.map[this.location].dumpItems)
+        let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
         return inven.putItems(names, nums, metas)
     },
     Map.prototype.retrieveItems = function(names, nums) {
-        let inven = new Inven(this.map[this.location].dumpItems)
+        let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
         return inven.getItems(names, nums)
     }
     Map.prototype.setItems = function(items) {

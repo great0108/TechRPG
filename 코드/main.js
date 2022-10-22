@@ -32,7 +32,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     try {
         if(admin.includes(hash)) {
             if(msg.startsWith("아이템 가져오기")) {
-                result = Presenter.BringItem(msg.slice(8), sender, hash)
+                result = Presenter.BringItem(msg.slice(9), sender, hash)
             }
         }
 
@@ -44,18 +44,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
             result = Presenter.MyInfo(msg, sender, hash)
         } else if(msg == "인벤정보") {
             result = Presenter.InvenInfo(msg, sender, hash)
-        } else if(msg == "맵정보") {
-            result = Presenter.MapInfo(msg, sender, hash)
-        } else if(msg.startsWith("아이템 수집")) {
-            result = Presenter.CollectItem(msg.slice(6), sender, hash)
-        } else if(msg.startsWith("아이템 회수")) {
-            result = Presenter.RetrieveItem(msg.slice(6), sender, hash)
-        } else if(msg.startsWith("아이템 버리기")) {
-            result = Presenter.DumpItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 꺼내기")) {
-            result = Presenter.GetItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 넣기")) {
-            result = Presenter.PutItem(msg.slice(6), sender, hash)
+        } else if(msg.startsWith("맵정보 ")) {
+            result = Presenter.MapInfo(msg.slice(4), sender, hash)
+        } else if(msg.startsWith("아이템 수집 ")) {
+            result = Presenter.CollectItem(msg.slice(7), sender, hash)
+        } else if(msg.startsWith("아이템 회수 ")) {
+            result = Presenter.RetrieveItem(msg.slice(7), sender, hash)
+        } else if(msg.startsWith("아이템 버리기 ")) {
+            result = Presenter.DumpItem(msg.slice(8), sender, hash)
+        } else if(msg.startsWith("아이템 꺼내기 ")) {
+            result = Presenter.GetItem(msg.slice(8), sender, hash)
+        } else if(msg.startsWith("아이템 넣기 ")) {
+            result = Presenter.PutItem(msg.slice(7), sender, hash)
         }
     } catch(e) {
         console.log(e)

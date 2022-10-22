@@ -64,7 +64,14 @@
 
             let hashDto = new HashDto(hash)
             let basicUserDto = UserRepository.getBasicInfo(hashDto)
-            return View.MyInfo(basicUserDto.name, basicUserDto.location, basicUserDto.busyTime > Date.now(), basicUserDto.tier)
+            let mapDto = UserRepository.getMap(hashDto)
+            let map = new Map(mapDto.map, mapDto.location)
+            let coord = map.getLocate(basicUserDto.location).coord
+            return View.MyInfo(basicUserDto.name,
+                               basicUserDto.location, 
+                               coord, 
+                               basicUserDto.busyTime > Date.now(), 
+                               basicUserDto.tier)
         },
         InvenInfo : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -84,7 +91,13 @@
             let hashDto = new HashDto(hash)
             let mapDto = UserRepository.getMap(hashDto)
             let map = new Map(mapDto.map, mapDto.location)
-            return View.MapInfo(map.mapInfo())
+            let location = msg || map.location
+            if(!map.isExist(locate)) {
+                return View.NotExistMap()
+            }
+
+            let locate = map.getLocate(location)
+            return View.MapInfo(location, locate.coord, locate.type, map.mapInfo(location))
         },
         CollectItem : function(msg, sender, hash) {
             if(notExistUser(hash)) {
@@ -393,6 +406,52 @@
 
             UserRepository.setUser(userDataDto)
             return View.PutItem(item, number, store, withItem)
+        },
+        BringItem : function(msg, sender, hash) {
+            if(notExistUser(hash)) {
+                return View.NotSignUp()
+            }
+            let hashDto = new HashDto(hash)
+            let user = UserRepository.getBasicInfo(hashDto)
+            if(user.busyTime >= Date.now()) {
+                return View.NowBusy()
+            }
+
+            msg = msg.split(" ")
+            let item = msg[0]
+            let number = Number(msg[1])
+            let withItem = msg[2]
+
+            let result = checkItemAndNumber(item, number, user.tier)
+            if(result) {
+                return result
+            }
+
+            let invenDto = UserRepository.getInven(hashDto)
+            let inven = new Inven(invenDto.inven)
+
+            let itemInven = withItem ? withItemInven(withItem, inven) : null
+            if(typeof itemInven === "string") {
+                return itemInven
+            }
+
+            [inven2, _] = (withItem ? itemInven : inven).putItems([item], [number])
+            if(inven2 === false) {
+                return View.LackInvenSpace()
+            }
+
+            if(withItem) {
+                inven.findItem(withItem).meta.inven = inven2
+            } else {
+                inven.inven = inven2
+            }
+
+            let userDataDto = new UserDataDto(hash)
+                              .setInven(inven.inven)
+                              .setMap(map.map)
+
+            UserRepository.setUser(userDataDto)
+            return View.BringItem(item, number, withItem)
         }
     }
 

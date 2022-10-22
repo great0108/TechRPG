@@ -30,8 +30,8 @@
     "점토 병" : {"stack" : 1, "type" : "item"},
     "점토 항아리" : {"stack" : 1, "type" : "item"},
     "점토 도끼 틀" : {"stack" : 1, "type" : "item"},
-    "세라믹 병" : {"stack" : 1, "inven" : {"size" : 1, "includetype" : ["물"]}, "type" : "hold"},
-    "세라믹 항아리" : {"stack" : 1, "inven" : {"size" : 4, "canItem" : true}, "type" : "hold"},
+    "세라믹 병" : {"stack" : 1, "inven" : {"size" : 1, "includeItem" : ["물"]}, "type" : "hold"},
+    "세라믹 항아리" : {"stack" : 1, "inven" : {"size" : 4, "canItem" : true, "excludeItem" : ["세라믹 항아리", "세라믹 병"]}, "type" : "hold"},
     "세라믹 도끼 틀" : {"stack" : 1, "type" : "item"},
     "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10}, "type" : "install"},
     "물" : {"collectTime" : 0.5, "stack" : 1, "type" : "liquid"}

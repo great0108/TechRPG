@@ -14,6 +14,9 @@
         NotExistItem : function() {
             return "이런 이름의 아이템은 존재하지 않습니다."
         },
+        NotExistMap : function() {
+            return "이런 이름의 장소는 존재하지 않습니다."
+        },
         NotNumber : function() {
             return "숫자를 제대로 입력하세요."
         },
@@ -54,10 +57,11 @@
             "아이템 꺼내기 (아이템) (개수) (in 아이템) [with item] - 저장공간에서 아이템을 꺼냄\n" +
             "아이템 넣기 (아이템) (개수) (to 아이템) [in item] - 저장공간에 아이템을 넣음\n"
         },
-        MyInfo : function(name, location, busy, tier) {
+        MyInfo : function(name, location, coord, busy, tier) {
             return "내 정보입니다.\n" +
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
+            "좌표 : " + coord[0] + ", " + coord[1] + "\n" +
             "바쁨 : " + (busy ? "예" : "아니오") + "\n" +
             "티어 : " + tier + "\n\n" +
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
@@ -67,8 +71,11 @@
             "현재 공간 : " + invenSpace + " / " + invenlimit + "\n" +
             "아이템\n" + itemInfo
         },
-        MapInfo : function(mapInfo) {
-            return "맵 정보입니다.\n" + mapInfo
+        MapInfo : function(location, coord, biome, mapInfo) {
+            return "맵 정보입니다.\n" +
+            "장소 이름 : " + location + "\n" +
+            "좌표 : " + coord + "\n" +
+            "바이옴 : " + biome + "\n" + mapInfo
         },
         CollectItem : function(item, number, time, tool, withItem) {
             return [
@@ -93,8 +100,11 @@
         },
         PutItem : function(item, number, store, withItem) {
             return withItem && (withItem + "에 있는 ") + item + "을(를) " + store + "에다 " + number + "개 넣습니다."
+        },
+        BringItem : function(item, number, withItem) {
+            return "[어드민 명령어]\n" +
+            item + "을(를) " + withItem && (withItem + "에다 ") + number + "개 가져옵니다."
         }
-
     }
 
     module.exports = View
