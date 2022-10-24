@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const Setting = require("../Setting")
     const Copy = require("../Util/Copy")
     const ItemMaker = require("./ItemMaker")
     const ItemRepository = require("../Repository/ItemRepository")
@@ -18,6 +19,15 @@
             metas.push(item.meta)
         }
         return [names, numbers, metas]
+    }
+    Inven.prototype.defaultSetting = {
+        canItem : true,
+        canLiquid : false,
+        includeItem : [],
+        excludeItem : [],
+        invenLimit : Setting.invenLimit
+        // itemStack : 20,
+        // liquidStack : 1
     }
     Inven.prototype.invenInfo = function(space) {
         space = space === undefined ? 0 : space
@@ -40,15 +50,6 @@
             result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + item.meta.damage || "없음"
         }
         return result
-    }
-    Inven.prototype.defaultSetting = {
-        canItem : true,
-        canLiquid : false,
-        includeItem : [],
-        excludeItem : [],
-        invenLimit : 10
-        // itemStack : 20,
-        // liquidStack : 1
     }
     Inven.prototype.invenSpace = function() {
         let count = 0

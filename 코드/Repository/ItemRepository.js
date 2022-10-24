@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const Setting = require("../Setting")
     const ItemDao = require("../Dao/ItemDao")
     const BasicItemDto = require("../Dto/BasicItemDto")
     const InvenSettingDto = require("../Dto/InvenSettingDto")
@@ -10,7 +11,7 @@
     const ItemRepository = {
         getBasicInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
-            return new BasicItemDto(item.type, item.stack || 20)
+            return new BasicItemDto(item.type, item.stack || Setting.itemStack)
         },
         getInvenInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)

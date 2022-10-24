@@ -1,6 +1,7 @@
 "use strict"
 const Setting = require("./Setting")
 const Presenter = require("./Presenter")
+const CommandHandler = require("./Model/CommandHandler")
 
 function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {
     function reply(msg, room) {
@@ -60,7 +61,7 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
             result = Presenter.CraftItem(msg.slice(7), sender, hash)
         }
     } catch(e) {
-        console.log(e)
+        result = e.name
     }
     
     if(Setting.nodeJS) {

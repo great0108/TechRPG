@@ -1,5 +1,5 @@
 {
     "끈" : [
-        {"items" : [{"name" : "풀", "number" : 3}], "tool" : [], "time" : 0, "need" : ""}
+        {"items" : [{"name" : "풀", "number" : 3}], "tools" : [], "number" : 1, "time" : 0.5, "need" : ""}
     ]
 }

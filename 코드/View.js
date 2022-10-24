@@ -1,5 +1,7 @@
 (function() {
     "use strict"
+    const Setting = require("./Setting")
+    const Space = Setting.nodeJS ? "" : '\u200b'.repeat(500)
 
     const View = {
         AlreadySignUp : function() {
@@ -45,20 +47,23 @@
             return "저장공간을 찾을 수 없습니다."
         },
         Command : function() {
-            return "명령어 목록입니다.\n" +
-            "회원가입 - 회원가입을 함\n" + 
-            "명령어 - 명령어 목록을 띄움\n" +
-            "내정보 - 내정보 창을 띄움\n" +
-            "인벤정보 - 인벤정보 창을 띄움\n" +
-            "맵정보 - 맵정보 창을 띄움\n" +
-            "아이템 수집 (아이템)/(개수)/[with item] - 아이템을 수집 함\n" +
-            "아이템 회수 (아이템)/(개수)/[with item] - 버린 아이템을 수집 함\n" +
-            "아이템 버림 (아이템)/(개수)/[in 아이템] - 아이템을 버림\n" +
-            "아이템 꺼내기 (아이템)/(개수)/(in 아이템)/[with item] - 저장공간에서 아이템을 꺼냄\n" +
-            "아이템 넣기 (아이템)/(개수)/(to 아이템)/[in item] - 저장공간에 아이템을 넣음"
+            return "명령어 목록입니다\n" + Space + 
+            "회원가입 - 회원가입을 합니다\n" + 
+            "명령어 - 명령어 목록을 보여줍니다\n" +
+            "내정보 - 내정보를 보여줍니다\n" +
+            "인벤정보 - 인벤 정보를 보여줍니다\n" +
+            "맵정보 [위치] - 맵 정보를 보여줍니다\n" +
+            "아이템 수집 (아이템)/(개수)/[to item] - 아이템을 수집합니다\n" +
+            "아이템 회수 (아이템)/(개수)/[to item] - 버린 아이템을 수집합니다\n" +
+            "아이템 버리기 (아이템)/(개수)/[in 아이템] - 아이템을 버립니다\n" +
+            "아이템 꺼내기 (아이템)/(개수)/(in 아이템)/[to item] - 저장공간에서 아이템을 꺼냅니다\n" +
+            "아이템 넣기 (아이템)/(개수)/(to 아이템)/[in item] - 저장공간에 아이템을 넣습니다\n" +
+            "아이템 제작 (아이템)/(개수)/[조합법] - 아이템을 제작합니다\n" +
+            "\n[어드민 명령어]\n" +
+            "아이템 가져오기 (아이템)/(개수)/[to 아이템] - 아이템을 가져옵니다"
         },
         MyInfo : function(name, location, coord, busy, tier) {
-            return "내 정보입니다.\n" +
+            return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
             "좌표 : " + coord[0] + ", " + coord[1] + "\n" +
@@ -67,12 +72,12 @@
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
         },
         InvenInfo : function(itemInfo, invenlimit, invenSpace) {
-            return "인벤 정보입니다.\n" +
+            return "인벤 정보입니다.\n" + Space + 
             "현재 공간 : " + invenSpace + " / " + invenlimit + "\n\n" +
             "아이템\n" + (itemInfo || "없음")
         },
         MapInfo : function(location, coord, biome, mapInfo) {
-            return "맵 정보입니다.\n" +
+            return "맵 정보입니다.\n" + Space + 
             "장소 이름 : " + location + "\n" +
             "좌표 : " + coord + "\n" +
             "바이옴 : " + biome + "\n\n" + mapInfo
