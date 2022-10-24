@@ -434,6 +434,9 @@
 
             UserRepository.setUser(userDataDto)
             return View.BringItem(item, number, withItem)
+        },
+        CraftItem : function(msg, sender, hash) {
+            
         }
     }
 

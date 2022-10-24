@@ -16,3 +16,12 @@
 
 테스트 명령어
 아이템 가져오기 (아이템) (개수) [with item]
+
+todo
+CommandHandler 같은거 적용하기
+일정시간마다 백업하기
+Presenter 정리하기
+명령어 View 수정하기
+Setting 추가하기
+jsdoc 추가하기
+전체보기 만들기

@@ -10,15 +10,14 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
             return ""
         }
         if(Array.isArray(msg[0])) {
-            for(m of msg) {
+            for(let m of msg) {
                 if(m[1]) {
                     java.lang.Thread.sleep(m[1])
-                    Api.replyRoom(room, m[1] + "time")
                 }
                 Api.replyRoom(room, m[0])
             }
         } else {
-            for(m of msg) {
+            for(let m of msg) {
                 Api.replyRoom(room, m)
             }
         }
@@ -57,6 +56,8 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
             result = Presenter.GetItem(msg.slice(8), sender, hash)
         } else if(msg.startsWith("아이템 넣기")) {
             result = Presenter.PutItem(msg.slice(7), sender, hash)
+        } else if(msg.startsWith("아이템 제작")) {
+            result = Presenter.CraftItem(msg.slice(7), sender, hash)
         }
     } catch(e) {
         console.log(e)
