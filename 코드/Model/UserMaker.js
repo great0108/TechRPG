@@ -1,6 +1,7 @@
 (function() {
     "use strict"
     const MapMaker = require("./MapMaker")
+    const Setting = require("../Setting")
 
     const UserMaker = function(name) {
         this.name = name
@@ -10,6 +11,7 @@
         this.map = {"base" : base}
         this.busyTime = Date.now()
         this.tier = 0
+        this.version = Setting.version
     }
     
     module.exports = UserMaker

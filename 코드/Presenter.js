@@ -25,11 +25,19 @@
         let item = inven.findItem(withItem)
         let nameDto = new NameDto(item.name)
         let setting = ItemRepository.getInvenInfo(nameDto)
+        
         return new Inven(item.meta.inven, setting)
     }
 
+    const busyUser = function(hash) {
+        let hashDto = new HashDto(hash)
+        let user = UserRepository.getBasicInfo(hashDto)
+        return user.busyTime >= Date.now()
+    }
+
     const Presenter = {
-        SignUp : function(msg, sender, hash) {
+        SignUp : function(bot) {
+            let {sender, hash} = bot
             if(!notExistUser(hash)) {
                 return View.AlreadySignUp()
             }
@@ -39,10 +47,11 @@
             UserRepository.newUser(makeUserDto)
             return View.SignUp()
         },
-        Command : function(msg, sender, hash) {
+        Command : function(bot) {
             return View.Command()
         },
-        MyInfo : function(msg, sender, hash) {
+        MyInfo : function(bot) {
+            let {hash} = bot
             if(notExistUser(hash)) {
                 return View.NotSignUp()
             }
@@ -58,7 +67,8 @@
                                basicUserDto.busyTime > Date.now(), 
                                basicUserDto.tier)
         },
-        InvenInfo : function(msg, sender, hash) {
+        InvenInfo : function(bot) {
+            let {hash} = bot
             if(notExistUser(hash)) {
                 return View.NotSignUp()
             }
@@ -68,7 +78,8 @@
             let inven = new Inven(invenDto.inven)
             return View.InvenInfo(inven.invenInfo(), inven.invenLimit, inven.invenSpace())
         },
-        MapInfo : function(msg, sender, hash) {
+        MapInfo : function(bot) {
+            let {hash, data} = bot
             if(notExistUser(hash)) {
                 return View.NotSignUp()
             }
@@ -76,7 +87,7 @@
             let hashDto = new HashDto(hash)
             let mapDto = UserRepository.getMap(hashDto)
             let map = new Map(mapDto.map, mapDto.location)
-            let location = msg || map.location
+            let location = data || map.location
             if(!map.isExist(location)) {
                 return View.NotExistMap()
             }
@@ -84,26 +95,23 @@
             let locate = map.getLocate(location)
             return View.MapInfo(location, locate.coord, locate.type, map.mapInfo(location))
         },
-        CollectItem : function(msg, sender, hash) {
+        CollectItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let withItem = msg[2]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
             }
+
+            let hashDto = new HashDto(hash)
+            let user = UserRepository.getBasicInfo(hashDto)
             if(number <= 0 || number > user.tier * 10 + 10) {
-                return View.NotRangeNumber()
+                return View.OutOfRangeNumber()
             }
 
             let invenDto = UserRepository.getInven(hashDto)
@@ -171,25 +179,22 @@
             return View.CollectItem(item, number, time, tool, withItem)
 
         },
-        DumpItem : function(msg, sender, hash) {
+        DumpItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let withItem = msg[2]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
             }
 
+            let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
             let mapDto = UserRepository.getMap(hashDto)
@@ -223,25 +228,22 @@
             return View.DumpItem(item, number, withItem)
 
         },
-        RetrieveItem : function(msg, sender, hash) {
+        RetrieveItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let withItem = msg[2]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
             }
 
+            let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
             let mapDto = UserRepository.getMap(hashDto)
@@ -277,26 +279,22 @@
             UserRepository.setUser(userDataDto)
             return View.RetrieveItem(item, number, withItem)
         },
-        GetItem : function(msg, sender, hash) {
+        GetItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, store, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let store = msg[2]
-            let withItem = msg[3]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
             }
 
+            let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
             
@@ -334,26 +332,22 @@
             UserRepository.setUser(userDataDto)
             return View.GetItem(item, number, store, withItem)
         },
-        PutItem : function(msg, sender, hash) {
+        PutItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, store, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let store = msg[2]
-            let withItem = msg[3]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
             }
 
+            let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
             
@@ -391,25 +385,22 @@
             UserRepository.setUser(userDataDto)
             return View.PutItem(item, number, store, withItem)
         },
-        BringItem : function(msg, sender, hash) {
+        BringItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, withItem] = args
+            number = Number(number)
+
             if(notExistUser(hash)) {
                 return View.NotSignUp()
-            }
-            let hashDto = new HashDto(hash)
-            let user = UserRepository.getBasicInfo(hashDto)
-            if(user.busyTime >= Date.now()) {
+            } else if(busyUser(hash)) {
                 return View.NowBusy()
-            }
-
-            msg = msg.split(Setting.dataSeperator)
-            let item = msg[0]
-            let number = Number(msg[1])
-            let withItem = msg[2]
-
-            if(isNaN(number)) {
+            } else if(isNaN(number)) {
                 return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
             }
 
+            let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
 
@@ -435,8 +426,20 @@
             UserRepository.setUser(userDataDto)
             return View.BringItem(item, number, withItem)
         },
-        CraftItem : function(msg, sender, hash) {
-            
+        CraftItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, withItem] = args
+            number = Number(number)
+
+            if(notExistUser(hash)) {
+                return View.NotSignUp()
+            } else if(busyUser(hash)) {
+                return View.NowBusy()
+            } else if(isNaN(number)) {
+                return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
+            }
         }
     }
 

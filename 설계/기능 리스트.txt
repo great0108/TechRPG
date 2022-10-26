@@ -18,7 +18,5 @@
 아이템 가져오기 (아이템) (개수) [with item]
 
 todo
-CommandHandler 같은거 적용하기
 일정시간마다 백업하기
-Presenter 정리하기
 jsdoc 추가하기

@@ -3,9 +3,28 @@ const Setting = require("./Setting")
 const Presenter = require("./Presenter")
 const CommandHandler = require("./Model/CommandHandler")
 
+let bot = new CommandHandler("/", " ", "실험방", "/")
+const Command = {
+    "회원가입" : bot => Presenter.SignUp(bot),
+    "명령어" : bot => Presenter.Command(bot),
+    "내정보" : bot => Presenter.MyInfo(bot),
+    "인벤정보" : bot => Presenter.InvenInfo(bot),
+    "맵정보" : bot => Presenter.MapInfo(bot),
+    "아이템 수집" : bot => Presenter.CollectItem(bot),
+    "아이템 회수" : bot => Presenter.RetrieveItem(bot),
+    "아이템 버리기" : bot => Presenter.DumpItem(bot),
+    "아이템 꺼내기" : bot => Presenter.GetItem(bot),
+    "아이템 넣기" : bot => Presenter.PutItem(bot),
+    "아이템 제작" : bot => Presenter.CraftItem(bot)
+}
+
+const AdminCommand = {
+    "아이템 가져오기" : bot => Presenter.BringItem(bot)
+}
+
 function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {
     function reply(msg, room) {
-        if([undefined, null, ""].includes(msg)) return ""
+        if(msg === "") return ""
         if(!Array.isArray(msg)) {
             Api.replyRoom(room, msg)
             return ""
@@ -24,46 +43,19 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
         }
     }
 
-    if(!msg.startsWith("/")) return
-    msg = msg.slice(1)
-    let hash = Setting.nodeJS ? 123456 : imageDB.getProfileHash()
-    admin = Setting.nodeJS ? [123456] : admin
+    bot.build(room, msg, sender, isGroupChat, replier, imageDB, packageName);
     let result;
-
     try {
-        if(admin.includes(hash)) {
-            if(msg.startsWith("아이템 가져오기")) {
-                result = Presenter.BringItem(msg.slice(9), sender, hash)
-            }
+        if(admin.includes(bot.hash)) {
+            result = bot.run(AdminCommand)
         }
-
-        if(msg == "회원가입") {
-            result = Presenter.SignUp(msg, sender, hash)
-        } else if(msg == "명령어") {
-            result = Presenter.Command(msg, sender, hash)
-        } else if(msg == "내정보") {
-            result = Presenter.MyInfo(msg, sender, hash)
-        } else if(msg == "인벤정보") {
-            result = Presenter.InvenInfo(msg, sender, hash)
-        } else if(msg.startsWith("맵정보")) {
-            result = Presenter.MapInfo(msg.slice(4), sender, hash)
-        } else if(msg.startsWith("아이템 수집")) {
-            result = Presenter.CollectItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 회수")) {
-            result = Presenter.RetrieveItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 버리기")) {
-            result = Presenter.DumpItem(msg.slice(8), sender, hash)
-        } else if(msg.startsWith("아이템 꺼내기")) {
-            result = Presenter.GetItem(msg.slice(8), sender, hash)
-        } else if(msg.startsWith("아이템 넣기")) {
-            result = Presenter.PutItem(msg.slice(7), sender, hash)
-        } else if(msg.startsWith("아이템 제작")) {
-            result = Presenter.CraftItem(msg.slice(7), sender, hash)
+        if(!result) {
+            result = bot.run(Command)
         }
     } catch(e) {
-        result = e.name
+        result = e
     }
-    
+
     if(Setting.nodeJS) {
         console.log(result)
     } else {

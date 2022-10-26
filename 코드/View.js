@@ -22,7 +22,7 @@
         NotNumber : function() {
             return "숫자를 제대로 입력하세요."
         },
-        NotRangeNumber : function() {
+        OutOfRangeNumber : function() {
             return "숫자가 너무 크거나 작습니다."
         },
         LackMapItem : function() {
