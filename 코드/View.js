@@ -25,6 +25,9 @@
         OutOfRangeNumber : function() {
             return "숫자가 너무 크거나 작습니다."
         },
+        OutOfRangeCraftNum : function() {
+            return "조합법 숫자가 너무 크거나 작습니다."
+        },
         LackMapItem : function() {
             return "맵에 아이템이 없거나 부족합니다."
         },
@@ -46,11 +49,14 @@
         CantFindStore : function() {
             return "저장공간을 찾을 수 없습니다."
         },
+        CommandError : function() {
+            return "명령어를 제대로 입력하세요"
+        },
         Command : function() {
             return "명령어 목록입니다\n" + Space + 
             "회원가입 - 회원가입을 합니다\n" + 
             "명령어 - 명령어 목록을 보여줍니다\n" +
-            "내정보 - 내정보를 보여줍니다\n" +
+            "내정보 - 내 정보를 보여줍니다\n" +
             "인벤정보 - 인벤 정보를 보여줍니다\n" +
             "맵정보 [위치] - 맵 정보를 보여줍니다\n" +
             "아이템 수집 (아이템)/(개수)/[to item] - 아이템을 수집합니다\n" +

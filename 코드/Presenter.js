@@ -1,16 +1,18 @@
 (function() {
     "use strict"
-    const Setting = require("./Setting")
     const View = require("./View")
     const UserMaker = require("./Model/UserMaker")
     const Inven = require("./Model/Inven")
     const Map = require("./Model/Map")
+    const Craft = require("./Model/Craft")
     const UserRepository = require("./Repository/UserRepository")
     const ItemRepository = require("./Repository/ItemRepository")
+    const CraftRepository = require("./Repository/CraftRepository")
     const HashDto = require("./Dto/HashDto")
     const NameDto = require("./Dto/NameDto")
     const MakeUserDto = require("./Dto/MakeUserDto")
     const UserDataDto = require("./Dto/UserDataDto")
+    const NameTierDto = require("./Dto/NameTierDto")
 
     const notExistUser = function(hash) {
         let hashDto = new HashDto(hash)
@@ -124,7 +126,7 @@
                 return itemInven
             }
 
-            let [mapInven, _] = map.getItems([item], [number])
+            let [mapInven] = map.getItems([item], [number])
             if(mapInven === false) {
                 return View.LackMapItem()
             }
@@ -142,7 +144,7 @@
             if(!tool) {
                 inven2 = (withItem ? itemInven : inven).putItems([item], [number])
             } else if(tool.meta.durability === number) {
-                let [tempInven, _] = inven.getItems([tool.nick], [1])
+                let [tempInven] = inven.getItems([tool.nick], [1])
                 inven2 = (withItem ? itemInven : tempInven).putItems([item], [number])
             } else {
                 inven.findItem(tool.nick).meta.durability -= number
@@ -155,9 +157,9 @@
 
             map.setItems(mapInven)
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
 
             let userDataDto = new UserDataDto(hash)
@@ -205,9 +207,9 @@
             map.setDumpItems(dumpItems)
 
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
 
             let userDataDto = new UserDataDto(hash)
@@ -257,9 +259,9 @@
 
             map.setDumpItems(mapInven)
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
 
             let userDataDto = new UserDataDto(hash)
@@ -282,6 +284,8 @@
                 return View.NotNumber()
             } else if(number <= 0) {
                 return View.OutOfRangeNumber()
+            } else if(store === withItem) {
+                return View.CommandError()
             }
 
             let hashDto = new HashDto(hash)
@@ -310,11 +314,11 @@
             }
 
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
-            inven.findItem(store).meta.inven = storeInven2
+            inven.findItem(store).meta.inven = storeInven2.inven
 
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven.inven)
@@ -335,6 +339,8 @@
                 return View.NotNumber()
             } else if(number <= 0) {
                 return View.OutOfRangeNumber()
+            } else if(store === withItem) {
+                return View.CommandError()
             }
 
             let hashDto = new HashDto(hash)
@@ -363,17 +369,49 @@
             }    
 
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
-            inven.findItem(store).meta.inven = storeInven2
+            inven.findItem(store).meta.inven = storeInven2.inven
 
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven.inven)
 
             UserRepository.setUser(userDataDto)
             return View.PutItem(item, number, store, withItem)
+        },
+        CraftItem : function(bot) {
+            let {hash, args} = bot
+            let [item, number, craftNum] = args
+            number = Number(number)
+
+            if(notExistUser(hash)) {
+                return View.NotSignUp()
+            } else if(busyUser(hash)) {
+                return View.NowBusy()
+            } else if(isNaN(number)) {
+                return View.NotNumber()
+            } else if(number <= 0) {
+                return View.OutOfRangeNumber()
+            }
+
+            let hashDto = new HashDto(hash)
+            let invenDto = UserRepository.getInven(hashDto)
+            let inven = new Inven(invenDto.inven)
+            let craft = new Craft(inven)
+
+            let tier = UserRepository.getBasicInfo(hashDto).tier
+            let nameTierDto = new NameTierDto(item, tier)
+            let craftNumber = CraftRepository.getCraftNum(nameTierDto)
+
+            if(craftNum && (craftNumber < craftNum || craftNum <= 0)) {
+                return View.OutOfRangeCraftNum()
+            }
+            if(!craftNum) {
+                return View.chooseCraftNum()
+            }
+
         },
         BringItem : function(bot) {
             let {hash, args} = bot
@@ -405,9 +443,9 @@
             }
 
             if(withItem) {
-                inven.findItem(withItem).meta.inven = inven2
+                inven.findItem(withItem).meta.inven = inven2.inven
             } else {
-                inven.inven = inven2
+                inven.inven = inven2.inven
             }
 
             let userDataDto = new UserDataDto(hash)
@@ -415,21 +453,6 @@
 
             UserRepository.setUser(userDataDto)
             return View.BringItem(item, number, withItem)
-        },
-        CraftItem : function(bot) {
-            let {hash, args} = bot
-            let [item, number, withItem] = args
-            number = Number(number)
-
-            if(notExistUser(hash)) {
-                return View.NotSignUp()
-            } else if(busyUser(hash)) {
-                return View.NowBusy()
-            } else if(isNaN(number)) {
-                return View.NotNumber()
-            } else if(number <= 0) {
-                return View.OutOfRangeNumber()
-            }
         }
     }
 

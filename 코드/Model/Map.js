@@ -54,11 +54,11 @@
         let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
         return inven.getItems(names, nums)
     }
-    Map.prototype.setItems = function(items) {
-        this.map[this.location].items = items
+    Map.prototype.setItems = function(inven) {
+        this.map[this.location].items = inven.inven
     }
-    Map.prototype.setDumpItems = function(items) {
-        this.map[this.location].dumpItems = items
+    Map.prototype.setDumpItems = function(inven) {
+        this.map[this.location].dumpItems = inven.inven
     }
 
     

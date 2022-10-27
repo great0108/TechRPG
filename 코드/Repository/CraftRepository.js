@@ -14,7 +14,7 @@
             return new CraftNumDto(craft.length)
         },
         getItems : function(craftNameDto) {
-            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum]
+            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
             return new CraftItemDto(craft.items, craft.tools || [])
         }
     }

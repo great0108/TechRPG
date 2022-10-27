@@ -97,8 +97,14 @@
         return items.sort((a, b) => b.meta.tier - a.meta.tier)
     }
     Inven.prototype.findItemIndex = function(name) {
-        let index = this.inven.findIndex(v => v.name === name || v.nick === name)
-        return index
+        return this.inven.findIndex(v => v.name === name || v.nick === name)
+    }
+    Inven.prototype.removeItem = function(name) {
+        let index = this.findItemIndex(name)
+        if(index === -1) {
+            return null
+        }
+        return this.inven.splice(index, 1)[0]
     }
     Inven.prototype.isOverLimit = function() {
         return this.invenSpace() > this.invenlimit
@@ -121,11 +127,11 @@
 
             if(findItem.stack === 1) {
                 for(let j = 0; j < nums[i]; j++) {
-                    let index = inven.findItemIndex(names[i])
-                    if(index === -1) {
+                    let item = inven.removeItem(names[i])
+                    if(item === null) {
                         return [false]
                     }
-                    items.push(inven.inven.splice(index, 1)[0])
+                    items.push(item)
                 }
             } else {
                 if(findItem.number < nums[i]) {

@@ -6,7 +6,7 @@ const UserDao = require("./Dao/UserDao")
 // UserDao.write("123456", user)
 // UserDao.save()
 
-response("", "실험방", "2", "sender")
+response([123456], "실험방", "/아이템 가져오기 아/1", "sender")
 
 // 버전 : 0.0.2
 

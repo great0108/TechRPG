@@ -41,8 +41,7 @@
         for(let i = 0; i < useTool.length; i++) {
             let tool = useTool[i]
             if(tool.meta.durability === tools[i].durability) {
-                let index = inven.findItemIndex(tool.nick)
-                inven.inven.splice(index, 1)
+                inven.removeItem(tool.nick)
             } else {
                 tool.meta.durability -= tools[i].durability
             }
