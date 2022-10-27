@@ -139,7 +139,7 @@
                 }
             }
         }
-        return [inven.inven, items]
+        return [inven, items]
     }
     Inven.prototype.putItems = function(names, nums, metas) {
         metas = metas === undefined ? [] : metas
@@ -175,7 +175,7 @@
         if(inven.isOverLimit()) {
             return false
         }
-        return inven.inven
+        return inven
     }
 
     module.exports = Inven

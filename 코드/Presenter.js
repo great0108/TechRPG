@@ -132,17 +132,7 @@
             let nameDto = new NameDto(item)
             let collectItemDto = ItemRepository.getCollectInfo(nameDto)
             let tools = inven.findTool(collectItemDto.effective)
-            let tool = null
-            let i = 0
-            while(tools && tools.length > i) {
-                if(tools[i].meta.tier < collectItemDto.tier) {
-                    break
-                }
-                if(tools[i].meta.durability >= number) {
-                    tool = tools[i]
-                    break
-                }
-            }
+            let tool = tools.find(v => v.meta.tier >= collectItemDto.tier && v.meta.durability >= number)
             if(!tool && collectItemDto.tier >= 1) {
                 return View.CantCollectItem()
             }

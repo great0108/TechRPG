@@ -1,5 +1,9 @@
 {
     "끈" : [
-        {"items" : [{"name" : "풀", "number" : 3}], "tools" : [], "number" : 1, "time" : 0.5, "need" : ""}
+        {"items" : {"풀" : 3}, "tools" : [], "number" : 1, "time" : 0.5, "need" : "", "tier" : 0}
+    ],
+    "나무판자" : [
+        {"items" : {"나무" : 1}, "tools" : [], "number" : 2, "time" : 0.5, "need" : "", "tier" : 0},
+        {"items" : {"나무" : 1}, "tools" : [{"class" : "톱", "tier" : 1, "durability" : 1}], "number" : 4, "time" : 0.5, "need" : "", "tier" : 1}
     ]
 }

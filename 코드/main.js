@@ -3,7 +3,7 @@ const Setting = require("./Setting")
 const Presenter = require("./Presenter")
 const CommandHandler = require("./Model/CommandHandler")
 
-let bot = new CommandHandler("/", " ", "실험방", "/")
+let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
 const Command = {
     "회원가입" : bot => Presenter.SignUp(bot),
     "명령어" : bot => Presenter.Command(bot),

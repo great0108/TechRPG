@@ -5,8 +5,12 @@
     const CraftItemDto = require("../Dto/CraftItemDto")
 
     const CraftRepository = {
-        getCraftNum : function(nameDto) {
+        getAllCraftNum : function(nameDto) {
             let craft = CraftDao.read(nameDto.name)
+            return new CraftNumDto(craft.length)
+        },
+        getCraftNum : function(nameTierDto) {
+            let craft = CraftDao.read(nameTierDto.name).filter(v => v.tier <= nameTierDto.tier)
             return new CraftNumDto(craft.length)
         },
         getItems : function(craftNameDto) {

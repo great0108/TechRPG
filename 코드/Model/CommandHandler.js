@@ -32,7 +32,6 @@
         this.package = packageName;
         this.room = room;
         this.sender = sender
-        this.nickname = sender.match(/[ㄱ-힣a-zA-Z0-9]+/)[0]
         this.hash = Setting.nodeJS ? 123456 : imageDB.getProfileHash()
     
         this.isGroupChat = isGroupChat;
@@ -46,7 +45,7 @@
         for (let key in Commands) {
             let a = this.keyToRegex(key)
             if (a.test(cmd)) {
-                let match = Setting.nodeJS ? cmd.match(a)[0] : cmd.match(a)
+                let match = cmd.match(a)[0]
                 this.data = cmd.slice(match.length).trim()
                 this.args = this.data.split(this.dataSeparator)
                 return Commands[key](this)
