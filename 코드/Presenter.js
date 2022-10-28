@@ -422,7 +422,6 @@
 
                     let userDataDto = new UserDataDto(hash)
                                     .setMessage(bot.content)
-
                     UserRepository.setUser(userDataDto)
                     return View.ChooseCraftNum(craftInfo)
                 } else {
@@ -449,6 +448,24 @@
 
             UserRepository.setUser(userDataDto)
             return View.CraftItem(item, number, withItem)
+        },
+        ChooseNum : function(bot) {
+            let number = Number(bot.content)
+            if(notExistUser(hash)) {
+                return ""
+            }
+
+            let hashDto = new HashDto(hash)
+            let message = UserRepository.getMessage(hashDto).message
+            if(!message) {
+                return ""
+            }
+
+            let userDataDto = new UserDataDto(hash)
+                              .setMessage("")
+            UserRepository.setUser(userDataDto)
+            return message + "/" + number
+
         },
         BringItem : function(bot) {
             let {hash, args} = bot

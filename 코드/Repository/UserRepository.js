@@ -5,6 +5,7 @@
     const InvenDto = require("../Dto/InvenDto")
     const MapDto = require("../Dto/MapDto")
     const BasicUserDto = require("../Dto/BasicUserDto")
+    const MessageDto = require("../Dto/MessageDto")
 
     const UserRepository = {
         isExist : function(hashDto) {
@@ -34,8 +35,9 @@
             UserDao.write(hash, Object.assign(user, userDataDto))
             UserDao.save()
         },
-        setMessage : function(messageDto) {
-            
+        getMessage : function(hashDto) {
+            let user = UserDao.read(hashDto.hash)
+            return new MessageDto(user.message)
         }
     }
     

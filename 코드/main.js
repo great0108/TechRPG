@@ -4,6 +4,10 @@ const Presenter = require("./Presenter")
 const CommandHandler = require("./Model/CommandHandler")
 
 let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
+const MessageCommand = {
+    "n" : bot => Presenter.ChooseNum(bot)
+}
+
 const Command = {
     "회원가입" : bot => Presenter.SignUp(bot),
     "명령어" : bot => Presenter.Command(bot),
@@ -46,6 +50,11 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
     bot.build(room, msg, sender, isGroupChat, replier, imageDB, packageName);
     let result;
     try {
+        let message = bot.run(MessageCommand)
+        if(message) {
+            bot.build(room, message, sender, isGroupChat, replier, imageDB, packageName);
+        }
+        
         if(admin.includes(bot.hash)) {
             result = bot.run(AdminCommand)
         }

@@ -20,7 +20,7 @@
         },
         getInfo : function(craftNameDto) {
             let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
-            return new CraftInfoDto(craft.number, craft.time, craft.need, craft.tier)
+            return new CraftInfoDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
         }
     }
 
