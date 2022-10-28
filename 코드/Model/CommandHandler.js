@@ -57,7 +57,7 @@
         string = string.replace(/n/g, '\\d+') // number
                       .replace(/s/g, '[^\\d ]+') // string
                       .replace(/a/g, '[^ ]+') // any
-        return new RegExp(string);
+        return new RegExp("^" + string);
     }
 
     module.exports = CommandHandler

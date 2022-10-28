@@ -52,6 +52,9 @@
         CantFindStore : function() {
             return "저장공간을 찾을 수 없습니다."
         },
+        CantFindInstall : function() {
+            return "기구를 찾을 수 없습니다."
+        },
         CommandError : function() {
             return "명령어를 제대로 입력하세요"
         },

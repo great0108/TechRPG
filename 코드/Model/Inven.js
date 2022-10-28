@@ -83,18 +83,11 @@
         return item
     }
     Inven.prototype.findItems = function(name) {
-        let items = this.inven.filter(v => v.name === name || v.nick === name)
-        if(items.length === 0) {
-            return null
-        }
-        return items
+        return this.inven.filter(v => v.name === name || v.nick === name)
     }
     Inven.prototype.findTool = function(effective) {
-        let items = this.inven.filter(v => v.type === "tool" && v.meta.class === effective)
-        if(items.length === 0) {
-            return null
-        }
-        return items.sort((a, b) => b.meta.tier - a.meta.tier)
+        return this.inven.filter(v => v.type === "tool" && v.meta.class === effective)
+               .sort((a, b) => b.meta.tier - a.meta.tier)
     }
     Inven.prototype.findItemIndex = function(name) {
         return this.inven.findIndex(v => v.name === name || v.nick === name)

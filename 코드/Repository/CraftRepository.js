@@ -3,7 +3,7 @@
     const CraftDao = require("../Dao/CraftDao")
     const CraftNumDto = require("../Dto/CraftNumDto")
     const CraftItemDto = require("../Dto/CraftItemDto")
-    const CraftInfoDto = require("../Dto/CraftInfoDto")
+    const BasicCraftDto = require("../Dto/BasicCraftDto")
 
     const CraftRepository = {
         getAllCraftNum : function(nameDto) {
@@ -20,7 +20,7 @@
         },
         getInfo : function(craftNameDto) {
             let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
-            return new CraftInfoDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
+            return new BasicCraftDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
         }
     }
 

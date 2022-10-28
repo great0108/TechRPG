@@ -13,6 +13,7 @@
     const MakeUserDto = require("./Dto/MakeUserDto")
     const UserDataDto = require("./Dto/UserDataDto")
     const NameTierDto = require("./Dto/NameTierDto")
+    const CraftNameDto = require("./Dto/CraftNameDto")
 
     const notExistUser = function(hash) {
         let hashDto = new HashDto(hash)
@@ -430,8 +431,8 @@
             }
 
             let install = map.getInstall()
-            if(install.findItem()) {
-                
+            if(!install.findItem()) {
+                return View.CantFindInstall()
             }
 
             let inven2 = craft.craft(item, number, craftNum)
@@ -443,14 +444,18 @@
                 return View.LackInvenSpace()
             }
 
+            let craftNameDto = new CraftNameDto(item, craftNum)
+            let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
+
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven2.inven)
 
             UserRepository.setUser(userDataDto)
-            return View.CraftItem(item, number, withItem)
+            return View.CraftItem(item, number, basicCraftDto.number, basicCraftDto.time, basicCraftDto.need)
         },
         ChooseNum : function(bot) {
             let number = Number(bot.content)
+            let hash = bot.hash
             if(notExistUser(hash)) {
                 return ""
             }
