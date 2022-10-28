@@ -33,6 +33,9 @@
             delete userDataDto.hash
             UserDao.write(hash, Object.assign(user, userDataDto))
             UserDao.save()
+        },
+        setMessage : function(messageDto) {
+            
         }
     }
     

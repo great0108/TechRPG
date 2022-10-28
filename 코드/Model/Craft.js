@@ -3,9 +3,11 @@
     const CraftRepository = require("../Repository/CraftRepository")
     const CraftNameDto = require("../Dto/CraftNameDto")
 
-    const Craft = function(inven, outInven) {
+    const Craft = function(inven) {
         this.inven = inven
-        this.outInven = outInven
+    }
+    Craft.prototype.craftInfo = function(item, craftNum) {
+        return ""
     }
     Craft.prototype.craft = function(item, number, craftNum) {
         let craftNameDto = new CraftNameDto(item, craftNum)
@@ -17,7 +19,7 @@
             let a = this.inven.findTool(tool.class)
             let result = a.find(v => v.meta.tier >= tool.tier && v.meta.durability >= tool.durability * number)
             if(!result) {
-                return ["tool"]
+                return "tool"
             }
             useTool.push(result)
         }
@@ -30,12 +32,12 @@
 
         let [inven] = this.inven.getItems(names, numbers)
         if(!inven) {
-            return ["inven"]
+            return "inven"
         }
 
-        let inven2 = (this.outInven || inven).putItems([item], [number])
+        let inven2 = inven.putItems([item], [number])
         if(!inven2) {
-            return [this.outInven ? "outInven" : "inven"]
+            return "space"
         }
 
         for(let i = 0; i < useTool.length; i++) {
@@ -47,7 +49,7 @@
             }
         }
 
-        return this.outInven ? [inven, inven2] : [inven2]
+        return inven2
     }
 
     module.exports = Craft

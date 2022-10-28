@@ -46,6 +46,9 @@
         let inven = new Inven(this.map[this.location].items, this.invenSetting)
         return inven.getItems(names, nums)
     }
+    Map.prototype.getInstall = function() {
+        return new Inven(this.map[this.location].install, this.invenSetting)
+    }
     Map.prototype.dumpItems = function(names, nums, metas) {
         let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
         return inven.putItems(names, nums, metas)

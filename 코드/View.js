@@ -37,6 +37,9 @@
         LackInvenItem : function() {
             return "인벤토리에 아이템이 없거나 부족합니다."
         },
+        LackInvenTool : function() {
+            return "인벤토리에 도구가 없거나 내구도가 부족합니다."
+        },
         NotHaveItem : function() {
             return "이런 이름의 아이템을 가지고 있지 않습니다."
         },
@@ -111,6 +114,14 @@
         },
         PutItem : function(item, number, store, withItem) {
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + store + " 에다 " + number + "개 넣습니다."
+        },
+        ChooseCraftNum : function(craftInfo) {
+            return "조합법이 여러가지가 있습니다.\n" +
+                   "/(숫자) 형식으로 조합법을 정해주세요.\n\n" + Space +
+                   craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
+        },
+        CraftItem : function(item, number) {
+
         },
         BringItem : function(item, number, withItem) {
             return "[어드민 명령어]\n" +

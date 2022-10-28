@@ -399,19 +399,56 @@
             let hashDto = new HashDto(hash)
             let invenDto = UserRepository.getInven(hashDto)
             let inven = new Inven(invenDto.inven)
+            let mapDto = UserRepository.getMap(hashDto)
+            let map = new Map(mapDto.map, mapDto.location)
             let craft = new Craft(inven)
 
             let tier = UserRepository.getBasicInfo(hashDto).tier
             let nameTierDto = new NameTierDto(item, tier)
             let craftNumber = CraftRepository.getCraftNum(nameTierDto)
 
-            if(craftNum && (craftNumber < craftNum || craftNum <= 0)) {
-                return View.OutOfRangeCraftNum()
-            }
-            if(!craftNum) {
-                return View.chooseCraftNum()
+            if(craftNum) {
+                if(isNaN(craftNum)) {
+                    return View.NotNumber()
+                } else if (craftNumber < craftNum || craftNum <= 0) {
+                    return View.OutOfRangeCraftNum()
+                }
+            } else {
+                if (craftNumber > 1) {
+                    let craftInfo = []
+                    for(let i = 0; i < craftNumber; i++) {
+                        craftInfo.push(craft.craftInfo(item, i+1))
+                    }
+
+                    let userDataDto = new UserDataDto(hash)
+                                    .setMessage(bot.content)
+
+                    UserRepository.setUser(userDataDto)
+                    return View.ChooseCraftNum(craftInfo)
+                } else {
+                    craftNum = 1
+                }
             }
 
+            let install = map.getInstall()
+            if(install.findItem()) {
+                
+            }
+
+            let inven2 = craft.craft(item, number, craftNum)
+            if(inven2 === "tool") {
+                return View.LackInvenTool()
+            } else if(inven2 === "inven") {
+                return View.LackInvenItem()
+            } else if(inven2 === "space") {
+                return View.LackInvenSpace()
+            }
+
+            let userDataDto = new UserDataDto(hash)
+                              .setInven(inven2.inven)
+
+            UserRepository.setUser(userDataDto)
+            return View.CraftItem(item, number, withItem)
         },
         BringItem : function(bot) {
             let {hash, args} = bot

@@ -12,6 +12,7 @@
         let nameDto = new NameDto(type)
         let BiomeItemDto = BiomeRepository.getItem(nameDto)
         this.items = this.makeItems(BiomeItemDto.items)
+        this.install = []
     }
     MapMaker.prototype.makeItems = function(items) {
         let inven = []

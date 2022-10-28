@@ -11,6 +11,7 @@
         this.map = {"base" : base}
         this.busyTime = Date.now()
         this.tier = 0
+        this.message = null
         this.version = Setting.version
     }
     

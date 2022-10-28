@@ -24,6 +24,10 @@
         this.tier = tier
         return this
     }
+    UserDataDto.prototype.setMessage = function(message) {
+        this.message = message
+        return this
+    }
 
     
     module.exports = UserDataDto
