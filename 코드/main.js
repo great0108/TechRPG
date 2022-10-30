@@ -2,7 +2,9 @@
 const Setting = require("./Setting")
 const Presenter = require("./Presenter")
 const CommandHandler = require("./Model/CommandHandler")
+const UserDao = require("./Dao/UserDao")
 
+UserDao.update()
 let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
 const MessageCommand = {
     "n" : bot => Presenter.ChooseNum(bot)
