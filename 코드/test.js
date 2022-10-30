@@ -1,12 +1,10 @@
 const response = require("./main")
-const UserDao = require("./Dao/UserDao")
+// const UserDao = require("./Dao/UserDao")
+// UserDao.update()
 
-// let user = UserDao.read("123456")
-// user.inven = []
-// UserDao.write("123456", user)
-// UserDao.save()
-
-response([123456], "실험방", "/아이템 제작 나무판자/1", "sender")
+//response([123456], "실험방", "/인벤정보", "sender")
+response([123456], "실험방", "/아이템 제작 나무 판자/1/1", "sender")
+//response([123456], "실험방", "/1", "sender")
 
 // 버전 : 0.2.0
 

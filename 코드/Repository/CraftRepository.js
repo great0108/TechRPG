@@ -18,7 +18,7 @@
             let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
             return new CraftItemDto(craft.items, craft.tools || [])
         },
-        getInfo : function(craftNameDto) {
+        getBasicInfo : function(craftNameDto) {
             let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
             return new BasicCraftDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
         }

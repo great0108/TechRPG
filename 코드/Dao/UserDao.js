@@ -3,6 +3,7 @@
     const Dao = require("./Dao")
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
+    const VersionUpdate = require("../Model/VersionUpdate")
 
     const UserDao = {
         data : File.load("User"),
@@ -26,6 +27,11 @@
         },
         isExist : function(hash) {
             return Boolean(this.data[hash])
+        },
+        update : function() {
+            for(let hash in this.data) {
+                VersionUpdate.updateUser(this.data[hash])
+            }
         }
     }
     UserDao.__proto__ = Dao

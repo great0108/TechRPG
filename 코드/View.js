@@ -123,8 +123,18 @@
                    "/(숫자) 형식으로 조합법을 정해주세요.\n\n" + Space +
                    craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
         },
-        CraftItem : function(item, number) {
-
+        CraftItem : function(item, number, time, need, useItems) {
+            return [
+                [
+                    (need ? (need + " 을(를) 사용해서") : "") + item + " 을(를) " + number + "개 제작합니다.\n" +
+                    "아이템을 제작하는데 " + time + "초가 걸립니다.\n" +
+                    "사용 아이템\n" +
+                    useItems.map(v => v.length === 3 ? 
+                                      v[0] + "의 내구도 : " + v[1] + "만큼 사용":
+                                      v[0] + " : " + v[1] + "개 사용").join("\n")
+                ],
+                ["아이템을 모두 제작했습니다.", time*1000]
+            ]
         },
         BringItem : function(item, number, withItem) {
             return "[어드민 명령어]\n" +

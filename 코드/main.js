@@ -52,9 +52,9 @@ function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packa
     try {
         let message = bot.run(MessageCommand)
         if(message) {
-            bot.build(room, message, sender, isGroupChat, replier, imageDB, packageName);
+            bot.build(room, bot.frontPrefix + message, sender, isGroupChat, replier, imageDB, packageName);
         }
-        
+
         if(admin.includes(bot.hash)) {
             result = bot.run(AdminCommand)
         }

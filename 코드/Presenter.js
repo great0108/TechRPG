@@ -406,7 +406,7 @@
 
             let tier = UserRepository.getBasicInfo(hashDto).tier
             let nameTierDto = new NameTierDto(item, tier)
-            let craftNumber = CraftRepository.getCraftNum(nameTierDto)
+            let craftNumber = CraftRepository.getCraftNum(nameTierDto).craftNum
 
             if(craftNum) {
                 if(isNaN(craftNum)) {
@@ -430,12 +430,15 @@
                 }
             }
 
+            let craftNameDto = new CraftNameDto(item, craftNum)
+            let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
+
             let install = map.getInstall()
-            if(!install.findItem()) {
+            if(basicCraftDto.need && !install.findItem(basicCraftDto.need)) {
                 return View.CantFindInstall()
             }
 
-            let inven2 = craft.craft(item, number, craftNum)
+            let [inven2, useItems] = craft.craft(item, number, craftNum)
             if(inven2 === "tool") {
                 return View.LackInvenTool()
             } else if(inven2 === "inven") {
@@ -444,14 +447,11 @@
                 return View.LackInvenSpace()
             }
 
-            let craftNameDto = new CraftNameDto(item, craftNum)
-            let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
-
             let userDataDto = new UserDataDto(hash)
                               .setInven(inven2.inven)
 
             UserRepository.setUser(userDataDto)
-            return View.CraftItem(item, number, basicCraftDto.number, basicCraftDto.time, basicCraftDto.need)
+            return View.CraftItem(item, number * basicCraftDto.number, basicCraftDto.time * number, basicCraftDto.need, useItems)
         },
         ChooseNum : function(bot) {
             let number = Number(bot.content)
@@ -467,7 +467,7 @@
             }
 
             let userDataDto = new UserDataDto(hash)
-                              .setMessage("")
+                              .setMessage(null)
             UserRepository.setUser(userDataDto)
             return message + "/" + number
 
