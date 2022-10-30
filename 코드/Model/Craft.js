@@ -25,6 +25,8 @@
     Craft.prototype.craft = function(item, number, craftNum) {
         let craftNameDto = new CraftNameDto(item, craftNum)
         let craftItemDto = CraftRepository.getItems(craftNameDto)
+        let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
+        let makeNumber = basicCraftDto.number
         let {items, tools} = craftItemDto
         let useItems = []
 
@@ -57,7 +59,7 @@
             return ["inven"]
         }
 
-        inven = inven.putItems([item], [number])
+        inven = inven.putItems([item], [number * makeNumber])
         if(!inven) {
             return ["space"]
         }
