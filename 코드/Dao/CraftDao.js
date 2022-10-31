@@ -3,12 +3,13 @@
     const Dao = require("./Dao")
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
+    const Err = require("../Util/Err")
 
     const CraftDao = {
         data : File.load("Craft"),
         read : function(name) {
             if(!this.data[name]) {
-                throw new Error("이런 아이템의 조합법은 존재하지 않습니다.")
+                Err.NotExistCraft()
             }
             return Copy.deepcopy(this.data[name])
         },

@@ -3,13 +3,14 @@
     const Dao = require("./Dao")
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
+    const Err = require("../Util/Err")
     const VersionUpdate = require("../Model/VersionUpdate")
 
     const UserDao = {
         data : File.load("User"),
         read : function(hash) {
             if(!this.data[hash]) {
-                throw new Error("이런 이름의 유저는 존재하지 않습니다.")
+                Err.NotExistUser()
             }
             return Copy.deepcopy(this.data[hash])
         },

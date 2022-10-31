@@ -3,12 +3,13 @@
     const Dao = require("./Dao")
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
+    const Err = require("../Util/Err")
 
     const ItemDao = {
         data : File.load("Item"),
         read : function(name) {
             if(!this.data[name]) {
-                throw new Error("이런 이름의 아이템은 존재하지 않습니다.")
+                Err.NotExistItem()
             }
             return Copy.deepcopy(this.data[name])
         },

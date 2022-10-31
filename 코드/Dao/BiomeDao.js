@@ -3,12 +3,13 @@
     const Dao = require("./Dao")
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
+    const Err = require("../Util/Err")
 
     const BiomeDao = {
         data : File.load("Biome"),
         read : function(name) {
             if(!this.data[name]) {
-                throw new Error("이런 이름의 바이옴은 존재하지 않습니다.")
+                Err.NotExistBiome()
             }
             return Copy.deepcopy(this.data[name])
         },

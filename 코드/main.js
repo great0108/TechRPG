@@ -1,7 +1,7 @@
 "use strict"
 const Setting = require("./Setting")
 const Presenter = require("./Presenter")
-const CommandHandler = require("./Model/CommandHandler")
+const CommandHandler = require("./Util/CommandHandler")
 const UserDao = require("./Dao/UserDao")
 
 UserDao.update()
