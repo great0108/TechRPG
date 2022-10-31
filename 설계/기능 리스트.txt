@@ -24,4 +24,4 @@ todo
 presenter와 dto 분리하기
 일정시간마다 백업하기
 jsdoc 추가하기
-main에 versionupdate 추가하기
+코드 구조 바꾸기

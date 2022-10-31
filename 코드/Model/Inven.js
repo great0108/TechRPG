@@ -92,6 +92,16 @@
     Inven.prototype.findItemIndex = function(name) {
         return this.inven.findIndex(v => v.name === name || v.nick === name)
     }
+    Inven.prototype.itemInven = function(name) {
+        if(!this.isExist(name) || this.findItems(name).length > 1) {
+            return false
+        }
+        let item = inven.findItem(name)
+        let nameDto = new NameDto(item.name)
+        let setting = ItemRepository.getInvenInfo(nameDto)
+        
+        return new Inven(item.meta.inven, setting)
+    }
     Inven.prototype.removeItem = function(name) {
         let index = this.findItemIndex(name)
         if(index === -1) {
