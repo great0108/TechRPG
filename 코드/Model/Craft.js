@@ -2,16 +2,26 @@
     "use strict"
     const CraftRepository = require("../Repository/CraftRepository")
     const CraftNameDto = require("../Dto/CraftNameDto")
+    const NameTierDto = require("../Dto/NameTierDto")
 
     const Craft = function(inven) {
         this.inven = inven
     }
-    Craft.prototype.craftInfo = function(item, craftNum) {
+    Craft.prototype.getBasicInfo = function(item, craftNum) {
         let craftNameDto = new CraftNameDto(item, craftNum)
-        let craftItemDto = CraftRepository.getItems(craftNameDto)
-        let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
-        let {items, tools} = craftItemDto
-        let {number, time, need} = basicCraftDto
+        return CraftRepository.getBasicInfo(craftNameDto)
+    }
+    Craft.prototype.getItems = function(item, craftNum) {
+        let craftNameDto = new CraftNameDto(item, craftNum)
+        return CraftRepository.getItems(craftNameDto)
+    }
+    Craft.prototype.getCraftNum = function(item, tier) {
+        let nameTierDto = new NameTierDto(item, tier)
+        return CraftRepository.getCraftNum(nameTierDto)
+    }
+    Craft.prototype.craftInfo = function(item, craftNum) {
+        let {items, tools} = this.getItems(item, craftNum)
+        let {number, time, need} = this.getCraftNum(item, craftNum)
         return "만들어 지는 개수 : " + number + "\n" +
             "필요 시간 : " + time + "초 필요 기구 : " + (need ? need : "없음") + "\n" +
             "사용 아이템\n" +
@@ -23,11 +33,8 @@
 
     }
     Craft.prototype.craft = function(item, number, craftNum) {
-        let craftNameDto = new CraftNameDto(item, craftNum)
-        let craftItemDto = CraftRepository.getItems(craftNameDto)
-        let basicCraftDto = CraftRepository.getBasicInfo(craftNameDto)
-        let makeNumber = basicCraftDto.number
-        let {items, tools} = craftItemDto
+        let makeNumber = this.getCraftNum(item, craftNum).number
+        let {items, tools} = this.getItems(item, craftNum)
         let useItems = []
 
         let useTool = []
