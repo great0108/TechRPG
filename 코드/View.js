@@ -7,7 +7,7 @@
     const View = {
         SignUp : function(bot) {
             let presenter = new Presenter()
-            presenter.Command(bot)
+            presenter.SignUp(bot)
             return "회원가입을 완료했습니다."
         },
         Command : function(bot) {

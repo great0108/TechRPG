@@ -100,7 +100,7 @@
         if(!this.isExist(name) || this.findItems(name).length > 1) {
             return false
         }
-        let item = this.inven.findItem(name)
+        let item = this.findItem(name)
         let nameDto = new NameDto(item.name)
         let setting = ItemRepository.getInvenInfo(nameDto)
         

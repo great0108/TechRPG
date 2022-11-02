@@ -388,7 +388,7 @@
             }
         }
 
-        let craftInfo = craft.getBasicInfo()
+        let craftInfo = craft.getBasicInfo(item, craftNum)
         let install = map.getInstall()
         if(craftInfo.need && !install.findItem(craftInfo.need)) {
             Err.CantFindInstall()
