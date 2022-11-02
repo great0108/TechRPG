@@ -6,11 +6,11 @@
     const User = require("./Model/User")
     const Err = require("./Util/Err")
 
-    const Presenter = function(view) {
+    const Presenter = function() {
     }
     Presenter.prototype.SignUp = function(bot) {
         let user = new User(bot.hash)
-        if(!user.isExist()) {
+        if(user.isExist()) {
             Err.AlreadySignUp()
         }
 
@@ -123,7 +123,7 @@
             inven.inven = inven2.inven
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
                         .setMap(map.map)
                         .setBusyTime(Date.now() + time*1000)
@@ -132,7 +132,7 @@
         this.item = item
         this.number = number
         this.time = time
-        this.tool = tool.nick
+        this.tool = tool ? tool.nick : null
         this.withItem = withItem
     }
     Presenter.prototype.DumpItem = function(bot) {
@@ -172,7 +172,7 @@
             inven.inven = inven2.inven
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
                         .setMap(map.map)
 
@@ -221,7 +221,7 @@
             inven.inven = inven2.inven
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
                         .setMap(map.map)
 
@@ -277,7 +277,7 @@
         inven.findItem(store).meta.inven = storeInven2.inven
            
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
 
         user.setUser(userData)
@@ -333,7 +333,7 @@
         inven.findItem(store).meta.inven = storeInven2.inven
            
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
 
         user.setUser(userData)
@@ -377,7 +377,7 @@
                     craftInfo.push(craft.craftInfo(item, i+1))
                 }
 
-                let userData = new UserData(hash)
+                let userData = new UserData()
                                 .setMessage(bot.content)
 
                 user.setUser(userData)
@@ -403,7 +403,7 @@
             Err.LackInvenSpace()
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven2.inven)
 
         user.setUser(userData)
@@ -425,7 +425,7 @@
             return
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setMessage(null)
         user.setUser(userData)
         this.message = message + "/" + number
@@ -462,7 +462,7 @@
             inven.inven = inven2.inven
         }
 
-        let userData = new UserData(hash)
+        let userData = new UserData()
                         .setInven(inven.inven)
 
         user.setUser(userData)

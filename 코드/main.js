@@ -1,31 +1,31 @@
 "use strict"
 const Setting = require("./Setting")
-const Presenter = require("./Presenter")
+const View = require("./View")
 const CommandHandler = require("./Util/CommandHandler")
 const UserDao = require("./Dao/UserDao")
 
 UserDao.update()
 let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
 const MessageCommand = {
-    "n" : bot => Presenter.ChooseNum(bot)
+    "n" : bot => View.ChooseNum(bot)
 }
 
 const Command = {
-    "회원가입" : bot => Presenter.SignUp(bot),
-    "명령어" : bot => Presenter.Command(bot),
-    "내정보" : bot => Presenter.MyInfo(bot),
-    "인벤정보" : bot => Presenter.InvenInfo(bot),
-    "맵정보" : bot => Presenter.MapInfo(bot),
-    "아이템 수집" : bot => Presenter.CollectItem(bot),
-    "아이템 회수" : bot => Presenter.RetrieveItem(bot),
-    "아이템 버리기" : bot => Presenter.DumpItem(bot),
-    "아이템 꺼내기" : bot => Presenter.GetItem(bot),
-    "아이템 넣기" : bot => Presenter.PutItem(bot),
-    "아이템 제작" : bot => Presenter.CraftItem(bot)
+    "회원가입" : bot => View.SignUp(bot),
+    "명령어" : bot => View.Command(bot),
+    "내정보" : bot => View.MyInfo(bot),
+    "인벤정보" : bot => View.InvenInfo(bot),
+    "맵정보" : bot => View.MapInfo(bot),
+    "아이템 수집" : bot => View.CollectItem(bot),
+    "아이템 회수" : bot => View.RetrieveItem(bot),
+    "아이템 버리기" : bot => View.DumpItem(bot),
+    "아이템 꺼내기" : bot => View.GetItem(bot),
+    "아이템 넣기" : bot => View.PutItem(bot),
+    "아이템 제작" : bot => View.CraftItem(bot)
 }
 
 const AdminCommand = {
-    "아이템 가져오기" : bot => Presenter.BringItem(bot)
+    "아이템 가져오기" : bot => View.BringItem(bot)
 }
 
 function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {

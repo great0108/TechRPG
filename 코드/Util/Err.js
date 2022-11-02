@@ -5,9 +5,6 @@
         AlreadySignUp : function() {
             throw new Error("이미 회원가입이 되어 있습니다.")
         },
-        SignUp : function() {
-            throw new Error("회원가입이 완료되었습니다.")
-        },
         NotSignUp : function() {
             throw new Error("회원가입을 먼저 해주세요.")
         },
@@ -68,4 +65,4 @@
     }
 
     module.exports = Err
-})
+})()

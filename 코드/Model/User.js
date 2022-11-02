@@ -26,7 +26,7 @@
         return UserRepository.getBasicInfo(this.hashDto)
     }
     User.prototype.getInven = function() {
-        let invenDto = UserRepository.getInven(hashDto)
+        let invenDto = UserRepository.getInven(this.hashDto)
         return new Inven(invenDto.inven)
     }
     User.prototype.getMap = function() {
@@ -34,6 +34,7 @@
         return new Map(mapDto.map, mapDto.location)
     }
     User.prototype.setUser = function(userData) {
+        userData.hash = this.hash
         UserRepository.setUser(userData)
     }
 

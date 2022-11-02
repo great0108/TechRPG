@@ -5,8 +5,10 @@
     const Presenter = require("./Presenter")
 
     const View = {
-        update : function() {
-
+        SignUp : function(bot) {
+            let presenter = new Presenter()
+            presenter.Command(bot)
+            return "회원가입을 완료했습니다."
         },
         Command : function(bot) {
             let presenter = new Presenter()

@@ -1,8 +1,7 @@
 (function() {
     "use strict"
 
-    const UserDataDto = function(hash) {
-        this.hash = hash
+    const UserDataDto = function() {
     }
     UserDataDto.prototype.setInven = function(inven) {
         this.inven = inven
