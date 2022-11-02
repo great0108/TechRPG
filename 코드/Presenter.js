@@ -23,7 +23,7 @@
         if(!user.isExist()) {
             Err.NotSignUp()
         } else if(user.getMessage()) {
-            user.setUser(new UserData.setMessage(null))
+            user.setUser(new UserData().setMessage(null))
             Err.CancleCommand()
         }
 
@@ -41,7 +41,7 @@
         if(!user.isExist()) {
             Err.NotSignUp()
         } else if(user.getMessage()) {
-            user.setUser(new UserData.setMessage(null))
+            user.setUser(new UserData().setMessage(null))
             Err.CancleCommand()
         }
 
@@ -55,7 +55,7 @@
         if(!user.isExist()) {
             Err.NotSignUp()
         } else if(user.getMessage()) {
-            user.setUser(new UserData.setMessage(null))
+            user.setUser(new UserData().setMessage(null))
             Err.CancleCommand()
         }
 
@@ -381,7 +381,7 @@
             return
         }
         
-        let message = user.getMessage().message
+        let message = user.getMessage()
         if(!message) {
             return
         }

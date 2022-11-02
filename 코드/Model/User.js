@@ -1,8 +1,9 @@
 (function() {
     "use strict"
-    const Inven = require("../Model/Inven")
-    const Map = require("../Model/Map")
-    const UserMaker = require("../Model/UserMaker")
+    const Inven = require("./Inven")
+    const Map = require("./Map")
+    const UserMaker = require("./UserMaker")
+    const UserData = require("./UserData")
     const Err = require("../Util/Err")
     const UserRepository = require("../Repository/UserRepository")
     const HashDto = require("../Dto/HashDto")
@@ -27,7 +28,7 @@
         return UserRepository.getBasicInfo(this.hashDto)
     }
     User.prototype.getMessage = function() {
-        return UserRepository.getMessage(this.hashDto)
+        return UserRepository.getMessage(this.hashDto).message
     }
     User.prototype.getInven = function() {
         let invenDto = UserRepository.getInven(this.hashDto)
@@ -42,12 +43,12 @@
         UserRepository.setUser(userData)
     }
     User.prototype.errorCheck = function(number) {
-        if(!user.isExist()) {
+        if(!this.isExist()) {
             Err.NotSignUp()
-        } else if(user.getMessage()) {
-            user.setUser(new UserData.setMessage(null))
+        } else if(this.getMessage()) {
+            this.setUser(new UserData().setMessage(null))
             Err.CancleCommand()
-        } else if(user.isBusy()) {
+        } else if(this.isBusy()) {
             Err.NowBusy()
         } else if(isNaN(number)) {
             Err.NotNumber()
