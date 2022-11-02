@@ -22,6 +22,9 @@
         let user = new User(bot.hash)
         if(!user.isExist()) {
             Err.NotSignUp()
+        } else if(user.getMessage()) {
+            user.setUser(new UserData.setMessage(null))
+            Err.CancleCommand()
         }
 
         let userInfo = user.getBasicInfo()
@@ -37,6 +40,9 @@
         let user = new User(bot.hash)
         if(!user.isExist()) {
             Err.NotSignUp()
+        } else if(user.getMessage()) {
+            user.setUser(new UserData.setMessage(null))
+            Err.CancleCommand()
         }
 
         let inven = user.getInven()
@@ -48,6 +54,9 @@
         let user = new User(bot.hash)
         if(!user.isExist()) {
             Err.NotSignUp()
+        } else if(user.getMessage()) {
+            user.setUser(new UserData.setMessage(null))
+            Err.CancleCommand()
         }
 
         let map = user.getMap()
@@ -66,17 +75,10 @@
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
         number = Number(number)
-
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        }
+        user.errorCheck(number)
 
         let userInfo = user.getBasicInfo()
-        if(number <= 0 || number > userInfo.tier * 10 + 10) {
+        if(number > userInfo.tier * 10 + 10) {
             Err.OutOfRangeNumber()
         }
 
@@ -139,16 +141,7 @@
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
         number = Number(number)
-
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        }
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let map = user.getMap()
@@ -185,16 +178,7 @@
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
         number = Number(number)
-
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        }
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let map = user.getMap()
@@ -235,15 +219,8 @@
         let [item, number, store, withItem] = bot.args
         number = Number(number)
 
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        } else if(store === withItem) {
+        user.errorCheck(number)
+        if(store === withItem) {
             Err.CommandError()
         }
 
@@ -291,15 +268,8 @@
         let [item, number, store, withItem] = bot.args
         number = Number(number)
 
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        } else if(store === withItem) {
+        user.errorCheck(number)
+        if(store === withItem) {
             Err.CommandError()
         }
 
@@ -346,16 +316,7 @@
         let user = new User(bot.hash)
         let [item, number, craftNum] = bot.args
         number = Number(number)
-
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        }
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let map = user.getMap()
@@ -420,7 +381,7 @@
             return
         }
         
-        let message = user.getBasicInfo().message
+        let message = user.getMessage().message
         if(!message) {
             return
         }
@@ -434,16 +395,7 @@
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
         number = Number(number)
-
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.isBusy()) {
-            Err.NowBusy()
-        } else if(isNaN(number)) {
-            Err.NotNumber()
-        } else if(number <= 0) {
-            Err.OutOfRangeNumber()
-        }
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let itemInven = withItem ? inven.itemInven(withItem) : null

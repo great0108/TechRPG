@@ -3,6 +3,7 @@
     const Inven = require("../Model/Inven")
     const Map = require("../Model/Map")
     const UserMaker = require("../Model/UserMaker")
+    const Err = require("../Util/Err")
     const UserRepository = require("../Repository/UserRepository")
     const HashDto = require("../Dto/HashDto")
     const MakeUserDto = require("../Dto/MakeUserDto")
@@ -25,6 +26,9 @@
     User.prototype.getBasicInfo = function() {
         return UserRepository.getBasicInfo(this.hashDto)
     }
+    User.prototype.getMessage = function() {
+        return UserRepository.getMessage(this.hashDto)
+    }
     User.prototype.getInven = function() {
         let invenDto = UserRepository.getInven(this.hashDto)
         return new Inven(invenDto.inven)
@@ -36,6 +40,20 @@
     User.prototype.setUser = function(userData) {
         userData.hash = this.hash
         UserRepository.setUser(userData)
+    }
+    User.prototype.errorCheck = function(number) {
+        if(!user.isExist()) {
+            Err.NotSignUp()
+        } else if(user.getMessage()) {
+            user.setUser(new UserData.setMessage(null))
+            Err.CancleCommand()
+        } else if(user.isBusy()) {
+            Err.NowBusy()
+        } else if(isNaN(number)) {
+            Err.NotNumber()
+        } else if(number <= 0) {
+            Err.OutOfRangeNumber()
+        }
     }
 
     module.exports = User

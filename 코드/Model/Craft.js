@@ -17,11 +17,11 @@
     }
     Craft.prototype.getCraftNum = function(item, tier) {
         let nameTierDto = new NameTierDto(item, tier)
-        return CraftRepository.getCraftNum(nameTierDto)
+        return CraftRepository.getCraftNum(nameTierDto).craftNum
     }
     Craft.prototype.craftInfo = function(item, craftNum) {
         let {items, tools} = this.getItems(item, craftNum)
-        let {number, time, need} = this.getCraftNum(item, craftNum)
+        let {number, time, need} = this.getBasicInfo(item, craftNum)
         return "만들어 지는 개수 : " + number + "\n" +
             "필요 시간 : " + time + "초 필요 기구 : " + (need ? need : "없음") + "\n" +
             "사용 아이템\n" +

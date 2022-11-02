@@ -62,6 +62,9 @@
         CommandError : function() {
             throw new Error("명령어를 제대로 입력하세요")
         },
+        CancleCommand : function() {
+            throw new Error("명령어를 취소합니다.")
+        }
     }
 
     module.exports = Err
