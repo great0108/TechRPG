@@ -33,7 +33,7 @@
 
     }
     Craft.prototype.craft = function(item, number, craftNum) {
-        let makeNumber = this.getCraftNum(item, craftNum).number
+        let makeNumber = this.getCraftNum(item, craftNum)
         let {items, tools} = this.getItems(item, craftNum)
         let useItems = []
 
