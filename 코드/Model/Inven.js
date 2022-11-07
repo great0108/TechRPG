@@ -3,8 +3,7 @@
     const Setting = require("../Setting")
     const Copy = require("../Util/Copy")
     const ItemMaker = require("./ItemMaker")
-    const ItemRepository = require("../Repository/ItemRepository")
-    const NameDto = require("../Dto/NameDto")
+    const Item = require("./Item")
     
     const Inven = function(inven, setting) {
         this.inven = inven
@@ -38,16 +37,12 @@
         return result.join("\n")
     }
     Inven.prototype.itemInfo = function(item, space) {
-        space = space === undefined ? "" : " ".repeat(space)
-        let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
+        let result = Item.invenItemInfo(item, space)
         if(item.type === "hold") {
-            let nameDto = new NameDto(item.name)
-            let invenSetting = ItemRepository.getInvenInfo(nameDto)
+            let invenSetting = Item.getInvenSetting(item.name)
             let itemInven = new Inven(item.meta.inven, invenSetting)
             result += "\n" + "  아이템 인벤 공간 : " + itemInven.invenSpace() + " / " + itemInven.invenLimit + "\n" +
                       "  아이템\n" + (itemInven.invenInfo(2) || "  없음")
-        } else if(item.type === "tool") {
-            result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + item.meta.damage || "없음"
         }
         return result
     }
@@ -92,17 +87,12 @@
     Inven.prototype.findItemIndex = function(name) {
         return this.inven.findIndex(v => v.name === name || v.nick === name)
     }
-    Inven.prototype.getCollectInfo = function(item) {
-        let nameDto = new NameDto(item)
-        return ItemRepository.getCollectInfo(nameDto)
-    }
     Inven.prototype.itemInven = function(name) {
         if(!this.isExist(name) || this.findItems(name).length > 1) {
             return false
         }
         let item = this.findItem(name)
-        let nameDto = new NameDto(item.name)
-        let setting = ItemRepository.getInvenInfo(nameDto)
+        let setting = Item.getInvenSetting(item.name)
         
         return new Inven(item.meta.inven, setting)
     }
@@ -158,8 +148,7 @@
         metas = metas === undefined ? [] : metas
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         for(let i = 0; i < names.length; i++) {
-            let nameDto = new NameDto(names[i])
-            let basicItemDto = ItemRepository.getBasicInfo(nameDto)
+            let basicItemDto = Item.getItemInfo(names[i])
 
             if(!this.setting.includeItem.includes(names[i])) {
                 if(this.setting.excludeItem.includes(names[i])) {

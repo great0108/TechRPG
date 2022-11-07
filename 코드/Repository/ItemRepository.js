@@ -11,7 +11,7 @@
     const ItemRepository = {
         getBasicInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
-            return new BasicItemDto(item.type, item.stack || Setting.itemStack)
+            return new BasicItemDto(item.type, item.stack || Setting.itemStack, item.heat || 0)
         },
         getInvenInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)

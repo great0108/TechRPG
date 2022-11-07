@@ -3,15 +3,14 @@
     const Setting = require("./Setting")
     const Space = Setting.nodeJS ? "" : '\u200b'.repeat(500)
     const Presenter = require("./Presenter")
+    const presenter = new Presenter()
 
     const View = {
         SignUp : function(bot) {
-            let presenter = new Presenter()
             presenter.SignUp(bot)
             return "회원가입을 완료했습니다."
         },
         Command : function(bot) {
-            let presenter = new Presenter()
             presenter.Command(bot)
             return "명령어 목록입니다\n" + Space + 
             "회원가입 - 회원가입을 합니다\n" + 
@@ -29,7 +28,6 @@
             "아이템 가져오기 (아이템)/(개수)/[to 아이템] - 아이템을 가져옵니다"
         },
         MyInfo : function(bot) {
-            let presenter = new Presenter()
             presenter.MyInfo(bot)
             let {name, location, coord, busy, tier} = presenter
             return "내 정보입니다.\n" + Space + 
@@ -41,7 +39,6 @@
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
         },
         InvenInfo : function(bot) {
-            let presenter = new Presenter()
             presenter.InvenInfo(bot)
             let {invenSpace, invenLimit, invenInfo} = presenter
             return "인벤 정보입니다.\n" + Space + 
@@ -49,7 +46,6 @@
             "아이템\n" + (invenInfo || "없음")
         },
         MapInfo : function(bot) {
-            let presenter = new Presenter()
             presenter.MapInfo(bot)
             let {location, coord, biome, mapInfo} = presenter
             return "맵 정보입니다.\n" + Space + 
@@ -58,7 +54,6 @@
             "바이옴 : " + biome + "\n\n" + mapInfo
         },
         CollectItem : function(bot) {
-            let presenter = new Presenter()
             presenter.CollectItem(bot)
             let {item, number, time, tool, withItem} = presenter
             return [
@@ -70,19 +65,16 @@
             ]
         },
         DumpItem : function(bot) {
-            let presenter = new Presenter()
             presenter.DumpItem(bot)
             let {item, number, withItem} = presenter
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + number + "개 버립니다."
         },
         RetrieveItem : function(bot) {
-            let presenter = new Presenter()
             presenter.RetrieveItem(bot)
             let {item, number, withItem} = presenter
             return item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 회수합니다."
         },
         GetItem : function(bot) {
-            let presenter = new Presenter()
             presenter.GetItem(bot)
             let {item, number, store, withItem} = presenter
             if(withItem) {
@@ -91,13 +83,11 @@
             return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼냅니다."
         },
         PutItem : function(bot) {
-            let presenter = new Presenter()
             presenter.PutItem(bot)
             let {item, number, store, withItem} = presenter
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + store + " 에다 " + number + "개 넣습니다."
         },
         CraftItem : function(bot) {
-            let presenter = new Presenter()
             presenter.CraftItem(bot)
             let {craftInfo, item, number, time, need, useItems} = presenter
 
@@ -119,15 +109,25 @@
                 ["아이템을 모두 제작했습니다.", time*1000]
             ]
         },
+        ItemInfo : function(bot) {
+            presenter.ItemInfo(bot)
+            
+        },
+        CraftInfo : function(bot) {
+            presenter.CraftInfo(bot)
+
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
+
+        },
         ChooseNum : function(bot) {
-            let presenter = new Presenter()
             presenter.ChooseNum(bot)
             let {message} = presenter
 
             return message
         },
         BringItem : function(bot) {
-            let presenter = new Presenter()
             presenter.BringItem(bot)
             let {item, number, withItem} = presenter
             return "[어드민 명령어]\n" +

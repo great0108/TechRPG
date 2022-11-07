@@ -21,7 +21,10 @@ const Command = {
     "아이템 버리기" : bot => View.DumpItem(bot),
     "아이템 꺼내기" : bot => View.GetItem(bot),
     "아이템 넣기" : bot => View.PutItem(bot),
-    "아이템 제작" : bot => View.CraftItem(bot)
+    "아이템 제작" : bot => View.CraftItem(bot),
+    "아이템 정보" : bot => View.ItemInfo(bot),
+    "제작 정보" : bot => View.CraftInfo(bot),
+    "튜토리얼" : bot => View.Tutorial(bot)
 }
 
 const AdminCommand = {

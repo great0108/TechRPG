@@ -1,6 +1,7 @@
 (function() {
     "use strict"
     const Inven = require("./Model/Inven")
+    const Item = require("./Model/Item")
     const Craft = require("./Model/Craft")
     const UserData = require("./Model/UserData")
     const User = require("./Model/User")
@@ -95,7 +96,7 @@
             Err.LackMapItem()
         }
         
-        let collectInfo = inven.getCollectInfo(item)
+        let collectInfo = Item.getCollectInfo(item)
         let tools = inven.findTool(collectInfo.effective)
         let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= number)
         if(!tool && collectInfo.tier >= 1) {
@@ -373,6 +374,19 @@
         this.time = number * craftInfo.time
         this.need = craftInfo.need
         this.useItems = useItems
+    }
+    Presenter.prototype.ItemInfo = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.errorCheck(1)
+
+
+    }
+    Presenter.prototype.CraftInfo = function(bot) {
+
+    }
+    Presenter.prototype.Tutorial = function(bot) {
+
     }
     Presenter.prototype.ChooseNum = function(bot) {
         let user = new User(bot.hash)

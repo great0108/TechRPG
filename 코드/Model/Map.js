@@ -63,7 +63,6 @@
     Map.prototype.setDumpItems = function(inven) {
         this.map[this.location].dumpItems = inven.inven
     }
-
     
     module.exports = Map
 })()
