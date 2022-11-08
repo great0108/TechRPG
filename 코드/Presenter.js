@@ -334,10 +334,7 @@
             }
         } else {
             if (craftNumber > 1) {
-                let craftInfo = []
-                for(let i = 0; i < craftNumber; i++) {
-                    craftInfo.push(craft.craftInfo(item, i+1))
-                }
+                let craftInfo = craft.craftInfos(craftNumber)
 
                 let userData = new UserData()
                                 .setMessage(bot.content)
@@ -380,12 +377,22 @@
         let item = bot.data
         user.errorCheck(1)
 
-
+        let itemInfo = Item.itemInfo(item)
+        this.itemInfo = itemInfo
     }
     Presenter.prototype.CraftInfo = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.errorCheck(1)
 
+        let tier = user.getBasicInfo().tier
+        let craft = new Craft()
+        let craftNum = craft.getCraftNum(item, tier)
+        let craftInfo = craft.craftInfos(item, craftNum)
+        this.craftInfo = craftInfo
     }
     Presenter.prototype.Tutorial = function(bot) {
+        let user = new User(bot.hash)
 
     }
     Presenter.prototype.ChooseNum = function(bot) {

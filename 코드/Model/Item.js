@@ -7,7 +7,7 @@
         getInvenSetting : function(item) {
             return ItemRepository.getInvenInfo(new NameDto(item))
         },
-        getItemInfo : function(item) {
+        getBasicInfo : function(item) {
             return ItemRepository.getBasicInfo(new NameDto(item))
         },
         getCollectInfo : function(item) {
@@ -25,7 +25,12 @@
             return result
         },
         itemInfo : function(item) {
-            
+            let itemInfo = this.getBasicInfo(item)
+            if(item.type === "tool") {
+
+            } else if(item.type === "hold") {
+                
+            }
         }
     }
 

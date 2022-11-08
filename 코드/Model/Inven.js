@@ -148,7 +148,7 @@
         metas = metas === undefined ? [] : metas
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         for(let i = 0; i < names.length; i++) {
-            let basicItemDto = Item.getItemInfo(names[i])
+            let basicItemDto = Item.getBasicInfo(names[i])
 
             if(!this.setting.includeItem.includes(names[i])) {
                 if(this.setting.excludeItem.includes(names[i])) {

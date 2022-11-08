@@ -93,8 +93,7 @@
 
             if(craftInfo) {
                 return "조합법이 여러가지가 있습니다.\n" +
-                   "/(숫자) 형식으로 조합법을 정해주세요.\n\n" + Space +
-                   craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
+                   "/(숫자) 형식으로 조합법을 정해주세요.\n\n" + Space + craftInfo
             }
 
             return [

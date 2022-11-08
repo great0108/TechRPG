@@ -30,7 +30,13 @@
                 v.tier + "티어 이상 " + v.class + " 도구의 내구도 : " + v.durability + "만큼 사용" :
                 v.name + "의 내구도 : " + v.durability + "만큼 사용"
             ).join("\n")
-
+    }
+    Craft.prototype.craftInfos = function(item, num) {
+        let craftInfo = []
+        for(let i = 0; i < num; i++) {
+            craftInfo.push(this.craftInfo(item, i+1))
+        }
+        return craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
     }
     Craft.prototype.craft = function(item, number, craftNum) {
         let makeNumber = this.getCraftNum(item, craftNum)
