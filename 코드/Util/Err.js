@@ -5,6 +5,9 @@
         AlreadySignUp : function() {
             throw new Error("이미 회원가입이 되어 있습니다.")
         },
+        AlreadyExistWriting : function() {
+            throw new Error("이런 이름의 글이 이미 존재합니다.")
+        },
         NotSignUp : function() {
             throw new Error("회원가입을 먼저 해주세요.")
         },
@@ -28,6 +31,9 @@
         },
         NotNumber : function() {
             throw new Error("숫자를 제대로 입력하세요.")
+        },
+        NotText : function() {
+            throw new Error("내용을 입력하세요.")
         },
         OutOfRangeNumber : function() {
             throw new Error("숫자가 너무 크거나 작습니다.")

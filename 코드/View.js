@@ -116,28 +116,28 @@
             let {item, craftInfo} = presenter.CraftInfo(bot)
             return item + "의 조합법입니다." + Space + craftInfo
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        SearchWriting : function(bot) {
+            presenter.SearchWriting(bot)
 
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        ListWriting : function(bot) {
+            presenter.ListWriting(bot)
 
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        ReadWriting : function(bot) {
+            presenter.ReadWriting(bot)
 
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        MakeWriting : function(bot) {
+            presenter.MakeWriting(bot)
 
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        DeleteWriting : function(bot) {
+            presenter.DeleteWriting(bot)
 
         },
-        Tutorial : function(bot) {
-            presenter.Tutorial(bot)
+        AppendWriting : function(bot) {
+            presenter.AppendWriting(bot)
 
         },
         ChooseNum : function(bot) {

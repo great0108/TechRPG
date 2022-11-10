@@ -5,9 +5,13 @@
     const MakeWritingDto = require("../Dto/MakeWritingDto")
 
     const Writing = {
+        isExist : function(title) {
+            let nameDto = new NameDto(title)
+            return WritingRepository.isExist(nameDto).isExist
+        },
         read : function(title) {
             let nameDto = new NameDto(title)
-            return WritingRepository.getWriting(nameDto)
+            return WritingRepository.getWriting(nameDto).text
         },
         write : function(title, text) {
             let makeWritingDto = new MakeWritingDto(title, text)
@@ -24,7 +28,7 @@
             WritingRepository.deleteWriting(nameDto)
         },
         list : function() {
-            return WritingRepository.getWritingList()
+            return WritingRepository.getWritingList().list
         },
         search : function(word) {
             let list = this.list()

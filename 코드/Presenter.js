@@ -5,6 +5,7 @@
     const Craft = require("./Model/Craft")
     const UserData = require("./Model/UserData")
     const User = require("./Model/User")
+    const Writing = require("./Model/Writing")
     const Err = require("./Util/Err")
 
     const Presenter = function() {
@@ -21,12 +22,7 @@
     },
     Presenter.prototype.MyInfo = function(bot) {
         let user = new User(bot.hash)
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.getMessage()) {
-            user.setUser(new UserData().setMessage(null))
-            Err.CancleCommand()
-        }
+        user.basicCheck()
 
         let userInfo = user.getBasicInfo()
         let map = user.getMap()
@@ -41,12 +37,7 @@
     },
     Presenter.prototype.InvenInfo = function(bot) {
         let user = new User(bot.hash)
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.getMessage()) {
-            user.setUser(new UserData().setMessage(null))
-            Err.CancleCommand()
-        }
+        user.basicCheck()
 
         let inven = user.getInven()
         return {
@@ -57,12 +48,7 @@
     }
     Presenter.prototype.MapInfo = function(bot) {
         let user = new User(bot.hash)
-        if(!user.isExist()) {
-            Err.NotSignUp()
-        } else if(user.getMessage()) {
-            user.setUser(new UserData().setMessage(null))
-            Err.CancleCommand()
-        }
+        user.basicCheck()
 
         let map = user.getMap()
         let location = bot.data || map.location
@@ -394,7 +380,7 @@
     Presenter.prototype.ItemInfo = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
-        user.errorCheck(1)
+        user.basicCheck()
 
         let itemInfo = Item.itemInfo(item)
         return {
@@ -405,7 +391,7 @@
     Presenter.prototype.CraftInfo = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
-        user.errorCheck(1)
+        user.basicCheck()
 
         let tier = user.getBasicInfo().tier
         let craft = new Craft()
@@ -416,23 +402,94 @@
             craftInfo : craftInfo
         }
     }
-    Presenter.prototype.a = function(bot) {
+    Presenter.prototype.SearchWriting = function(bot) {
+        let user = new User(bot.hash)
+        let word = bot.data
+        user.basicCheck()
 
+        let list = Writing.search(word)
+        return {
+            word : word,
+            list : list
+        }
     }
-    Presenter.prototype.a = function(bot) {
-        
+    Presenter.prototype.ListWriting = function(bot) {
+        let user = new User(bot.hash)
+        user.basicCheck()
+
+        let list = Writing.list()
+        return {
+            list : list
+        }
     }
-    Presenter.prototype.a = function(bot) {
-        
+    Presenter.prototype.ReadWriting = function(bot) {
+        let user = new User(bot.hash)
+        let title = bot.data
+        user.basicCheck()
+
+        let text = Writing.read(title)
+        return {
+            title : title,
+            text : text
+        }
     }
-    Presenter.prototype.a = function(bot) {
-        
+    Presenter.prototype.MakeWriting = function(bot) {
+        let user = new User(bot.hash)
+        let index = bot.data.indexOf("\n")
+        user.basicCheck()
+
+        if(index === -1) {
+            Err.NotText()
+        }
+
+        let title = bot.data.slice(index)
+        let text = bot.data.slice(index+1, bot.data.length)
+        if(Writing.isExist(title)) {
+            Err.AlreadyExistWriting()
+        }
+
+        Writing.write(title, text)
+        return {
+            title : title,
+            text : text
+        }
     }
-    Presenter.prototype.a = function(bot) {
-        
+    Presenter.prototype.DeleteWriting = function(bot) {
+        let user = new User(bot.hash)
+        let title = bot.data
+        user.basicCheck()
+
+        if(!Writing.isExist(title)) {
+            Err.NotExistWriting()
+        }
+
+        let text = Writing.read(title)
+        Writing.delete(title)
+        return {
+            title : title,
+            text : text
+        }
     }
-    Presenter.prototype.a = function(bot) {
-        
+    Presenter.prototype.AppendWriting = function(bot) {
+        let user = new User(bot.hash)
+        let index = bot.data.indexOf("\n")
+        user.basicCheck()
+
+        if(index === -1) {
+            Err.NotText()
+        }
+
+        let title = bot.data.slice(index)
+        let text = bot.data.slice(index+1, bot.data.length)
+        if(!Writing.isExist(title)) {
+            Err.NotExistWriting()
+        }
+
+        text = Writing.append(title, text)
+        return {
+            title : title,
+            text : text
+        }
     }
     Presenter.prototype.ChooseNum = function(bot) {
         let user = new User(bot.hash)

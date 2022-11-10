@@ -3,6 +3,7 @@
     const WritingDao = require("../Dao/WritingDao")
     const WritingDto = require("../Dto/WritingDto")
     const ListDto = require("../Dto/ListDto")
+    const IsExistDto = require("../Dto/IsExistDto")
 
     const WritingRepository = {
         getWriting : function(nameDto) {
@@ -18,6 +19,10 @@
         },
         deleteWriting : function(nameDto) {
             WritingDao.delete(nameDto.name)
+        },
+        isExist : function(nameDto) {
+           let exist = WritingDao.isExist(nameDto.name)
+           return new IsExistDto(exist)
         }
     }
 

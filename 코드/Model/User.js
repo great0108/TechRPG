@@ -14,7 +14,7 @@
         this.hashDto = new HashDto(hash)
     }
     User.prototype.isExist = function() {
-        return UserRepository.isExist(this.hashDto)
+        return UserRepository.isExist(this.hashDto).isExist
     }
     User.prototype.isBusy = function() {
         return this.getBasicInfo().busyTime >= Date.now()
@@ -42,13 +42,17 @@
         userData.hash = this.hash
         UserRepository.setUser(userData)
     }
-    User.prototype.errorCheck = function(number) {
+    User.prototype.basicCheck = function() {
         if(!this.isExist()) {
             Err.NotSignUp()
         } else if(this.getMessage()) {
             this.setUser(new UserData().setMessage(null))
             Err.CancleCommand()
-        } else if(this.isBusy()) {
+        }
+    }
+    User.prototype.errorCheck = function(number) {
+        this.basicCheck()
+        if(this.isBusy()) {
             Err.NowBusy()
         } else if(isNaN(number)) {
             Err.NotNumber()
