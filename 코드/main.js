@@ -33,7 +33,8 @@ const Command = {
 }
 
 const AdminCommand = {
-    "아이템 가져오기" : bot => View.BringItem(bot)
+    "아이템 가져오기" : bot => View.BringItem(bot),
+    "아이템 목록" : bot => View.ListItem(bot)
 }
 
 function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {

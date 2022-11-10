@@ -543,6 +543,15 @@
             withItem : withItem
         }
     }
+    Presenter.prototype.ListItem = function(bot) {
+        let user = new User(bot.hash)
+        user.basicCheck()
+
+        let list = Item.getList()
+        return {
+            list : list
+        }
+    }
 
     module.exports = Presenter
 })()

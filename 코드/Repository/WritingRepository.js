@@ -6,6 +6,10 @@
     const IsExistDto = require("../Dto/IsExistDto")
 
     const WritingRepository = {
+        isExist : function(nameDto) {
+            let exist = WritingDao.isExist(nameDto.name)
+            return new IsExistDto(exist)
+        },
         getWriting : function(nameDto) {
             let text = WritingDao.read(nameDto.name)
             return new WritingDto(text)
@@ -19,10 +23,6 @@
         },
         deleteWriting : function(nameDto) {
             WritingDao.delete(nameDto.name)
-        },
-        isExist : function(nameDto) {
-           let exist = WritingDao.isExist(nameDto.name)
-           return new IsExistDto(exist)
         }
     }
 

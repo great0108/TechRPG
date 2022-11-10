@@ -110,35 +110,39 @@
         },
         ItemInfo : function(bot) {
             let {item, itemInfo} = presenter.ItemInfo(bot)
-            return item + "의 정보입니다." + Space + itemInfo 
+            return item + "의 정보입니다.\n" + Space + itemInfo 
         },
         CraftInfo : function(bot) {
             let {item, craftInfo} = presenter.CraftInfo(bot)
-            return item + "의 조합법입니다." + Space + craftInfo
+            return item + "의 조합법입니다.\n" + Space + craftInfo
         },
         SearchWriting : function(bot) {
-            presenter.SearchWriting(bot)
-
+            let {word, list} = presenter.SearchWriting(bot)
+            return word + "(으)로 검색한 결과입니다.\n" + Space + 
+                   list.length === 0 ? "없음" : list.join("\n")
         },
         ListWriting : function(bot) {
-            presenter.ListWriting(bot)
-
+            let {list} = presenter.ListWriting(bot)
+            return "글 목록입니다.\n" + Space + list.join("\n")
         },
         ReadWriting : function(bot) {
-            presenter.ReadWriting(bot)
-
+            let {title, text} = presenter.ReadWriting(bot)
+            return "제목 : " + title + "\n" + Space + "내용 : " + text
         },
         MakeWriting : function(bot) {
-            presenter.MakeWriting(bot)
-
+            let {title, text} = presenter.MakeWriting(bot)
+            return "글이 작성되었습니다.\n" + Space + 
+                   "제목 : " + title + "\n내용 : " + text
         },
         DeleteWriting : function(bot) {
-            presenter.DeleteWriting(bot)
-
+            let {title, text} = presenter.DeleteWriting(bot)
+            return "글이 삭제되었습니다.\n" + Space +
+                   "제목 : " + title + "\n내용 : " + text
         },
         AppendWriting : function(bot) {
-            presenter.AppendWriting(bot)
-
+            let {title, text} = presenter.AppendWriting(bot)
+            return "글이 추가되었습니다.\n" + Space +
+                   "제목 : " + title + "\n내용 : " + text
         },
         ChooseNum : function(bot) {
             let {message} = presenter.ChooseNum(bot)
@@ -148,6 +152,10 @@
             let {item, number, withItem} = presenter.BringItem(bot)
             return "[어드민 명령어]\n" +
             item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 가져옵니다."
+        },
+        ListItem : function(bot) {
+            let {list} = presenter.ListItem(bot)
+            return "아이템 목록입니다." + Space + list.join("\n")
         }
     }
 

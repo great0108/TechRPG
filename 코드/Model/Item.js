@@ -16,6 +16,9 @@
         getToolInfo : function(item) {
             return ItemRepository.getToolInfo(new NameDto(item))
         },
+        getList : function() {
+            return ItemRepository.getItemList().list
+        },
         invenItemInfo : function(item, space) {
             space = space === undefined ? "" : " ".repeat(space)
             let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
