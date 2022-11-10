@@ -24,12 +24,20 @@
             "/아이템 꺼내기 (아이템)/(개수)/(in 아이템)/[to item] - 저장공간에서 아이템을 꺼냅니다\n" +
             "/아이템 넣기 (아이템)/(개수)/(to 아이템)/[in item] - 저장공간에 아이템을 넣습니다\n" +
             "/아이템 제작 (아이템)/(개수)/[조합법] - 아이템을 제작합니다\n" +
+            "/아이템 정보 (아이템) - 아이템 정보를 보여줍니다\n" +
+            "/제작 정보 (아이템) - 제작 정보를 보여줍니다\n" +
+            "/글 검색 (검색어) - 검색어로 글을 검색합니다\n" +
+            "/글 목록 - 글 목록을 보여줍니다\n" +
+            "/글 보기 (제목) - 해당 제목의 글을 보여줍니다\n" +
+            "/글 작성 (제목)/(내용) - 해당 제목의 새로운 글을 작성합니다\n" +
+            "/글 추가 (제목)/(내용) - 해당 제목의 글에 내용을 추가합니다\n" +
+            "/글 삭제 (제목) - 해당 제목의 글을 삭제합니다\n" +
             "\n[어드민 명령어]\n" +
-            "/아이템 가져오기 (아이템)/(개수)/[to 아이템] - 아이템을 가져옵니다"
+            "/아이템 가져오기 (아이템)/(개수)/[to 아이템] - 아이템을 가져옵니다" +
+            "/아이템 목록 - 전체 아이템 목록을 가져옵니다"
         },
         MyInfo : function(bot) {
-            presenter.MyInfo(bot)
-            let {name, location, coord, busy, tier} = presenter
+            let {name, location, coord, busy, tier} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
@@ -39,23 +47,20 @@
             "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
         },
         InvenInfo : function(bot) {
-            presenter.InvenInfo(bot)
-            let {invenSpace, invenLimit, invenInfo} = presenter
+            let {invenSpace, invenLimit, invenInfo} = presenter.InvenInfo(bot)
             return "인벤 정보입니다.\n" + Space + 
             "현재 공간 : " + invenSpace + " / " + invenLimit + "\n\n" +
             "아이템\n" + (invenInfo || "없음")
         },
         MapInfo : function(bot) {
-            presenter.MapInfo(bot)
-            let {location, coord, biome, mapInfo} = presenter
+            let {location, coord, biome, mapInfo} = presenter.MapInfo(bot)
             return "맵 정보입니다.\n" + Space + 
             "장소 이름 : " + location + "\n" +
             "좌표 : " + coord + "\n" +
             "바이옴 : " + biome + "\n\n" + mapInfo
         },
         CollectItem : function(bot) {
-            presenter.CollectItem(bot)
-            let {item, number, time, tool, withItem} = presenter
+            let {item, number, time, tool, withItem} = presenter.CollectItem(bot)
             return [
                 [
                     (tool ? (tool + " 을(를) 사용해서") : "") + item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 수집합니다.\n" +
@@ -65,31 +70,26 @@
             ]
         },
         DumpItem : function(bot) {
-            presenter.DumpItem(bot)
-            let {item, number, withItem} = presenter
+            let {item, number, withItem} = presenter.DumpItem(bot)
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + number + "개 버립니다."
         },
         RetrieveItem : function(bot) {
-            presenter.RetrieveItem(bot)
-            let {item, number, withItem} = presenter
+            let {item, number, withItem} = presenter.RetrieveItem(bot)
             return item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 회수합니다."
         },
         GetItem : function(bot) {
-            presenter.GetItem(bot)
-            let {item, number, store, withItem} = presenter
+            let {item, number, store, withItem} = presenter.GetItem(bot)
             if(withItem) {
                 return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼내서 " + withItem + " 에 넣습니다."
             }
             return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼냅니다."
         },
         PutItem : function(bot) {
-            presenter.PutItem(bot)
-            let {item, number, store, withItem} = presenter
+            let {item, number, store, withItem} = presenter.PutItem(bot)
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + store + " 에다 " + number + "개 넣습니다."
         },
         CraftItem : function(bot) {
-            presenter.CraftItem(bot)
-            let {craftInfo, item, number, time, need, useItems} = presenter
+            let {craftInfo, item, number, time, need, useItems} = presenter.CraftItem(bot)
 
             if(craftInfo) {
                 return "조합법이 여러가지가 있습니다.\n" +
@@ -109,11 +109,31 @@
             ]
         },
         ItemInfo : function(bot) {
-            presenter.ItemInfo(bot)
-            
+            let {item, itemInfo} = presenter.ItemInfo(bot)
+            return item + "의 정보입니다." + Space + itemInfo 
         },
         CraftInfo : function(bot) {
-            presenter.CraftInfo(bot)
+            let {item, craftInfo} = presenter.CraftInfo(bot)
+            return item + "의 조합법입니다." + Space + craftInfo
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
+
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
+
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
+
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
+
+        },
+        Tutorial : function(bot) {
+            presenter.Tutorial(bot)
 
         },
         Tutorial : function(bot) {
@@ -121,14 +141,11 @@
 
         },
         ChooseNum : function(bot) {
-            presenter.ChooseNum(bot)
-            let {message} = presenter
-
+            let {message} = presenter.ChooseNum(bot)
             return message
         },
         BringItem : function(bot) {
-            presenter.BringItem(bot)
-            let {item, number, withItem} = presenter
+            let {item, number, withItem} = presenter.BringItem(bot)
             return "[어드민 명령어]\n" +
             item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 가져옵니다."
         }

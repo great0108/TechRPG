@@ -31,11 +31,13 @@
         let userInfo = user.getBasicInfo()
         let map = user.getMap()
 
-        this.name = userInfo.name
-        this.location = userInfo.location
-        this.tier = userInfo.tier
-        this.busy = user.isBusy()
-        this.coord = map.getLocate(userInfo.location).coord
+        return {
+            name : userInfo.name,
+            location : userInfo.location,
+            tier : userInfo.tier,
+            busy : user.isBusy(),
+            coord : map.getLocate(userInfo.location).coord
+        }
     },
     Presenter.prototype.InvenInfo = function(bot) {
         let user = new User(bot.hash)
@@ -47,9 +49,11 @@
         }
 
         let inven = user.getInven()
-        this.invenInfo = inven.invenInfo()
-        this.invenLimit = inven.invenLimit
-        this.invenSpace = inven.invenSpace()
+        return {
+            invenInfo : inven.invenInfo(),
+            invenLimit : inven.invenLimit,
+            invenSpace : inven.invenSpace()
+        }
     }
     Presenter.prototype.MapInfo = function(bot) {
         let user = new User(bot.hash)
@@ -67,10 +71,12 @@
         }
 
         let locate = map.getLocate(location)
-        this.location = location
-        this.coord = locate.coord
-        this.biome = locate.type
-        this.mapInfo = map.mapInfo(location)
+        return {
+            location : location,
+            coord : locate.coord,
+            biome : locate.type,
+            mapInfo : map.mapInfo(location),
+        }
     }
     Presenter.prototype.CollectItem = function(bot) {
         let user = new User(bot.hash)
@@ -132,11 +138,13 @@
                         .setBusyTime(Date.now() + time*1000)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.time = time
-        this.tool = tool ? tool.nick : null
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            time : time,
+            tool : tool ? tool.nick : null,
+            withItem : withItem
+        }
     }
     Presenter.prototype.DumpItem = function(bot) {
         let user = new User(bot.hash)
@@ -171,9 +179,11 @@
                         .setMap(map.map)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            withItem : withItem
+        }
     }
     Presenter.prototype.RetrieveItem = function(bot) {
         let user = new User(bot.hash)
@@ -211,9 +221,11 @@
                         .setMap(map.map)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            withItem : withItem
+        }
     }
     Presenter.prototype.GetItem = function(bot) {
         let user = new User(bot.hash)
@@ -259,10 +271,12 @@
                         .setInven(inven.inven)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.store = store
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            store : store,
+            withItem : withItem
+        }
     }
     Presenter.prototype.PutItem = function(bot) {
         let user = new User(bot.hash)
@@ -308,10 +322,12 @@
                         .setInven(inven.inven)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.store = store
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            store : store,
+            withItem : withItem
+        }
     },
     Presenter.prototype.CraftItem = function(bot) {
         let user = new User(bot.hash)
@@ -340,8 +356,9 @@
                                 .setMessage(bot.content)
 
                 user.setUser(userData)
-                this.craftInfo = craftInfo
-                return
+                return {
+                    craftInfo : craftInfo
+                }
             } else {
                 craftNum = 1
             }
@@ -366,11 +383,13 @@
                         .setInven(inven2.inven)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number * craftInfo.number
-        this.time = number * craftInfo.time
-        this.need = craftInfo.need
-        this.useItems = useItems
+        return {
+            item : item,
+            number : number * craftInfo.number,
+            time : number * craftInfo.time,
+            need : craftInfo.need,
+            useItems : useItems
+        }
     }
     Presenter.prototype.ItemInfo = function(bot) {
         let user = new User(bot.hash)
@@ -378,7 +397,10 @@
         user.errorCheck(1)
 
         let itemInfo = Item.itemInfo(item)
-        this.itemInfo = itemInfo
+        return {
+            item : item,
+            itemInfo : itemInfo
+        }
     }
     Presenter.prototype.CraftInfo = function(bot) {
         let user = new User(bot.hash)
@@ -389,12 +411,28 @@
         let craft = new Craft()
         let craftNum = craft.getCraftNum(item, tier)
         let craftInfo = craft.craftInfos(item, craftNum)
-        this.craftInfo = craftInfo
+        return {
+            item : item,
+            craftInfo : craftInfo
+        }
     }
-    Presenter.prototype.Tutorial = function(bot) {
-        let user = new User(bot.hash)
-        let name = bot.data
+    Presenter.prototype.a = function(bot) {
 
+    }
+    Presenter.prototype.a = function(bot) {
+        
+    }
+    Presenter.prototype.a = function(bot) {
+        
+    }
+    Presenter.prototype.a = function(bot) {
+        
+    }
+    Presenter.prototype.a = function(bot) {
+        
+    }
+    Presenter.prototype.a = function(bot) {
+        
     }
     Presenter.prototype.ChooseNum = function(bot) {
         let user = new User(bot.hash)
@@ -411,7 +449,9 @@
         let userData = new UserData()
                         .setMessage(null)
         user.setUser(userData)
-        this.message = message + "/" + number
+        return {
+            message : message + "/" + number
+        }
     }
     Presenter.prototype.BringItem = function(bot) {
         let user = new User(bot.hash)
@@ -440,9 +480,11 @@
                         .setInven(inven.inven)
 
         user.setUser(userData)
-        this.item = item
-        this.number = number
-        this.withItem = withItem
+        return {
+            item : item,
+            number : number,
+            withItem : withItem
+        }
     }
 
     module.exports = Presenter

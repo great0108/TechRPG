@@ -1,21 +1,19 @@
 (function() {
     "use strict"
-    const ItemRepository = require("../Repository/ItemRepository")
-    const NameDto = require("../Dto/NameDto")
+    const Item = require("./Item")
 
     const ItemMaker = function(name, number, nick, meta) {
         this.name = name
         this.number = number
 
-        let nameDto = new NameDto(name)
-        let basicItemDto = ItemRepository.getBasicInfo(nameDto)
+        let basicItemDto = Item.getBasicInfo(name)
         this.type = basicItemDto.type
         this.stack = basicItemDto.stack
 
         if(basicItemDto.type === "hold") {
             this.meta = Object.assign({inven : []}, meta)
         } else if(basicItemDto.type === "tool") {
-            let toolItemDto = ItemRepository.getToolInfo(nameDto)
+            let toolItemDto = Item.getToolInfo(name)
             this.meta = Object.assign(toolItemDto, meta)
         } else {
             this.meta = meta

@@ -24,7 +24,12 @@ const Command = {
     "아이템 제작" : bot => View.CraftItem(bot),
     "아이템 정보" : bot => View.ItemInfo(bot),
     "제작 정보" : bot => View.CraftInfo(bot),
-    "튜토리얼" : bot => View.Tutorial(bot)
+    "글 검색" : bot => View.SearchWriting(bot),
+    "글 목록" : bot => View.ListWriting(bot),
+    "글 보기" : bot => View.ReadWriting(bot),
+    "글 작성" : bot => View.MakeWriting(bot),
+    "글 삭제" : bot => View.DeleteWriting(bot),
+    "글 추가" : bot => View.AppendWriting(bot)
 }
 
 const AdminCommand = {
