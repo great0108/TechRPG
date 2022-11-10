@@ -2,7 +2,7 @@
     "use strict"
 
     const InvenSettingDto = function(size, canItem, canLiquid, includeItem, excludeItem, itemStack, liquidStack) {
-        this.size = size
+        this.invenLimit = size
         this.canItem = canItem
         this.canLiquid = canLiquid
         this.includeItem = includeItem

@@ -119,7 +119,7 @@
         SearchWriting : function(bot) {
             let {word, list} = presenter.SearchWriting(bot)
             return word + "(으)로 검색한 결과입니다.\n" + Space + 
-                   list.length === 0 ? "없음" : list.join("\n")
+                   (list.length === 0 ? "없음" : list.join("\n"))
         },
         ListWriting : function(bot) {
             let {list} = presenter.ListWriting(bot)

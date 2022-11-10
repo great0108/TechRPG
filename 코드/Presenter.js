@@ -336,7 +336,7 @@
             }
         } else {
             if (craftNumber > 1) {
-                let craftInfo = craft.craftInfos(craftNumber)
+                let craftInfo = craft.craftInfos(item, craftNumber)
 
                 let userData = new UserData()
                                 .setMessage(bot.content)
@@ -442,8 +442,8 @@
             Err.NotText()
         }
 
-        let title = bot.data.slice(index)
-        let text = bot.data.slice(index+1, bot.data.length)
+        let title = bot.data.slice(0, index)
+        let text = bot.data.slice(index+1)
         if(Writing.isExist(title)) {
             Err.AlreadyExistWriting()
         }
@@ -479,8 +479,8 @@
             Err.NotText()
         }
 
-        let title = bot.data.slice(index)
-        let text = bot.data.slice(index+1, bot.data.length)
+        let title = bot.data.slice(0, index)
+        let text = bot.data.slice(index+1)
         if(!Writing.isExist(title)) {
             Err.NotExistWriting()
         }

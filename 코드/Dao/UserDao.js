@@ -4,7 +4,6 @@
     const File = require("../Util/File")
     const Copy = require("../Util/Copy")
     const Err = require("../Util/Err")
-    const VersionUpdate = require("../Model/VersionUpdate")
 
     const UserDao = {
         data : File.load("User"),
