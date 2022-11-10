@@ -393,6 +393,7 @@
     }
     Presenter.prototype.Tutorial = function(bot) {
         let user = new User(bot.hash)
+        let name = bot.data
 
     }
     Presenter.prototype.ChooseNum = function(bot) {

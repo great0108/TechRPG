@@ -29,8 +29,11 @@
             if(item.type === "tool") {
 
             } else if(item.type === "hold") {
-                
+
             }
+        },
+        makeItem : function(name, number, nick, meta) {
+
         }
     }
 
