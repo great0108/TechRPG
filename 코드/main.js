@@ -2,9 +2,9 @@
 const Setting = require("./Setting")
 const View = require("./View")
 const CommandHandler = require("./Util/CommandHandler")
-const UserDao = require("./Dao/UserDao")
+const VersionUpdate = require("./Model/VersionUpdate")
 
-UserDao.update()
+VersionUpdate.updateUser()
 let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
 const MessageCommand = {
     "n" : bot => View.ChooseNum(bot)

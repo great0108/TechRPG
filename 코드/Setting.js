@@ -4,7 +4,7 @@
     const Setting = {
         dataSeperator : "/",
         nodeJS : true,
-        version : "0.2.1",
+        version : "0.3.0",
         itemStack : 20,
         invenLimit : 10
     }

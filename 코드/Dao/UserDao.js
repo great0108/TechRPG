@@ -29,10 +29,8 @@
         isExist : function(hash) {
             return Boolean(this.data[hash])
         },
-        update : function() {
-            for(let hash in this.data) {
-                VersionUpdate.updateUser(this.data[hash])
-            }
+        list : function() {
+            return Object.keys(this.data)
         }
     }
     UserDao.__proto__ = Dao

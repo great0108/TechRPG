@@ -27,6 +27,9 @@
         },
         isExist : function(name) {
             return Boolean(this.data[name])
+        },
+        list : function() {
+            return Object.keys(this.data)
         }
     }
     BiomeDao.__proto__ = Dao

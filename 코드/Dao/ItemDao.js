@@ -27,6 +27,9 @@
         },
         isExist : function(name) {
             return Boolean(this.data[name])
+        },
+        list : function() {
+            return Object.keys(this.data)
         }
     }
     ItemDao.__proto__ = Dao

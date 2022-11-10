@@ -5,25 +5,22 @@
     const Copy = require("../Util/Copy")
     const Err = require("../Util/Err")
 
-    const CraftDao = {
-        data : File.load("Craft"),
+    const ItemDao = {
+        data : File.load("Tutorial"),
         read : function(name) {
-            if(!this.data[name]) {
-                Err.NotExistCraft()
-            }
             return Copy.deepcopy(this.data[name])
         },
-        write : function(name, craft) {
-            this.data[name] = craft
+        write : function(name, value) {
+            this.data[name] = value
         },
         delete : function(name) {
             delete this.data[name]
         },
         load : function() {
-            this.data = File.load("Craft")
+            this.data = File.load("Tutorial")
         },
         save : function() {
-            File.save("Craft", this.data)
+            File.save("Tutorial", this.data)
         },
         isExist : function(name) {
             return Boolean(this.data[name])
@@ -32,7 +29,7 @@
             return Object.keys(this.data)
         }
     }
-    CraftDao.__proto__ = Dao
+    ItemDao.__proto__ = Dao
 
-    module.exports = CraftDao
+    module.exports = ItemDao
 // })()

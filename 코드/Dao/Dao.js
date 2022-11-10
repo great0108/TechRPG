@@ -8,7 +8,8 @@
         delete : function() {},
         load : function() {},
         save : function() {},
-        isExist : function() {}
+        isExist : function() {},
+        list : function() {}
     }
 
     module.exports = Dao
