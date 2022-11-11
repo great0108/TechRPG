@@ -20,6 +20,7 @@
         },
         setWriting : function(makeWritingDto) {
             WritingDao.write(makeWritingDto.title, makeWritingDto.text)
+            WritingDao.save()
         },
         deleteWriting : function(nameDto) {
             WritingDao.delete(nameDto.name)
