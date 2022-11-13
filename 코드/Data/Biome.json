@@ -2,7 +2,7 @@
     "plane" : {
         "items" : {
             "풀" : {"number" : [50, 100]},
-            "나무" : {"number" : [10, 20]},
+            "나무" : {"number" : [10, 20], "exist" : 0.7},
             "막대기" : {"number" : [15, 30], "bothExist" : "나무"},
             "나무 묘목" : {"number" : [5, 10], "bothExist" : "나무"},
             "흙" : {"number" : [100, 200]},
