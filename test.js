@@ -1,3 +1,1 @@
-"use strict"
-let a = "123"
-console.log(a?.split(""))
+const sqlite3 = require('sqlite3').verbose();
