@@ -1,33 +1,71 @@
 (function() {
     "use strict"
 
-    const UserDataDto = function() {
+    /**
+     * 유저 데이터를 만드는 모듈
+     */
+    const UserData = function() {
     }
-    UserDataDto.prototype.setInven = function(inven) {
+
+    /**
+     * 유저 인벤을 설정함
+     * @param {object[]} inven 
+     * @returns {UserData}
+     */
+    UserData.prototype.setInven = function(inven) {
         this.inven = inven
         return this
     }
-    UserDataDto.prototype.setMap = function(map) {
+
+    /**
+     * 유저 맵을 설정함
+     * @param {object} map 
+     * @returns {UserData}
+     */
+    UserData.prototype.setMap = function(map) {
         this.map = map
         return this
     }
-    UserDataDto.prototype.setLocation = function(location) {
+
+    /**
+     * 유저 위치를 설정함
+     * @param {string} location 
+     * @returns {UserData}
+     */
+    UserData.prototype.setLocation = function(location) {
         this.location = location
         return this
     }
-    UserDataDto.prototype.setBusyTime = function(busyTime) {
+
+    /**
+     * 유저가 바쁜 시간을 설정함
+     * @param {number} busyTime 
+     * @returns {UserData}
+     */
+    UserData.prototype.setBusyTime = function(busyTime) {
         this.busyTime = busyTime
         return this
     }
-    UserDataDto.prototype.setTier = function(tier) {
+
+    /**
+     * 유저 티어를 설정함
+     * @param {number} tier 
+     * @returns {UserData}
+     */
+    UserData.prototype.setTier = function(tier) {
         this.tier = tier
         return this
     }
-    UserDataDto.prototype.setMessage = function(message) {
+
+    /**
+     * 유저 메시지를 설정함
+     * @param {string} message 
+     * @returns {UserData}
+     */
+    UserData.prototype.setMessage = function(message) {
         this.message = message
         return this
     }
 
-    
-    module.exports = UserDataDto
+    module.exports = UserData
 })()

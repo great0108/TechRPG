@@ -5,11 +5,22 @@
     const ItemMaker = require("./ItemMaker")
     const Item = require("./Item")
     
+    /**
+     * 인벤 관련 기능을 하는 모듈
+     * @param {object[]} inven 
+     * @param {object|undefined} setting 
+     */
     const Inven = function(inven, setting) {
         this.inven = inven
         this.setting = Object.assign({}, this.defaultSetting, setting)
         this.invenLimit = this.setting.invenLimit
     }
+
+    /**
+     * 아이템 인벤에서 이름, 숫자, 메타 데이터를 가져옴
+     * @param {object[]} items 
+     * @returns { [string[], number[], (object|undefined)[]] }
+     */
     Inven.splitItemInfo = function(items) {
         let names = [], numbers = [], metas = []
         for(let item of items) {
@@ -19,6 +30,8 @@
         }
         return [names, numbers, metas]
     }
+    
+    /** 인벤 기본 세팅 */
     Inven.prototype.defaultSetting = {
         canItem : true,
         canLiquid : false,
@@ -28,6 +41,12 @@
         // itemStack : 20,
         // liquidStack : 1
     }
+
+    /**
+     * 인벤 정보 텍스트를 만듬
+     * @param {number|undefined} space 
+     * @returns {string}
+     */
     Inven.prototype.invenInfo = function(space) {
         space = space === undefined ? 0 : space
         let result = []
@@ -36,6 +55,13 @@
         }
         return result.join("\n")
     }
+
+    /**
+     * 아이템 정보 텍스트를 만듬
+     * @param {string} item 
+     * @param {number|undefined} space 
+     * @returns {string}
+     */
     Inven.prototype.itemInfo = function(item, space) {
         let result = Item.invenItemInfo(item, space)
         if(item.type === "hold") {
@@ -46,6 +72,11 @@
         }
         return result
     }
+
+    /**
+     * 인벤을 차지한 공간을 계산함
+     * @returns {number}
+     */
     Inven.prototype.invenSpace = function() {
         let count = 0
         for(let item of this.inven) {
@@ -67,26 +98,68 @@
         }
         return count
     }
+
+    /**
+     * 인벤에 특정 이름의 아이템이 있는지 확인
+     * @param {string} name 
+     * @returns {boolean}
+     */
     Inven.prototype.isExist = function(name) {
         return this.inven.some(v => v.name === name || v.nick === name)
     }
+
+    /**
+     * 인벤에서 조건에 맞는 아이템을 가져옴
+     * @param {function} fn 
+     * @returns {object[]}
+     */
     Inven.prototype.filter = function(fn) {
         return this.inven.filter(fn)
     }
+
+    /**
+     * 인벤에서 특정 이름의 아이템을 가져옴
+     * @param {string} name 
+     * @returns {object|undefined}
+     */
     Inven.prototype.findItem = function(name) {
         let item = this.inven.find(v => v.name === name || v.nick === name)
         return item
     }
+
+    /**
+     * 인벤에서 특정 이름의 아이템들을 가져옴
+     * @param {string} name 
+     * @returns {object[]}
+     */
     Inven.prototype.findItems = function(name) {
         return this.inven.filter(v => v.name === name || v.nick === name)
     }
+
+    /**
+     * 인벤에서 특정 클래스의 도구들을 가져옴
+     * @param {string} effective 
+     * @returns {object[]}
+     */
     Inven.prototype.findTool = function(effective) {
         return this.inven.filter(v => v.type === "tool" && v.meta.class === effective)
                .sort((a, b) => b.meta.tier - a.meta.tier)
     }
+
+    /**
+     * 인벤에서 특정 이름의 아이템의 인덱스를 가져옴
+     * @param {string} name 
+     * @returns {number}
+     */
     Inven.prototype.findItemIndex = function(name) {
         return this.inven.findIndex(v => v.name === name || v.nick === name)
     }
+
+    /**
+     * 인벤에서 특정 이름의 아이템의 인벤을 만듬
+     * @param {string} name 
+     * @returns {Inven}
+     */
     Inven.prototype.itemInven = function(name) {
         if(!this.isExist(name) || this.findItems(name).length > 1) {
             return false
@@ -96,6 +169,12 @@
         
         return new Inven(item.meta.inven, setting)
     }
+
+    /**
+     * 인벤에서 특정 이름의 아이템을 제거하고 제거한 아이템을 돌려줌
+     * @param {string} name 
+     * @returns {object}
+     */
     Inven.prototype.removeItem = function(name) {
         let index = this.findItemIndex(name)
         if(index === -1) {
@@ -103,9 +182,20 @@
         }
         return this.inven.splice(index, 1)[0]
     }
+
+    /**
+     * 인벤의 저장공간을 넘었는지 확인
+     * @returns {boolean}
+     */
     Inven.prototype.isOverLimit = function() {
         return this.invenSpace() > this.invenlimit
     }
+
+    /**
+     * 인벤에서 특정 이름의 닉네임을 만듬
+     * @param {string} name 
+     * @returns 
+     */
     Inven.prototype.makeNick = function(name) {
         let num = 1
         while(this.isExist(name + num)) {
@@ -113,6 +203,13 @@
         }
         return name + num
     }
+
+    /**
+     * 인벤에서 아이템들을 꺼냄
+     * @param {string[]} names 
+     * @param {number[]} nums 
+     * @returns { [object[]|boolean, object[]|undefined] }
+     */
     Inven.prototype.getItems = function(names, nums) {
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
         let items = []
@@ -144,6 +241,14 @@
         }
         return [inven, items]
     }
+
+    /**
+     * 인벤에 아이템을 넣음
+     * @param {string[]} names 
+     * @param {number[]} nums 
+     * @param {(object|undefined)[]} metas 
+     * @returns {object[]|boolean}
+     */
     Inven.prototype.putItems = function(names, nums, metas) {
         metas = metas === undefined ? [] : metas
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)

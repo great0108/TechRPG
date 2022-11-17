@@ -2,7 +2,7 @@
     "use strict"
 
     /**
-     * 기본적인 제작법 정보를 담는 Dto 클래스
+     * 기본적인 제작법 정보를 담는 Dto 클래스 
      * @param {number} number 
      * @param {number} time 
      * @param {string} need 

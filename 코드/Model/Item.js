@@ -3,22 +3,58 @@
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
 
+    /** 아이템 관련 기능을 하는 모듈 */
     const Item = {
+        /**
+         * 아이템 인벤 세팅을 가져옴
+         * @param {string} item 
+         * @returns {InvenSettingDto}
+         */
         getInvenSetting : function(item) {
             return ItemRepository.getInvenInfo(new NameDto(item))
         },
+
+        /**
+         * 기본적인 아이템 정보를 가져옴
+         * @param {string} item 
+         * @returns {BasicItemDto}
+         */
         getBasicInfo : function(item) {
             return ItemRepository.getBasicInfo(new NameDto(item))
         },
+
+        /**
+         * 아이템 수집 정보를 가져옴
+         * @param {string} item 
+         * @returns {CollectItemDto}
+         */
         getCollectInfo : function(item) {
             return ItemRepository.getCollectInfo(new NameDto(item))
         },
+
+        /**
+         * 도구 점보를 가져옴
+         * @param {string} item 
+         * @returns {ToolItemDto}
+         */
         getToolInfo : function(item) {
             return ItemRepository.getToolInfo(new NameDto(item))
         },
+
+        /**
+         * 아이템 목록을 가져옴
+         * @returns {string[]}
+         */
         getList : function() {
             return ItemRepository.getItemList().list
         },
+
+        /**
+         * 인벤에 있는 아이템 정보 텍스트를 만듬
+         * @param {string} item 
+         * @param {number|undefined} space 
+         * @returns {string}
+         */
         invenItemInfo : function(item, space) {
             space = space === undefined ? "" : " ".repeat(space)
             let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
@@ -27,6 +63,12 @@
             }
             return result
         },
+
+        /**
+         * 아이템 정보 텍스트를 만듬
+         * @param {string} item 
+         * @returns {string}
+         */
         itemInfo : function(item) {
             let itemInfo = this.getBasicInfo(item)
             let result = "종류 : " + itemInfo.type + ", 스택 : " + itemInfo.stack + ", 연료량 : " + (itemInfo.heat || "없음")

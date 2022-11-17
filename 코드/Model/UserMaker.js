@@ -3,6 +3,10 @@
     const MapMaker = require("./MapMaker")
     const Setting = require("../Setting")
 
+    /**
+     * 새로운 유저를 만드는 모듈
+     * @param {string} name 
+     */
     const UserMaker = function(name) {
         this.name = name
         this.inven = []

@@ -4,21 +4,53 @@
     const CraftNameDto = require("../Dto/CraftNameDto")
     const NameTierDto = require("../Dto/NameTierDto")
 
+    /**
+     * 제작 관련 기능을 하는 모듈
+     * @param {object[]} inven 
+     */
     const Craft = function(inven) {
         this.inven = inven
     }
+
+    /**
+     * 기본적인 제작법 정보를 가져옴
+     * @param {string} item 
+     * @param {number} craftNum 
+     * @returns {BasicCraftDto}
+     */
     Craft.prototype.getBasicInfo = function(item, craftNum) {
         let craftNameDto = new CraftNameDto(item, craftNum)
         return CraftRepository.getBasicInfo(craftNameDto)
     }
+
+    /**
+     * 제작 아이템 정보를 가져옴
+     * @param {string} item 
+     * @param {number} craftNum 
+     * @returns {CraftItemDto}
+     */
     Craft.prototype.getItems = function(item, craftNum) {
         let craftNameDto = new CraftNameDto(item, craftNum)
         return CraftRepository.getItems(craftNameDto)
     }
+
+    /**
+     * 아이템의 제작법 개수를 가져옴
+     * @param {string} item 
+     * @param {number} tier 
+     * @returns {number}
+     */
     Craft.prototype.getCraftNum = function(item, tier) {
         let nameTierDto = new NameTierDto(item, tier)
         return CraftRepository.getCraftNum(nameTierDto).craftNum
     }
+
+    /**
+     * 제작법 정보 텍스트를 만듬
+     * @param {string} item 
+     * @param {number} craftNum 
+     * @returns {string}
+     */
     Craft.prototype.craftInfo = function(item, craftNum) {
         let {items, tools} = this.getItems(item, craftNum)
         let {number, time, need} = this.getBasicInfo(item, craftNum)
@@ -31,6 +63,13 @@
                 v.name + "의 내구도 : " + v.durability + "만큼 사용"
             ).join("\n")
     }
+
+    /**
+     * 여러 제작법 정보 텍스트를 만듬
+     * @param {string} item 
+     * @param {number} num 
+     * @returns {string}
+     */
     Craft.prototype.craftInfos = function(item, num) {
         let craftInfo = []
         for(let i = 0; i < num; i++) {
@@ -38,6 +77,14 @@
         }
         return craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
     }
+
+    /**
+     * 아이템을 제작한 인벤토리를 돌려줌
+     * @param {string} item 
+     * @param {number} number 
+     * @param {number} craftNum 
+     * @returns { [object[]|string, array<[string, number, string|undefined]>|undefined] }
+     */
     Craft.prototype.craft = function(item, number, craftNum) {
         let makeNumber = this.getCraftNum(item, craftNum)
         let {items, tools} = this.getItems(item, craftNum)
