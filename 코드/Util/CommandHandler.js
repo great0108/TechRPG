@@ -2,6 +2,13 @@
     "use strict"
     const Setting = require("../Setting")
 
+    /**
+     * 명령어 매핑을 하는 모듈
+     * @param {string} frontPrefix 
+     * @param {string} cmdPrefix 
+     * @param {string} roomPrefix 
+     * @param {string} dataSeparator 
+     */
     const CommandHandler = function(frontPrefix, cmdPrefix, roomPrefix, dataSeparator) {
         this.frontPrefix = frontPrefix;
         this.cmdPrefix = cmdPrefix;
@@ -27,6 +34,17 @@
         this.isDebugRoom = false;
         this.isBotOn = false;
     }
+
+    /**
+     * 채팅 정보 설정
+     * @param {string} room 
+     * @param {string} msg 
+     * @param {string} sender 
+     * @param {boolean} isGroupChat 
+     * @param {object} replier 
+     * @param {object} imageDB 
+     * @param {string} packageName 
+     */
     CommandHandler.prototype.build = function(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
         this.content = msg.slice(this.frontPrefix.length);
         this.package = packageName;
@@ -38,6 +56,12 @@
         this.isDebugRoom = (packageName === "com.xfl.msgbot")
         this.isBotOn = this.room.startsWith(this.roomPrefix) && msg.startsWith(this.frontPrefix)
     };
+
+    /**
+     * 명령어 매핑 및 실행
+     * @param {object<string : function>} Commands 
+     * @returns {string|array|array[]}
+     */
     CommandHandler.prototype.run = function(Commands) {
         if (!this.isBotOn) return "";
     
@@ -53,6 +77,12 @@
         }
         return "";
     };
+
+    /**
+     * 명령어 조건 정규식 처리
+     * @param {string} string 
+     * @returns {RegExp}
+     */
     CommandHandler.prototype.keyToRegex = function(string) {
         string = string.replace(/n/g, '\\d+') // number
                       .replace(/s/g, '[^\\d ]+') // string

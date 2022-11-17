@@ -1,6 +1,7 @@
 (function() {
     "use strict"
 
+    /** 에러 메시지 모듈 */
     const Err = {
         AlreadySignUp : function() {
             throw new Error("이미 회원가입이 되어 있습니다.")
