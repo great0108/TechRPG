@@ -9,15 +9,23 @@
     const CollectItemDto = require("../Dto/CollectItemDto")
     const ListDto = require("../Dto/ListDto")
 
+    /** 아이템 Repository 클래스 */
     const ItemRepository = {
-        isExist : function(nameDto) {
-            let isExist = ItemDao.isExist(nameDto.name)
-            return new IsExistDto(isExist)
-        },
+        /**
+         * 기본적인 아이템 정보를 가져옴
+         * @param {NameDto} nameDto 
+         * @returns {BasicItemDto}
+         */
         getBasicInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
             return new BasicItemDto(item.type, item.stack || Setting.itemStack, item.heat || 0)
         },
+
+        /**
+         * 아이템 인벤 세팅을 가져옴
+         * @param {NameDto} nameDto 
+         * @returns {InvenSettingDto}
+         */
         getInvenInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
             return new InvenSettingDto(
@@ -30,14 +38,31 @@
                 item.inven.liquidStack
             )
         },
+
+        /**
+         * 도구 정보를 가져옴
+         * @param {NameDto} nameDto 
+         * @returns {ToolItemDto}
+         */
         getToolInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
             return new ToolItemDto(item.durability, item.class, item.tier || 0, item.speed || 1, item.damage || 0)
         },
+
+        /**
+         * 아이템 수집 정보를 가져옴
+         * @param {NameDto} nameDto 
+         * @returns {CollectItemDto}
+         */
         getCollectInfo : function(nameDto) {
             let item = ItemDao.read(nameDto.name)
             return new CollectItemDto(item.collectTime, item.effective || null, item.tier || 0)
         },
+
+        /**
+         * 아이템 목록을 가져옴
+         * @returns {ListDto}
+         */
         getItemList : function() {
             let list = ItemDao.list()
             return new ListDto(list)
