@@ -8,8 +8,33 @@
     const Writing = require("./Model/Writing")
     const Err = require("./Util/Err")
 
+    /**
+     * 채팅 객체
+     * @typedef {object} bot
+     * @property {string} frontPrefix
+     * @property {string} cmdPrefix
+     * @property {string} roomPrefix
+     * @property {string} dataSeparator
+     * @property {string} content
+     * @property {string[]} args
+     * @property {string} data
+     * @property {string} package
+     * @property {string} room
+     * @property {string} sender
+     * @property {number} hash
+     * @property {boolean} isGroupChat
+     * @property {boolean} isDebugRoom
+     * @property {boolean} isBotOn
+     */
+
+    /** 명령어 기능을 하는 모듈 */
     const Presenter = function() {
     }
+
+    /**
+     * 회원가입 기능
+     * @param {bot} bot 
+     */
     Presenter.prototype.SignUp = function(bot) {
         let user = new User(bot.hash)
         if(user.isExist()) {
@@ -18,8 +43,18 @@
 
         user.makeUser(bot.sender)
     }
+
+    /**
+     * 명령어 기능
+     */
     Presenter.prototype.Command = function(bot) {
     },
+
+    /**
+     * 내정보 기능
+     * @param {bot} bot 
+     * @returns { {name : string, location : string, tier : number, busy : boolean, coord : number[]} }
+     */
     Presenter.prototype.MyInfo = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()
@@ -35,6 +70,12 @@
             coord : map.getLocate(userInfo.location).coord
         }
     },
+
+    /**
+     * 인벤정보 기능
+     * @param {bot} bot 
+     * @returns { {invenInfo : string, invenLimit : number, invenSpace : number} }
+     */
     Presenter.prototype.InvenInfo = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()
@@ -46,6 +87,12 @@
             invenSpace : inven.invenSpace()
         }
     }
+
+    /**
+     * 맵정보 기능
+     * @param {bot} bot 
+     * @returns { {location : string, coord : number[], biome : string, mapInfo : string} }
+     */
     Presenter.prototype.MapInfo = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()
@@ -64,6 +111,12 @@
             mapInfo : map.mapInfo(location),
         }
     }
+
+    /**
+     * 아이템 수집 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, time : number, tool : string|null, withItem : string|undefined} }
+     */
     Presenter.prototype.CollectItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
@@ -132,6 +185,12 @@
             withItem : withItem
         }
     }
+
+    /**
+     * 아이템 버리기 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, withItem : string|undefined} }
+     */
     Presenter.prototype.DumpItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
@@ -171,6 +230,12 @@
             withItem : withItem
         }
     }
+
+    /**
+     * 아이템 회수 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, withItem : string|undefined} }
+     */
     Presenter.prototype.RetrieveItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
@@ -213,6 +278,12 @@
             withItem : withItem
         }
     }
+
+    /**
+     * 아이템 꺼내기 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, store : string, withItem : string|undefined} }
+     */
     Presenter.prototype.GetItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, store, withItem] = bot.args
@@ -264,6 +335,12 @@
             withItem : withItem
         }
     }
+
+    /**
+     * 아이템 꺼내기 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, store : string, withItem : string|undefined} }
+     */
     Presenter.prototype.PutItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, store, withItem] = bot.args
@@ -314,7 +391,14 @@
             store : store,
             withItem : withItem
         }
-    },
+    }
+
+    /**
+     * 아이템 제작 기능
+     * @param {bot} bot 
+     * @returns { {craftInfo : string|undefined, item : string|undefined, number : number|undefined,
+     *             time : number|undefined, need : string|undefined, useItems : array[]|undefined} }
+     */
     Presenter.prototype.CraftItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, craftNum] = bot.args
@@ -377,17 +461,32 @@
             useItems : useItems
         }
     }
+
+    /**
+     * 아이템 정보 기능
+     * @param {bot} bot 
+     * @returns { {item : string, itemInfo : string, isCraft : boolean} }
+     */
     Presenter.prototype.ItemInfo = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
         user.basicCheck()
 
         let itemInfo = Item.itemInfo(item)
+        let craft = new Craft()
+        let isCraft = craft.isExist(item)
         return {
             item : item,
-            itemInfo : itemInfo
+            itemInfo : itemInfo,
+            isCraft : isCraft
         }
     }
+
+    /**
+     * 제작 정보 기능
+     * @param {bot} bot 
+     * @returns { {item : string, craftInfo : string} }
+     */
     Presenter.prototype.CraftInfo = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
@@ -402,6 +501,12 @@
             craftInfo : craftInfo
         }
     }
+
+    /**
+     * 글 검색 기능
+     * @param {bot} bot 
+     * @returns { {word : string, list : string[]} }
+     */
     Presenter.prototype.SearchWriting = function(bot) {
         let user = new User(bot.hash)
         let word = bot.data
@@ -413,6 +518,12 @@
             list : list
         }
     }
+
+    /**
+     * 글 목록 기능
+     * @param {bot} bot 
+     * @returns { {list : string[]} }
+     */
     Presenter.prototype.ListWriting = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()
@@ -422,6 +533,12 @@
             list : list
         }
     }
+
+    /**
+     * 글 읽기 기능
+     * @param {bot} bot 
+     * @returns { {title : string, text : string} }
+     */
     Presenter.prototype.ReadWriting = function(bot) {
         let user = new User(bot.hash)
         let title = bot.data
@@ -433,6 +550,12 @@
             text : text
         }
     }
+
+    /**
+     * 글 쓰기 기능
+     * @param {bot} bot 
+     * @returns { {title : string, text : string} }
+     */
     Presenter.prototype.MakeWriting = function(bot) {
         let user = new User(bot.hash)
         let index = bot.data.indexOf("\n")
@@ -454,6 +577,12 @@
             text : text
         }
     }
+
+    /**
+     * 글 삭제 기능
+     * @param {bot} bot 
+     * @returns { {title : string, text : string} }
+     */
     Presenter.prototype.DeleteWriting = function(bot) {
         let user = new User(bot.hash)
         let title = bot.data
@@ -470,6 +599,12 @@
             text : text
         }
     }
+
+    /**
+     * 글 추가 기능
+     * @param {bot} bot 
+     * @returns { {title : string, text : string} }
+     */
     Presenter.prototype.AppendWriting = function(bot) {
         let user = new User(bot.hash)
         let index = bot.data.indexOf("\n")
@@ -491,6 +626,12 @@
             text : text
         }
     }
+
+    /**
+     * 선택에 맞게 메시지를 만드는 기능
+     * @param {bot} bot 
+     * @returns { {message : string} }
+     */
     Presenter.prototype.ChooseNum = function(bot) {
         let user = new User(bot.hash)
         let number = Number(bot.content)
@@ -510,6 +651,12 @@
             message : message + "/" + number
         }
     }
+
+    /**
+     * 아이템 가져오기 기능
+     * @param {bot} bot 
+     * @returns { {item : string, number : number, withItem : string|undefined} }
+     */
     Presenter.prototype.BringItem = function(bot) {
         let user = new User(bot.hash)
         let [item, number, withItem] = bot.args
@@ -543,6 +690,12 @@
             withItem : withItem
         }
     }
+
+    /**
+     * 아이템 목록 기능
+     * @param {bot} bot 
+     * @returns { {list : string[]} }
+     */
     Presenter.prototype.ListItem = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()

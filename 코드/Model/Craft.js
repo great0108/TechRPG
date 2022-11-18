@@ -3,6 +3,7 @@
     const CraftRepository = require("../Repository/CraftRepository")
     const CraftNameDto = require("../Dto/CraftNameDto")
     const NameTierDto = require("../Dto/NameTierDto")
+    const NameDto = require("../Dto/nameDto")
 
     /**
      * 제작 관련 기능을 하는 모듈
@@ -10,6 +11,16 @@
      */
     const Craft = function(inven) {
         this.inven = inven
+    }
+
+    /**
+     * 특정 아이템의 제작법이 있는지 확인
+     * @param {string} item 
+     * @returns {boolean}
+     */
+    Craft.prototype.isExist = function(item) {
+        let nameDto = new NameDto(item)
+        return CraftRepository.isExist(nameDto).isExist
     }
 
     /**

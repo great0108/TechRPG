@@ -17,17 +17,14 @@
   
         // 메시지 처리
         this.content = "";
-        this.cmd = [];
         this.args = [];
         this.data = "";
-        this.param = [];
   
         // 사용자
         this.package = "";
         this.room = "";
         this.sender = ""
-        this.nickname = ""
-        this.hash = ""
+        this.hash = 0
   
         // boolean
         this.isGroupChat = false;

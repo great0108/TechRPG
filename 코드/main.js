@@ -6,10 +6,13 @@ const VersionUpdate = require("./Model/VersionUpdate")
 
 VersionUpdate.updateUser()
 let bot = new CommandHandler("/", " ", "실험방", Setting.dataSeperator)
+
+/** 메시지를 만드는 기능 */
 const MessageCommand = {
     "n" : bot => View.ChooseNum(bot)
 }
 
+/** 기본 명령어 */
 const Command = {
     "회원가입" : bot => View.SignUp(bot),
     "명령어" : bot => View.Command(bot),
@@ -26,12 +29,13 @@ const Command = {
     "제작 정보" : bot => View.CraftInfo(bot),
     "글 검색" : bot => View.SearchWriting(bot),
     "글 목록" : bot => View.ListWriting(bot),
-    "글 보기" : bot => View.ReadWriting(bot),
-    "글 작성" : bot => View.MakeWriting(bot),
+    "글 읽기" : bot => View.ReadWriting(bot),
+    "글 쓰기" : bot => View.MakeWriting(bot),
     "글 삭제" : bot => View.DeleteWriting(bot),
     "글 추가" : bot => View.AppendWriting(bot)
 }
 
+/** 어드민 명령어 */
 const AdminCommand = {
     "아이템 가져오기" : bot => View.BringItem(bot),
     "아이템 목록" : bot => View.ListItem(bot)

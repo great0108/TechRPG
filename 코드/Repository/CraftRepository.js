@@ -4,9 +4,20 @@
     const CraftNumDto = require("../Dto/CraftNumDto")
     const CraftItemDto = require("../Dto/CraftItemDto")
     const BasicCraftDto = require("../Dto/BasicCraftDto")
+    const IsExistDto = require("../Dto/IsExistDto")
 
     /** 제작 Repository 클래스 */
     const CraftRepository = {
+        /**
+         * 특정 아이템의 제작법이 있는지 확인
+         * @param {NameDto} nameDto 
+         * @returns {IsExistDto}
+         */
+        isExist : function(nameDto) {
+            let result = CraftDao.isExist(nameDto.name)
+            return new IsExistDto(result)
+        },
+
         /**
          * 특정 아이템의 모든 제작법 개수를 가져옴
          * @param {NameDto} nameDto 
