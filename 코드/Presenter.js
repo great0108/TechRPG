@@ -536,7 +536,7 @@
         if(inven2 === false) {
             Err.LackInvenSpace()
         }
-        map.setInstall(install)
+        map.setInstall(install2)
 
         let userData = new UserData()
                         .setInven(inven2.inven)

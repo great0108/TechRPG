@@ -36,11 +36,11 @@ function sleep(ms) {
 // response([123456], "실험방", "/글 삭제 테스트", "sender")
 // response([123456], "실험방", "/글 목록", "sender")
 
-response([123456], "실험방", "/아이템 제작 돌 곡괭이/1", "sender")
-response([123456], "실험방", "/기구 설치 조합대", "sender")
-response([123456], "실험방", "/아이템 제작 돌 곡괭이/1", "sender")
-response([123456], "실험방", "/기구 회수 조합대", "sender")
+// response([123456], "실험방", "/아이템 제작 돌 곡괭이/1", "sender")
+// response([123456], "실험방", "/기구 설치 조합대", "sender")
+// response([123456], "실험방", "/아이템 제작 돌 곡괭이/1", "sender")
+// response([123456], "실험방", "/기구 회수 조합대", "sender")
 
 // response([123456], "실험방", "/아이템 목록", "sender")
 
-//response([123456], "실험방", "/아이템 제작 막대기/4", "sender")
+response([123456], "실험방", "/기구 회수 조합대", "sender")

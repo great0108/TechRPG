@@ -21,8 +21,10 @@
     Map.prototype.mapInfo = function(location) {
         let inven = new Inven(this.map[location].items, this.invenSetting)
         let dumpInven = new Inven(this.map[location].dumpItems, this.invenSetting)
+        let install = this.getInstall()
         return "아이템\n" + inven.invenInfo() + 
-        (this.location === location ? "\n\n" + "버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "")
+        (this.location === location ? "\n\n" + "버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "") + "\n\n" +
+        "설치된 기구\n" + install.invenInfo()
     }
 
     /** 맵 인벤 기본 세팅 */
