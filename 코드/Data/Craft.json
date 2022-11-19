@@ -1,27 +1,27 @@
 {
     "끈" : [
-        {"items" : {"풀" : 3}, "time" : 1}
+        {"items" : {"풀" : 3}, "time" : 1, "tier" : 0}
     ],
     "섬유 망" : [
-        {"items" : {"끈" : 4}, "time" : 5}
+        {"items" : {"끈" : 4}, "time" : 5, "tier" : 0}
     ],
     "나무 판자" : [
         {"items" : {"나무" : 1}, "tools" : [], "number" : 2, "time" : 1, "need" : "", "tier" : 0},
         {"items" : {"나무" : 1}, "tools" : [{"class" : "axe", "tier" : 1, "durability" : 1}], "number" : 4, "time" : 1, "need" : "", "tier" : 0}
     ],
     "막대기" : [
-        {"items" : {"나무 판자" : 2}, "time" : 1, "number" : 2}
+        {"items" : {"나무 판자" : 2}, "time" : 1, "number" : 2, "tier" : 0}
     ],
     "부싯돌" : [
         {"items" : {"자갈" : 1}, "tools" : [{"name" : "섬유 망", "durability" : 1}], "time" : 1, "tier" : 0}
     ],
     "조합대" : [
-        {"items" : {"나무 판자" : 4}, "time" : 5}
+        {"items" : {"나무 판자" : 4}, "time" : 5, "tier" : 0}
     ],
     "돌 도끼" : [
-        {"items" : {"막대기" : 1, "끈" : 1, "돌맹이" : 1}, "time" : 5}
+        {"items" : {"막대기" : 1, "끈" : 1, "돌맹이" : 1}, "time" : 5, "tier" : 0}
     ],
     "돌 곡괭이" : [
-        {"items" : {"막대기" : 2, "끈" : 1, "돌맹이" : 2}, "time" : 5, "need" : "조합대"}
+        {"items" : {"막대기" : 2, "끈" : 1, "돌맹이" : 2}, "time" : 5, "need" : "조합대", "tier" : 0}
     ]
 }

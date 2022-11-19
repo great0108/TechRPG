@@ -476,6 +476,11 @@
         let map = user.getMap()
         let install = map.getInstall()
 
+        let itemInfo = Item.getBasicInfo(item)
+        if(!["store", "use", "auto"].includes(itemInfo.type)) {
+            Err.CantInstallItem()
+        }
+
         let [inven2] = inven.getItems([item], [1])
         if(inven2 === false) {
             Err.NotExistItem()
