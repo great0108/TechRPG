@@ -463,6 +463,94 @@
     }
 
     /**
+     * 기구 설치 기능
+     * @param {bot} bot
+     * @return { {item : string} }
+     */
+    Presenter.prototype.InstallUseMachine = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.basicCheck()
+
+        let inven = user.getInven()
+        let map = user.getMap()
+        let install = map.getInstall()
+
+        let [inven2] = inven.getItems([item], [1])
+        if(inven2 === false) {
+            Err.NotExistItem()
+        }
+
+        install = install.putItems([item], [1])
+        map.setInstall(install)
+
+        let userData = new UserData()
+                        .setInven(inven2.inven)
+                        .setMap(map.map)
+
+        user.setUser(userData)
+        return {
+            item : item
+        }
+    }
+
+    /**
+     * 기구 회수 기능
+     * @param {bot} bot 
+     * @returns { {item : string, time : number, tool : string|null} }
+     */
+    Presenter.prototype.RetrieveUseMachine = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.basicCheck()
+
+        let inven = user.getInven()
+        let map = user.getMap()
+        let install = map.getInstall()
+
+
+        let [install2] = install.getItems([item], [1])
+        if(install2 === false) {
+            Err.NotExistInstall()
+        }
+
+        let collectInfo = Item.getCollectInfo(item)
+        let tools = inven.findTool(collectInfo.effective)
+        let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= number)
+        if(!tool && collectInfo.tier >= 1) {
+            Err.CantCollectItem()
+        }
+        
+        let inven2 = null
+        let time = collectInfo.collectTime * number / (tool ? tool.meta.speed : 1)
+        if(!tool) {
+            inven2 = inven.putItems([item], [number])
+        } else if(tool.meta.durability === number) {
+            let [tempInven] = inven.getItems([tool.nick], [1])
+            inven2 = tempInven.putItems([item], [number])
+        } else {
+            inven.findItem(tool.nick).meta.durability -= number
+            inven2 = inven.putItems([item], [number])
+        }
+
+        if(inven2 === false) {
+            Err.LackInvenSpace()
+        }
+        map.setInstall(install)
+
+        let userData = new UserData()
+                        .setInven(inven2.inven)
+                        .setMap(map.map)
+
+        user.setUser(userData)
+        return {
+            item : item,
+            tool : tool ? tool.nick : null,
+            time : time
+        }
+    }
+
+    /**
      * 아이템 정보 기능
      * @param {bot} bot 
      * @returns { {item : string, itemInfo : string, isCraft : boolean} }

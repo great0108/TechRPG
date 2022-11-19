@@ -84,7 +84,7 @@
      * 현재 장소에 있는 아이템을 수집함
      * @param {string[]} names 
      * @param {number[]} nums 
-     * @returns { [object[]|boolean, object[]|undefined] }
+     * @returns { [Inven|boolean, object[]|undefined] }
      */
     Map.prototype.getItems = function(names, nums) {
         let inven = new Inven(this.map[this.location].items, this.invenSetting)
@@ -102,7 +102,7 @@
     /**
      * 현재 장소에 아이템을 버림
      * @param {string[]}
-     * @returns {object[]|boolean}
+     * @returns {Inven|boolean}
      */
     Map.prototype.dumpItems = function(names, nums, metas) {
         let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
@@ -113,7 +113,7 @@
      * 현재 장소에 버려진 아이템을 회수함
      * @param {string[]} names 
      * @param {number[]} nums 
-     * @returns { [object[]|boolean, object[]|undefined] }
+     * @returns { [Inven|boolean, object[]|undefined] }
      */
     Map.prototype.retrieveItems = function(names, nums) {
         let inven = new Inven(this.map[this.location].dumpItems, this.invenSetting)
@@ -135,6 +135,14 @@
      */
     Map.prototype.setDumpItems = function(inven) {
         this.map[this.location].dumpItems = inven.inven
+    }
+
+    /**
+     * 현재 장소에 설치된 기구를 설정함
+     * @param {Inven} inven 
+     */
+    Map.prototype.setInstall = function(inven) {
+        this.map[locateion].install = inven.inven
     }
     
     module.exports = Map

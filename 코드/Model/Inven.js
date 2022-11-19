@@ -208,7 +208,7 @@
      * 인벤에서 아이템들을 꺼냄
      * @param {string[]} names 
      * @param {number[]} nums 
-     * @returns { [object[]|boolean, object[]|undefined] }
+     * @returns { [Inven|boolean, object[]|undefined] }
      */
     Inven.prototype.getItems = function(names, nums) {
         let inven = new Inven(Copy.deepcopy(this.inven), this.setting)
@@ -247,7 +247,7 @@
      * @param {string[]} names 
      * @param {number[]} nums 
      * @param {(object|undefined)[]} metas 
-     * @returns {object[]|boolean}
+     * @returns {Inven|boolean}
      */
     Inven.prototype.putItems = function(names, nums, metas) {
         metas = metas === undefined ? [] : metas

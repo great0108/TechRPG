@@ -27,6 +27,9 @@
         NotExistLocate : function() {
             throw new Error("이런 이름의 장소는 존재하지 않습니다.")
         },
+        NotExistInstall : function() {
+            throw new Error("이런 이름의 기구는 존재하지 않습니다.")
+        },
         NotExistWriting : function() {
             throw new Error("이런 이름의 글은 존재하지 않습니다.")
         },
@@ -60,14 +63,14 @@
         CantCollectItem : function() {
             throw new Error("아이템을 수집하기 위한 도구가 없습니다.")
         },
-        NowBusy : function() {
-            throw new Error("다른 작업을 수행중 입니다.")
-        },
         CantFindStore : function() {
             throw new Error("저장공간을 찾을 수 없습니다.")
         },
         CantFindInstall : function() {
             throw new Error("기구를 찾을 수 없습니다.")
+        },
+        NowBusy : function() {
+            throw new Error("다른 작업을 수행중 입니다.")
         },
         CommandError : function() {
             throw new Error("명령어를 제대로 입력하세요")

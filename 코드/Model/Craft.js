@@ -94,7 +94,7 @@
      * @param {string} item 
      * @param {number} number 
      * @param {number} craftNum 
-     * @returns { [object[]|string, array<[string, number, string|undefined]>|undefined] }
+     * @returns { [Inven|string, array<[string, number, string|undefined]>|undefined] }
      */
     Craft.prototype.craft = function(item, number, craftNum) {
         let makeNumber = this.getCraftNum(item, craftNum)

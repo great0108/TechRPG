@@ -8,7 +8,7 @@
     "흙" : {"collectTime" : 2, "effective" : "shovel", "tier" : 0, "type" : "item"},
     "부싯돌" : {"type" : "item"},
     "나무" : {"collectTime" : 5, "effective" : "axe", "tier" : 1, "heat" : 2, "type" : "item"},
-    "조합대" : {"collectTime" : 5, "effective" : "axe", "tier" : 0, "type" : "install"},
+    "조합대" : {"collectTime" : 5, "effective" : "axe", "tier" : 0, "type" : "use"},
     "돌 도끼" : {"stack" : 1, "durability" : 50, "class" : "axe", "tier" : 1, "speed" : 2, "damage" : 3, "type" : "tool"},
     "돌 곡괭이" : {"stack" : 1, "durability" : 50, "class" : "pickaxe", "tier" : 1, "speed" : 2, "type" : "tool"},
     "돌 삽" : {"stack" : 1, "durability" : 50, "class" : "shovel", "tier" : 1, "speed" : 2, "type" : "tool"},
@@ -32,6 +32,6 @@
     "세라믹 병" : {"stack" : 1, "inven" : {"size" : 1, "includeItem" : ["물"]}, "type" : "hold"},
     "세라믹 항아리" : {"stack" : 1, "inven" : {"size" : 4, "canItem" : true, "excludeItem" : ["세라믹 항아리", "세라믹 병"]}, "type" : "hold"},
     "세라믹 도끼 틀" : {"stack" : 1, "type" : "item"},
-    "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10}, "type" : "install"},
+    "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10}, "type" : "auto"},
     "물" : {"collectTime" : 0.5, "stack" : 1, "type" : "liquid"}
 }
