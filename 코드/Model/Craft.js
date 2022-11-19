@@ -97,7 +97,7 @@
      * @returns { [Inven|string, array<[string, number, string|undefined]>|undefined] }
      */
     Craft.prototype.craft = function(item, number, craftNum) {
-        let makeNumber = this.getCraftNum(item, craftNum)
+        let makeNumber = this.getBasicInfo(item, craftNum).number
         let {items, tools} = this.getItems(item, craftNum)
         let useItems = []
 

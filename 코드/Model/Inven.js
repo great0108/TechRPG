@@ -188,7 +188,7 @@
      * @returns {boolean}
      */
     Inven.prototype.isOverLimit = function() {
-        return this.invenSpace() > this.invenlimit
+        return this.invenSpace() > this.invenLimit
     }
 
     /**
@@ -279,6 +279,7 @@
                 }
             }
         }
+
         if(inven.isOverLimit()) {
             return false
         }

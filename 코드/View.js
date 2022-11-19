@@ -213,7 +213,7 @@
             let {item, time, tool} = presenter.RetrieveUseMachine(bot)
             return [
                 [
-                    (tool ? (tool + " 을(를) 사용해서") : "") + item + " 을(를) 회수합니다.\n" +
+                    (tool ? (tool + " 을(를) 사용해서 ") : "") + item + " 을(를) 회수합니다.\n" +
                     "기구를 회수하는데 " + time + "초가 걸립니다."
                 ],
                 ["기구를 회수했습니다.", time*1000]
@@ -334,7 +334,7 @@
         ListItem : function(bot) {
             let {list} = presenter.ListItem(bot)
             return "[어드민 명령어]\n" +
-            "아이템 목록입니다." + Space + list.join("\n")
+            "아이템 목록입니다." + Space + "\n" + list.join("\n")
         }
     }
 

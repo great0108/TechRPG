@@ -147,7 +147,7 @@
         if(!tool && collectInfo.tier >= 1) {
             Err.CantCollectItem()
         }
-        
+
         let time = collectInfo.collectTime * number / (tool ? tool.meta.speed : 1)
         let inven2 = null
         if(!tool) {
@@ -511,26 +511,26 @@
 
         let [install2] = install.getItems([item], [1])
         if(install2 === false) {
-            Err.NotExistInstall()
+            Err.CantFindInstall()
         }
 
         let collectInfo = Item.getCollectInfo(item)
         let tools = inven.findTool(collectInfo.effective)
-        let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= number)
+        let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= 1)
         if(!tool && collectInfo.tier >= 1) {
             Err.CantCollectItem()
         }
         
         let inven2 = null
-        let time = collectInfo.collectTime * number / (tool ? tool.meta.speed : 1)
+        let time = collectInfo.collectTime * 1 / (tool ? tool.meta.speed : 1)
         if(!tool) {
-            inven2 = inven.putItems([item], [number])
-        } else if(tool.meta.durability === number) {
+            inven2 = inven.putItems([item], [1])
+        } else if(tool.meta.durability === 1) {
             let [tempInven] = inven.getItems([tool.nick], [1])
-            inven2 = tempInven.putItems([item], [number])
+            inven2 = tempInven.putItems([item], [1])
         } else {
-            inven.findItem(tool.nick).meta.durability -= number
-            inven2 = inven.putItems([item], [number])
+            inven.findItem(tool.nick).meta.durability -= 1
+            inven2 = inven.putItems([item], [1])
         }
 
         if(inven2 === false) {

@@ -142,7 +142,7 @@
      * @param {Inven} inven 
      */
     Map.prototype.setInstall = function(inven) {
-        this.map[locateion].install = inven.inven
+        this.map[this.location].install = inven.inven
     }
     
     module.exports = Map

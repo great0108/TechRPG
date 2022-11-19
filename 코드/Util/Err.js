@@ -27,9 +27,6 @@
         NotExistLocate : function() {
             throw new Error("이런 이름의 장소는 존재하지 않습니다.")
         },
-        NotExistInstall : function() {
-            throw new Error("이런 이름의 기구는 존재하지 않습니다.")
-        },
         NotExistWriting : function() {
             throw new Error("이런 이름의 글은 존재하지 않습니다.")
         },
