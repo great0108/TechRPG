@@ -113,6 +113,46 @@
     }
 
     /**
+     * 아이템 정보 기능
+     * @param {bot} bot 
+     * @returns { {item : string, itemInfo : string, isCraft : boolean} }
+     */
+     Presenter.prototype.ItemInfo = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.basicCheck()
+
+        let itemInfo = Item.itemInfo(item)
+        let craft = new Craft()
+        let isCraft = craft.isExist(item)
+        return {
+            item : item,
+            itemInfo : itemInfo,
+            isCraft : isCraft
+        }
+    }
+
+    /**
+     * 제작 정보 기능
+     * @param {bot} bot 
+     * @returns { {item : string, craftInfo : string} }
+     */
+    Presenter.prototype.CraftInfo = function(bot) {
+        let user = new User(bot.hash)
+        let item = bot.data
+        user.basicCheck()
+
+        let tier = user.getBasicInfo().tier
+        let craft = new Craft()
+        let craftNum = craft.getCraftNum(item, tier)
+        let craftInfo = craft.craftInfos(item, craftNum)
+        return {
+            item : item,
+            craftInfo : craftInfo
+        }
+    }
+
+    /**
      * 아이템 수집 기능
      * @param {bot} bot 
      * @returns { {item : string, number : number, time : number, tool : string|null, withItem : string|undefined} }
@@ -468,7 +508,7 @@
      * @param {bot} bot
      * @return { {item : string} }
      */
-    Presenter.prototype.InstallUseMachine = function(bot) {
+    Presenter.prototype.InstallMachine = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
         user.basicCheck()
@@ -478,7 +518,7 @@
         let install = map.getInstall()
 
         let itemInfo = Item.getBasicInfo(item)
-        if(!["store", "use", "auto"].includes(itemInfo.type)) {
+        if(!["store", "use"].includes(itemInfo.type)) {
             Err.CantInstallItem()
         }
 
@@ -505,7 +545,7 @@
      * @param {bot} bot 
      * @returns { {item : string, time : number, tool : string|null} }
      */
-    Presenter.prototype.RetrieveUseMachine = function(bot) {
+    Presenter.prototype.RetrieveMachine = function(bot) {
         let user = new User(bot.hash)
         let item = bot.data
         user.basicCheck()
@@ -554,46 +594,6 @@
             item : item,
             tool : tool ? tool.nick : null,
             time : time
-        }
-    }
-
-    /**
-     * 아이템 정보 기능
-     * @param {bot} bot 
-     * @returns { {item : string, itemInfo : string, isCraft : boolean} }
-     */
-    Presenter.prototype.ItemInfo = function(bot) {
-        let user = new User(bot.hash)
-        let item = bot.data
-        user.basicCheck()
-
-        let itemInfo = Item.itemInfo(item)
-        let craft = new Craft()
-        let isCraft = craft.isExist(item)
-        return {
-            item : item,
-            itemInfo : itemInfo,
-            isCraft : isCraft
-        }
-    }
-
-    /**
-     * 제작 정보 기능
-     * @param {bot} bot 
-     * @returns { {item : string, craftInfo : string} }
-     */
-    Presenter.prototype.CraftInfo = function(bot) {
-        let user = new User(bot.hash)
-        let item = bot.data
-        user.basicCheck()
-
-        let tier = user.getBasicInfo().tier
-        let craft = new Craft()
-        let craftNum = craft.getCraftNum(item, tier)
-        let craftInfo = craft.craftInfos(item, craftNum)
-        return {
-            item : item,
-            craftInfo : craftInfo
         }
     }
 

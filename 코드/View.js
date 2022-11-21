@@ -47,18 +47,17 @@
             "/회원가입 - 회원가입을 합니다\n" + 
             "/명령어 - 명령어 목록을 보여줍니다\n" +
             "/내정보 - 내 정보를 보여줍니다\n" +
-            "/인벤정보 - 인벤 정보를 보여줍니다\n" +
             "/맵정보 [위치] - 맵 정보를 보여줍니다\n" +
-            "/아이템 수집 (아이템)/(개수)/[to item] - 아이템을 수집합니다\n" +
-            "/아이템 회수 (아이템)/(개수)/[to item] - 버린 아이템을 수집합니다\n" +
-            "/아이템 버리기 (아이템)/(개수)/[in 아이템] - 아이템을 버립니다\n" +
-            "/아이템 꺼내기 (아이템)/(개수)/(in 아이템)/[to item] - 저장공간에서 아이템을 꺼냅니다\n" +
-            "/아이템 넣기 (아이템)/(개수)/(to 아이템)/[in item] - 저장공간에 아이템을 넣습니다\n" +
-            "/아이템 제작 (아이템)/(개수)/[조합법] - 아이템을 제작합니다\n" +
-            "/기구 설치 (아이템) - 기구를 설치합니다\n" +
-            "/기구 회수 (아이템) - 기구를 회수합니다\n" +
             "/아이템 정보 (아이템) - 아이템 정보를 보여줍니다\n" +
             "/제작 정보 (아이템) - 제작 정보를 보여줍니다\n" +
+            "/아이템 수집 (아이템)/(개수)/[to 아이템] - 아이템을 수집합니다\n" +
+            "/아이템 버리기 (아이템)/(개수)/[in 아이템] - 아이템을 버립니다\n" +
+            "/아이템 회수 (아이템)/(개수)/[to 아이템] - 버린 아이템을 수집합니다\n" +
+            "/아이템 꺼내기 (아이템)/(개수)/(in 아이템/기구)/[to 아이템] - 저장공간에서 아이템을 꺼냅니다\n" +
+            "/아이템 넣기 (아이템)/(개수)/(to 아이템/기구)/[in 아이템] - 저장공간에 아이템을 넣습니다\n" +
+            "/아이템 제작 (아이템)/(개수)/[조합법] - 아이템을 제작합니다\n" +
+            "/기구 설치 (아이템)/[개수] - 기구를 설치합니다\n" +
+            "/기구 회수 (아이템)/[개수] - 기구를 회수합니다\n" +
             "/글 검색 (검색어) - 검색어로 글을 검색합니다\n" +
             "/글 목록 - 글 목록을 보여줍니다\n" +
             "/글 읽기 (제목) - 해당 제목의 글을 보여줍니다\n" +
@@ -109,6 +108,27 @@
             "장소 이름 : " + location + "\n" +
             "좌표 : " + coord + "\n" +
             "바이옴 : " + biome + "\n\n" + mapInfo
+        },
+
+        /**
+         * 아이템 정보 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {string}
+         */
+         ItemInfo : function(bot) {
+            let {item, itemInfo, isCraft} = presenter.ItemInfo(bot)
+            return item + "의 정보입니다.\n" + Space + itemInfo + "\n" +
+            "제작 가능 여부 : " + (isCraft ? "O" : "X")
+        },
+
+        /**
+         * 제작 정보 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {string}
+         */
+        CraftInfo : function(bot) {
+            let {item, craftInfo} = presenter.CraftInfo(bot)
+            return item + "의 조합법입니다.\n" + Space + craftInfo
         },
 
         /**
@@ -201,7 +221,7 @@
          * @param {bot} bot 
          * @returns {string}
          */
-        InstallUseMachine : function(bot) {
+        InstallMachine : function(bot) {
             let {item} = presenter.InstallUseMachine(bot)
             return item + "(을)를 설치했습니다."
         },
@@ -211,7 +231,7 @@
          * @param {bot} bot 
          * @returns {array[]}
          */
-        RetrieveUseMachine : function(bot) {
+        RetrieveMachine : function(bot) {
             let {item, time, tool} = presenter.RetrieveUseMachine(bot)
             return [
                 [
@@ -220,27 +240,6 @@
                 ],
                 ["기구를 회수했습니다.", time*1000]
             ]
-        },
-
-        /**
-         * 아이템 정보 답장을 돌려줌
-         * @param {bot} bot 
-         * @returns {string}
-         */
-        ItemInfo : function(bot) {
-            let {item, itemInfo, isCraft} = presenter.ItemInfo(bot)
-            return item + "의 정보입니다.\n" + Space + itemInfo + "\n" +
-            "제작 가능 여부 : " + (isCraft ? "O" : "X")
-        },
-
-        /**
-         * 제작 정보 답장을 돌려줌
-         * @param {bot} bot 
-         * @returns {string}
-         */
-        CraftInfo : function(bot) {
-            let {item, craftInfo} = presenter.CraftInfo(bot)
-            return item + "의 조합법입니다.\n" + Space + craftInfo
         },
 
         /**
