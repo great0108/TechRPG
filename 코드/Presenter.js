@@ -451,6 +451,7 @@
 
         let userData = new UserData()
                         .setInven(inven2.inven)
+                        .setBusyTime(Date.now() + number * craftInfo.time * 1000)
 
         user.setUser(userData)
         return {
@@ -527,7 +528,7 @@
         }
         
         let inven2 = null
-        let time = collectInfo.collectTime * 1 / (tool ? tool.meta.speed : 1)
+        let time = collectInfo.collectTime / (tool ? tool.meta.speed : 1)
         if(!tool) {
             inven2 = inven.putItems([item], [1])
         } else if(tool.meta.durability === 1) {
@@ -546,6 +547,7 @@
         let userData = new UserData()
                         .setInven(inven2.inven)
                         .setMap(map.map)
+                        .setBusyTime(Date.now() + time * 1000)
 
         user.setUser(userData)
         return {
