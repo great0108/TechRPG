@@ -829,7 +829,9 @@
 
         let userData = user.deleteUser()
         let user2 = new User(hash2)
-        user2.makeUser(name || userData.name)
+        
+        userData.name = name || userData.name
+        user2.makeUser(userData.name)
         user2.setUser(userData)
 
         return {
