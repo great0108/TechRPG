@@ -77,26 +77,17 @@
          * @returns {string}
          */
         MyInfo : function(bot) {
-            let {name, location, coord, busy, tier} = presenter.MyInfo(bot)
+            let {name, location, coord, busy, tier, invenSpace, invenLimit, invenInfo} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
             "좌표 : " + coord[0] + ", " + coord[1] + "\n" +
             "바쁨 : " + (busy ? "예" : "아니오") + "\n" +
             "티어 : " + tier + "\n\n" +
-            "인벤은 인벤정보 명령어, 맵은 맵정보 명령어로 정보를 확인할 수 있습니다."
-        },
-
-        /**
-         * 인벤정보 답장을 돌려줌
-         * @param {bot} bot 
-         * @returns {string}
-         */
-        InvenInfo : function(bot) {
-            let {invenSpace, invenLimit, invenInfo} = presenter.InvenInfo(bot)
-            return "인벤 정보입니다.\n" + Space + 
+            "인벤 정보\n" + Space + 
             "현재 공간 : " + invenSpace + " / " + invenLimit + "\n\n" +
-            "아이템\n" + (invenInfo || "없음")
+            "아이템\n" + (invenInfo || "없음") + "\n\n" +
+            "맵과 기구는 맵정보 명령어로 정보를 확인할 수 있습니다."
         },
 
         /**
@@ -340,12 +331,22 @@
             "아이템 목록입니다." + Space + "\n" + list.join("\n")
         },
 
+        /**
+         * 해시 변경 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {string}
+         */
         ChangeHash : function(bot) {
             let {hash1, hash2} = presenter.ChangeHash(bot)
             return "[어드민 명령어]\n" +
             hash1 + "에서 " + hash2 + "로 해시를 변경했습니다."
         },
 
+        /**
+         * 해시 찾기 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {string}
+         */
         FindHash : function(bot) {
             let {name, userInfo} = presenter.FindHash(bot)
             return name + "(으)로 검색한 결과입니다.\n" + Space + 

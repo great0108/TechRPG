@@ -33,5 +33,6 @@
     "세라믹 항아리" : {"stack" : 1, "inven" : {"size" : 4, "canItem" : true, "excludeItem" : ["세라믹 항아리", "세라믹 병"]}, "type" : "hold"},
     "세라믹 도끼 틀" : {"stack" : 1, "type" : "item"},
     "통" : {"stack" : 1, "inven" : {"size" : 1, "liquidItem" : true, "liquidStack" : 10}, "type" : "auto"},
-    "물" : {"collectTime" : 0.5, "stack" : 1, "type" : "liquid"}
+    "물" : {"collectTime" : 0.5, "stack" : 1, "type" : "liquid"},
+    "상자" : {"collectTime" : 5, "type" : "store", "inven" : {"size" : 20, "canItem" : true}}
 }

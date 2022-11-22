@@ -53,13 +53,14 @@
     /**
      * 내정보 기능
      * @param {bot} bot 
-     * @returns { {name : string, location : string, tier : number, busy : boolean, coord : number[]} }
+     * @returns { {name : string, location : string, tier : number, busy : boolean, coord : number[], invenInfo : string, invenLimit : number, invenSpace : number} }
      */
     Presenter.prototype.MyInfo = function(bot) {
         let user = new User(bot.hash)
         user.basicCheck()
 
         let userInfo = user.getBasicInfo()
+        let inven = user.getInven()
         let map = user.getMap()
 
         return {
@@ -67,26 +68,12 @@
             location : userInfo.location,
             tier : userInfo.tier,
             busy : user.isBusy(),
-            coord : map.getLocate(userInfo.location).coord
-        }
-    },
-
-    /**
-     * 인벤정보 기능
-     * @param {bot} bot 
-     * @returns { {invenInfo : string, invenLimit : number, invenSpace : number} }
-     */
-    Presenter.prototype.InvenInfo = function(bot) {
-        let user = new User(bot.hash)
-        user.basicCheck()
-
-        let inven = user.getInven()
-        return {
+            coord : map.getLocate(userInfo.location).coord,
             invenInfo : inven.invenInfo(),
             invenLimit : inven.invenLimit,
             invenSpace : inven.invenSpace()
         }
-    }
+    },
 
     /**
      * 맵정보 기능
@@ -802,13 +789,13 @@
     }
 
     Presenter.prototype.ChangeHash = function(bot) {
-        let [hash1, hash2] = bot.args
+        let [hash1, hash2, name] = bot.args
         let user = new User(hash1)
         user.basicCheck()
 
         let userData = user.deleteUser()
         let user2 = new User(hash2)
-        user2.makeUser(userData.name)
+        user2.makeUser(name || userData.name)
         user2.setUser(userData)
 
         return {

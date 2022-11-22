@@ -43,4 +43,4 @@ function sleep(ms) {
 
 // response([123456], "실험방", "/아이템 목록", "sender")
 
-response([123456], "실험방", "/해시 찾기 sender", "sender")
+response([123456], "실험방", "/내정보", "sender")
