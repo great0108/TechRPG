@@ -825,7 +825,11 @@
         let userList = user.findUser(name)
         return {
             name : name,
-            userInfo : userList.map(hash => this.MyInfo({hash : hash}))
+            userInfo : userList.map(hash => {
+                let info = this.MyInfo({hash : hash})
+                info.hash = hash
+                return info
+            })
         }
     }
 
