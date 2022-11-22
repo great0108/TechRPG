@@ -6,6 +6,8 @@
     const MapDto = require("../Dto/MapDto")
     const BasicUserDto = require("../Dto/BasicUserDto")
     const MessageDto = require("../Dto/MessageDto")
+    const ListDto = require("../Dto/ListDto")
+    const UserDto = require("../Dto/UserDto")
 
     /** 유저 Repository 클래스 */
     const UserRepository = {
@@ -59,6 +61,25 @@
         },
 
         /**
+         * 유저 메시지를 가져옴
+         * @param {HashDto} hashDto 
+         * @returns {MessageDto}
+         */
+        getMessage : function(hashDto) {
+            let user = UserDao.read(hashDto.hash)
+            return new MessageDto(user.message)
+        },
+
+        /**
+         * 유저 목록을 가져옴
+         * @returns {ListDto}
+         */
+        getUserList : function() {
+            let list = UserDao.list()
+            return new ListDto(list)
+        },
+
+        /**
          * 유저 데이터를 설정함
          * @param {UserData} userData
          */
@@ -71,14 +92,16 @@
         },
 
         /**
-         * 유저 메시지를 가져옴
+         * 유저 데이터를 삭제함
          * @param {HashDto} hashDto 
-         * @returns {MessageDto}
+         * @returns {UserDto}
          */
-        getMessage : function(hashDto) {
+        deleteUser : function(hashDto) {
             let user = UserDao.read(hashDto.hash)
-            return new MessageDto(user.message)
+            UserDao.delete(hashDto.hash)
+            return new UserDto(user)
         }
+
     }
     
     module.exports = UserRepository

@@ -43,4 +43,4 @@ function sleep(ms) {
 
 // response([123456], "실험방", "/아이템 목록", "sender")
 
-response([123456], "실험방", "/제작 정보 돌 곡괭이", "sender")
+response([123456], "실험방", "/해시 변경 123456/654321", "sender")

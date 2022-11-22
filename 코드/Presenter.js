@@ -801,5 +801,33 @@
         }
     }
 
+    Presenter.prototype.ChangeHash = function(bot) {
+        let [hash1, hash2] = bot.args
+        let user = new User(hash1)
+        user.basicCheck()
+
+        let userData = user.deleteUser()
+        let user2 = new User(hash2)
+        user2.makeUser(userData.name)
+        user2.setUser(userData)
+
+        return {
+            hash1 : hash1,
+            hash2 : hash2
+        }
+    }
+
+    Presenter.prototype.FindHash = function(bot) {
+        let user = new User(bot.hash)
+        let [name] = bot.args
+        user.basicCheck()
+
+        let userList = user.findUser(name)
+        return {
+            name : name,
+            userInfo : userList.map(hash => this.MyInfo({hash : hash}))
+        }
+    }
+
     module.exports = Presenter
 })()

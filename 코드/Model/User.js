@@ -48,8 +48,9 @@
      * 기본적인 유저 정보를 가져옴
      * @returns {BasicUserDto}
      */
-    User.prototype.getBasicInfo = function() {
-        return UserRepository.getBasicInfo(this.hashDto)
+    User.prototype.getBasicInfo = function(hash) {
+        let hashDto = hash === undefined ? this.hashDto : new HashDto(hash)
+        return UserRepository.getBasicInfo(hashDto)
     }
 
     /**
@@ -85,6 +86,24 @@
     User.prototype.setUser = function(userData) {
         userData.hash = this.hash
         UserRepository.setUser(userData)
+    }
+
+    /**
+     * 유저 데이터를 삭제함
+     * @returns {object}
+     */
+    User.prototype.deleteUser = function() {
+        return UserRepository.deleteUser(this.hashDto).user
+    }
+
+    /**
+     * 이름이 일치하는 유저 해시를 가져옴
+     * @param {string} name 
+     * @returns {string[]}
+     */
+    User.prototype.findUser = function(name) {
+        let userList = UserRepository.getUserList().list
+        return userList.filter(hash => this.getBasicInfo(hash).name === name)
     }
 
     /**

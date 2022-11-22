@@ -39,7 +39,9 @@ const Command = {
 /** 어드민 명령어 */
 const AdminCommand = {
     "아이템 가져오기" : bot => View.BringItem(bot),
-    "아이템 목록" : bot => View.ListItem(bot)
+    "아이템 목록" : bot => View.ListItem(bot),
+    "해시 변경" : bot => View.ChangeHash(bot),
+    "해시 찾기" : bot => View.FindHash(bot)
 }
 
 function response(admin, room, msg, sender, isGroupChat, replier, imageDB, packageName) {

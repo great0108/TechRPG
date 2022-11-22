@@ -336,6 +336,22 @@
             let {list} = presenter.ListItem(bot)
             return "[어드민 명령어]\n" +
             "아이템 목록입니다." + Space + "\n" + list.join("\n")
+        },
+
+        ChangeHash : function(bot) {
+            let {hash1, hash2} = presenter.ChangeHash(bot)
+            return "[어드민 명령어]\n" +
+            hash1 + "에서 " + hash2 + "로 해시를 변경했습니다."
+        },
+
+        FindHash : function(bot) {
+            let {name, userInfo} = presenter.FindHash(bot)
+            return name + "(으)로 검색한 결과입니다.\n" + Space + 
+            userInfo.map((v, i) => (i+1) + "번 유저\n" + 
+            "이름 : " + v.name + "\n" +
+            "위치 : " + v.location + "\n" +
+            "좌표 : " + v.coord[0] + ", " + v.coord[1] + "\n" +
+            "티어 : " + v.tier).join("\n\n")
         }
     }
 
