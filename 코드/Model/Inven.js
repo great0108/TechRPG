@@ -2,6 +2,7 @@
     "use strict"
     const Setting = require("../Setting")
     const Copy = require("../Util/Copy")
+    const Err = require("../Util/Err")
     const ItemMaker = require("./ItemMaker")
     const Item = require("./Item")
     
@@ -37,9 +38,10 @@
         canLiquid : false,
         includeItem : [],
         excludeItem : [],
-        invenLimit : Setting.invenLimit
+        invenLimit : Setting.invenLimit,
+        isInstall : false
         // itemStack : 20,
-        // liquidStack : 1
+        // liquidStack : 1,
     }
 
     /**
@@ -64,7 +66,7 @@
      */
     Inven.prototype.itemInfo = function(item, space) {
         let result = Item.invenItemInfo(item, space)
-        if(item.type === "hold") {
+        if(item.type === "hold" || (item.type === "store" && this.setting.isInstall)) {
             let invenSetting = Item.getInvenSetting(item.name)
             let itemInven = new Inven(item.meta.inven, invenSetting)
             result += "\n" + "  아이템 인벤 공간 : " + itemInven.invenSpace() + " / " + itemInven.invenLimit + "\n" +
@@ -162,6 +164,11 @@
      */
     Inven.prototype.itemInven = function(name) {
         if(!this.isExist(name) || this.findItems(name).length > 1) {
+            return false
+        }
+
+        let itemInfo = Item.getBasicInfo(name)
+        if(!(itemInfo.type === "hold" || (itemInfo.type === "store" && this.setting.isInstall))) {
             return false
         }
         let item = this.findItem(name)
@@ -266,7 +273,7 @@
                 }
             }
 
-            if(basicItemDto.stack === 1) {
+            if(basicItemDto.stack === 1 || (basicItemDto.type === "store" && this.setting.isInstall)) {
                 for(let j = 0; j < nums[i]; j++) {
                     inven.inven.push(new ItemMaker(names[i], 1, inven.makeNick(names[i]), metas[i]))
                 }

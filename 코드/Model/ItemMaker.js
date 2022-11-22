@@ -17,7 +17,7 @@
         this.type = basicItemDto.type
         this.stack = basicItemDto.stack
 
-        if(basicItemDto.type === "hold") {
+        if(["store", "hold"].includes(basicItemDto.type)) {
             this.meta = Object.assign({inven : []}, meta)
         } else if(basicItemDto.type === "tool") {
             let toolItemDto = Item.getToolInfo(name)

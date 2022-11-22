@@ -1,4 +1,5 @@
 const response = require("./main")
+
 function sleep(ms) {
     const wakeUpTime = Date.now() + ms;
     while (Date.now() < wakeUpTime) {}
@@ -43,4 +44,4 @@ function sleep(ms) {
 
 // response([123456], "실험방", "/아이템 목록", "sender")
 
-response([123456], "실험방", "/내정보", "sender")
+response([123456], "실험방", "/아이템 꺼내기 풀/1/상자", "sender")

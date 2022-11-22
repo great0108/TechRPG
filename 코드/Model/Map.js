@@ -34,8 +34,15 @@
         includeItem : [],
         excludeItem : [],
         invenLimit : 10000
-        // itemStack : 20,
-        // liquidStack : 1
+    }
+
+    Map.prototype.installSetting = {
+        canItem : true,
+        canLiquid : false,
+        includeItem : [],
+        excludeItem : [],
+        invenLimit : 10000,
+        isInstall : true
     }
 
     /**
@@ -98,7 +105,7 @@
      * @returns {Inven}
      */
     Map.prototype.getInstall = function() {
-        return new Inven(this.map[this.location].install, this.invenSetting)
+        return new Inven(this.map[this.location].install, this.installSetting)
     }
 
     /**
