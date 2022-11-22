@@ -68,7 +68,7 @@
             let invenSetting = Item.getInvenSetting(item.name)
             let itemInven = new Inven(item.meta.inven, invenSetting)
             result += "\n" + "  아이템 인벤 공간 : " + itemInven.invenSpace() + " / " + itemInven.invenLimit + "\n" +
-                      "  아이템\n" + (itemInven.invenInfo(2) || "  없음")
+                      "  아이템\n" + (itemInven.invenInfo(space+2) || "  없음")
         }
         return result
     }

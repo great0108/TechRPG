@@ -322,9 +322,17 @@
         }
 
         let inven = user.getInven()
+        let map = user.getMap()
+        let install = map.getInstall()
         let storeInven = inven.itemInven(store)
+        let isInstall = false
+
         if(storeInven === false) {
-            Err.CantFindStore()
+            storeInven = install.itemInven(store)
+            isInstall = true
+            if(storeInven === false) {
+                Err.CantFindStore()
+            }
         }
 
         let itemInven = withItem ? inven.itemInven(withItem) : null
@@ -348,11 +356,17 @@
         } else {
             inven.inven = inven2.inven
         }
-        inven.findItem(store).meta.inven = storeInven2.inven
-           
 
+        if(!isInstall) {
+            inven.findItem(store).meta.inven = storeInven2.inven
+        } else {
+            install.findItem(store).meta.inven = storeInven2.inven
+            map.setInstall(install)
+        }
+           
         let userData = new UserData()
                         .setInven(inven.inven)
+                        .setMap(map.map)
 
         user.setUser(userData)
         return {
@@ -379,9 +393,17 @@
         }
 
         let inven = user.getInven()
+        let map = user.getMap()
+        let install = map.getInstall()
         let storeInven = inven.itemInven(store)
+        let isInstall = false
+
         if(storeInven === false) {
-            Err.CantFindStore()
+            storeInven = install.itemInven(store)
+            isInstall = true
+            if(storeInven === false) {
+                Err.CantFindStore()
+            }
         }
 
         let itemInven = withItem ? inven.itemInven(withItem) : null
@@ -405,11 +427,17 @@
         } else {
             inven.inven = inven2.inven
         }
-        inven.findItem(store).meta.inven = storeInven2.inven
-           
+
+        if(!isInstall) {
+            inven.findItem(store).meta.inven = storeInven2.inven
+        } else {
+            install.findItem(store).meta.inven = storeInven2.inven
+            map.setInstall(install)
+        }
 
         let userData = new UserData()
                         .setInven(inven.inven)
+                        .setMap(map.map)
 
         user.setUser(userData)
         return {
@@ -493,12 +521,14 @@
     /**
      * 기구 설치 기능
      * @param {bot} bot
-     * @return { {item : string} }
+     * @return { {item : string, number : number} }
      */
     Presenter.prototype.InstallMachine = function(bot) {
         let user = new User(bot.hash)
-        let item = bot.data
-        user.basicCheck()
+        let [item, number] = bot.args
+        number = number || 1
+        number = Number(number)
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let map = user.getMap()
@@ -509,12 +539,12 @@
             Err.CantInstallItem()
         }
 
-        let [inven2] = inven.getItems([item], [1])
+        let [inven2] = inven.getItems([item], [number])
         if(inven2 === false) {
             Err.NotExistItem()
         }
 
-        install = install.putItems([item], [1])
+        install = install.putItems([item], [number])
         map.setInstall(install)
 
         let userData = new UserData()
@@ -523,47 +553,50 @@
 
         user.setUser(userData)
         return {
-            item : item
+            item : item,
+            number : number
         }
     }
 
     /**
      * 기구 회수 기능
      * @param {bot} bot 
-     * @returns { {item : string, time : number, tool : string|null} }
+     * @returns { {item : string, number : number, time : number, tool : string|null} }
      */
     Presenter.prototype.RetrieveMachine = function(bot) {
         let user = new User(bot.hash)
-        let item = bot.data
-        user.basicCheck()
+        let [item, number] = bot.args
+        number = number || 1
+        number = Number(number)
+        user.errorCheck(number)
 
         let inven = user.getInven()
         let map = user.getMap()
         let install = map.getInstall()
 
 
-        let [install2] = install.getItems([item], [1])
+        let [install2] = install.getItems([item], [number])
         if(install2 === false) {
             Err.CantFindInstall()
         }
 
         let collectInfo = Item.getCollectInfo(item)
         let tools = inven.findTool(collectInfo.effective)
-        let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= 1)
-        if(!tool && collectInfo.tier >= 1) {
+        let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= number)
+        if(!tool && collectInfo.tier >= number) {
             Err.CantCollectItem()
         }
         
         let inven2 = null
-        let time = collectInfo.collectTime / (tool ? tool.meta.speed : 1)
+        let time = collectInfo.collectTime * number / (tool ? tool.meta.speed : 1)
         if(!tool) {
-            inven2 = inven.putItems([item], [1])
-        } else if(tool.meta.durability === 1) {
-            let [tempInven] = inven.getItems([tool.nick], [1])
-            inven2 = tempInven.putItems([item], [1])
+            inven2 = inven.putItems([item], [number])
+        } else if(tool.meta.durability === number) {
+            let [tempInven] = inven.getItems([tool.nick], [number])
+            inven2 = tempInven.putItems([item], [number])
         } else {
-            inven.findItem(tool.nick).meta.durability -= 1
-            inven2 = inven.putItems([item], [1])
+            inven.findItem(tool.nick).meta.durability -= number
+            inven2 = inven.putItems([item], [number])
         }
 
         if(inven2 === false) {
@@ -580,7 +613,8 @@
         return {
             item : item,
             tool : tool ? tool.nick : null,
-            time : time
+            time : time,
+            number : number
         }
     }
 

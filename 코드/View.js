@@ -108,7 +108,7 @@
          * @param {bot} bot 
          * @returns {string}
          */
-         ItemInfo : function(bot) {
+        ItemInfo : function(bot) {
             let {item, itemInfo, isCraft} = presenter.ItemInfo(bot)
             return item + "의 정보입니다.\n" + Space + itemInfo + "\n" +
             "제작 가능 여부 : " + (isCraft ? "O" : "X")
@@ -215,8 +215,8 @@
          * @returns {string}
          */
         InstallMachine : function(bot) {
-            let {item} = presenter.InstallUseMachine(bot)
-            return item + "(을)를 설치했습니다."
+            let {item, number} = presenter.InstallMachine(bot)
+            return item + "(을)를 " + number + "개 설치했습니다."
         },
 
         /**
@@ -225,10 +225,10 @@
          * @returns {array[]}
          */
         RetrieveMachine : function(bot) {
-            let {item, time, tool} = presenter.RetrieveUseMachine(bot)
+            let {item, number, time, tool} = presenter.RetrieveMachine(bot)
             return [
                 [
-                    (tool ? (tool + " 을(를) 사용해서 ") : "") + item + " 을(를) 회수합니다.\n" +
+                    (tool ? (tool + " 을(를) 사용해서 ") : "") + item + " 을(를) " + number + "개 회수합니다.\n" +
                     "기구를 회수하는데 " + time + "초가 걸립니다."
                 ],
                 ["기구를 회수했습니다.", time*1000]

@@ -57,6 +57,9 @@
         NotHaveItem : function() {
             throw new Error("이런 이름의 아이템을 가지고 있지 않습니다.")
         },
+        NotHaveInven : function() {
+            throw new Error("이 아이템은 인벤토리를 가지고 있지 않습니다.")
+        },
         CantCollectItem : function() {
             throw new Error("아이템을 수집하기 위한 도구가 없습니다.")
         },

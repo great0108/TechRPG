@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const Err = require("../Util/Err")
     const ItemRepository = require("../Repository/ItemRepository")
     const NameDto = require("../Dto/NameDto")
 
@@ -11,6 +12,10 @@
          * @returns {InvenSettingDto}
          */
         getInvenSetting : function(item) {
+            let itemInfo = this.getBasicInfo(item)
+            if(!["store", "hold"].includes(itemInfo.type)) {
+                Err.NotHaveInven()
+            }
             return ItemRepository.getInvenInfo(new NameDto(item))
         },
 
