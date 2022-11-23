@@ -68,11 +68,11 @@
         return "만들어 지는 개수 : " + number + "\n" +
             "필요 시간 : " + time + "초, 필요 기구 : " + (need ? need : "없음") + "\n" +
             "사용 아이템\n" +
-            Object.keys(items).map(v => v + " : " + items[v] + "개 사용").join("\n") + "\n" + 
-            tools.map(v => v.tier ?
+            Object.keys(items).map(v => v + " : " + items[v] + "개 사용").join("\n") +
+            (tools.length === 0 ? "" : "\n" + tools.map(v => v.tier ?
                 v.tier + "티어 이상 " + v.class + " 도구의 내구도 : " + v.durability + "만큼 사용" :
                 v.name + "의 내구도 : " + v.durability + "만큼 사용"
-            ).join("\n")
+            ).join("\n"))
     }
 
     /**
