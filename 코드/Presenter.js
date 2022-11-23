@@ -574,13 +574,13 @@
         let map = user.getMap()
         let install = map.getInstall()
 
-
-        let [install2] = install.getItems([item], [number])
+        let [install2, retrieveItems] = install.getItems([item], [number])
         if(install2 === false) {
             Err.CantFindInstall()
         }
 
-        let collectInfo = Item.getCollectInfo(item)
+        let itemName = retrieveItems[0].name
+        let collectInfo = Item.getCollectInfo(itemName)
         let tools = inven.findTool(collectInfo.effective)
         let tool = tools.find(v => v.meta.tier >= collectInfo.tier && v.meta.durability >= number)
         if(!tool && collectInfo.tier >= number) {
@@ -590,13 +590,21 @@
         let inven2 = null
         let time = collectInfo.collectTime * number / (tool ? tool.meta.speed : 1)
         if(!tool) {
-            inven2 = inven.putItems([item], [number])
+            inven2 = inven.putItems([itemName], [number])
         } else if(tool.meta.durability === number) {
             let [tempInven] = inven.getItems([tool.nick], [number])
-            inven2 = tempInven.putItems([item], [number])
+            inven2 = tempInven.putItems([itemName], [number])
         } else {
             inven.findItem(tool.nick).meta.durability -= number
-            inven2 = inven.putItems([item], [number])
+            inven2 = inven.putItems([itemName], [number])
+        }
+
+        for(let retrieveItem of retrieveItems) {
+            if(retrieveItem.type === "store") {
+                let [names, numbers, metas] = Inven.splitItemInfo(retrieveItem.meta.inven)
+                let dumpInven = map.dumpItems(names, numbers, metas)
+                map.setDumpItems(dumpInven)
+            }
         }
 
         if(inven2 === false) {

@@ -125,8 +125,7 @@
      * @returns {object|undefined}
      */
     Inven.prototype.findItem = function(name) {
-        let item = this.inven.find(v => v.name === name || v.nick === name)
-        return item
+        return this.inven.find(v => v.name === name || v.nick === name)
     }
 
     /**
@@ -167,12 +166,11 @@
             return false
         }
 
-        let itemInfo = Item.getBasicInfo(name)
-        if(!(itemInfo.type === "hold" || (itemInfo.type === "store" && this.setting.isInstall))) {
-            return false
-        }
         let item = this.findItem(name)
         let setting = Item.getInvenSetting(item.name)
+        if(!(item.type === "hold" || (item.type === "store" && this.setting.isInstall))) {
+            return false
+        }
         
         return new Inven(item.meta.inven, setting)
     }
