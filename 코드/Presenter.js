@@ -759,7 +759,9 @@
     Presenter.prototype.ChooseNum = function(bot) {
         let user = new User(bot.hash)
         let number = Number(bot.content)
-        if(!user.isExist()) {
+        if(isNaN(number)) {
+            return
+        } else if(!user.isExist()) {
             return
         }
         

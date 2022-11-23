@@ -193,12 +193,13 @@
 
             if(craftInfo) {
                 return "조합법이 여러가지가 있습니다.\n" +
-                   "/(숫자) 형식으로 조합법을 정해주세요.\n\n" + Space + craftInfo
+                   "/(숫자) 형식으로 조합법을 정해주세요.\n" + 
+                   "/0으로 취소할 수 있습니다.\n\n" + Space + craftInfo
             }
 
             return [
                 [
-                    (need ? (need + " 을(를) 사용해서") : "") + item + " 을(를) " + number + "개 제작합니다.\n" +
+                    (need ? (need + " 을(를) 사용해서 ") : "") + item + " 을(를) " + number + "개 제작합니다.\n" +
                     "아이템을 제작하는데 " + time + "초가 걸립니다.\n" +
                     "사용 아이템\n" +
                     useItems.map(v => v.length === 3 ? 
@@ -305,8 +306,8 @@
          * @returns {string}
          */
         ChooseNum : function(bot) {
-            let {message} = presenter.ChooseNum(bot)
-            return message
+            let result = presenter.ChooseNum(bot)
+            return result ? result.message : ""
         },
 
         /**
