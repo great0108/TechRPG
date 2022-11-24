@@ -50,6 +50,8 @@
             "/맵정보 [위치] - 맵 정보를 보여줍니다\n" +
             "/아이템 정보 (아이템) - 아이템 정보를 보여줍니다\n" +
             "/제작 정보 (아이템) - 제작 정보를 보여줍니다\n" +
+            "/탐험 [좌표] - 맵을 탐험합니다\n" +
+            "/이동 (장소 또는 좌표) - 다른 장소로 이동합니다\n" +
             "/아이템 수집 (아이템)/(개수)/[to 아이템] - 아이템을 수집합니다\n" +
             "/아이템 버리기 (아이템)/(개수)/[in 아이템] - 아이템을 버립니다\n" +
             "/아이템 회수 (아이템)/(개수)/[to 아이템] - 버린 아이템을 수집합니다\n" +
@@ -122,6 +124,24 @@
         CraftInfo : function(bot) {
             let {item, craftInfo} = presenter.CraftInfo(bot)
             return item + "의 조합법입니다.\n" + Space + craftInfo
+        },
+
+        /**
+         * 탐험 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {array[]}
+         */
+        Explore : function(bot) {
+            let {} = presenter.Explore(bot)
+        },
+
+        /**
+         * 이동 답장을 돌려줌
+         * @param {bot} bot 
+         * @returns {array[]}
+         */
+        MoveLocation : function(bot) {
+            let {} = presenter.MoveLocation(bot)
         },
 
         /**

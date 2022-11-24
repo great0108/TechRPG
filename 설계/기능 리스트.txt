@@ -37,3 +37,5 @@
 todo
 일정시간마다 백업하기
 json 파일을 db로 바꾸기
+CommandRouter 만들기
+View 정리하기

@@ -139,6 +139,14 @@
         }
     }
 
+    Presenter.prototype.Explore = function(bot) {
+
+    }
+
+    Presenter.prototype.MoveLocation = function(bot) {
+        
+    }
+
     /**
      * 아이템 수집 기능
      * @param {bot} bot 

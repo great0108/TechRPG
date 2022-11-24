@@ -88,6 +88,10 @@
         let name = this.makeName(biomename)
         this.map[nick] = new MapMaker(name, coord)
     }
+    
+    Map.prototype.explore = function(coord) {
+        
+    }
 
     /**
      * 현재 장소에 있는 아이템을 수집함

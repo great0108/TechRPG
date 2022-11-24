@@ -11,7 +11,7 @@
         this.name = name
         this.inven = []
         this.location = "base"
-        let base = new MapMaker("plane", [0,0])
+        let base = new MapMaker("평원", [0,0])
         this.map = {"base" : base}
         this.busyTime = Date.now()
         this.tier = 0
