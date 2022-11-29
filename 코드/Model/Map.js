@@ -1,7 +1,18 @@
 (function() {
     "use strict"
+    const BiomeRepository = require("../Repository/BiomeRepository")
     const MapMaker = require("./MapMaker")
     const Inven = require("./Inven")
+
+    /**
+     * 맵 객체
+     * @typedef {object} map
+     * @property {string} type
+     * @property {number[]} coord
+     * @property {object[]} items
+     * @property {object[]} dumpItems
+     * @property {object[]} install
+     */
 
     /**
      * 맵 관련 기능을 하는 모듈
@@ -68,9 +79,18 @@
     }
 
     /**
+     * 맵에 특정 좌표의 장소가 있는지 확인
+     * @param {number[]} coord 
+     * @returns {boolean}
+     */
+    Map.prototype.isExistCoord = function(coord) {
+        return Object.keys(this.map).some(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
+    }
+
+    /**
      * 맵에서 특정 이름의 장소를 가져옴
      * @param {string} name 
-     * @returns {type : string, coord : number[], dumpItems : object[], items : object[], install : object[]}
+     * @returns {map}
      */
     Map.prototype.getLocate = function(name) {
         if(!this.map[name]) {
@@ -87,10 +107,6 @@
     Map.prototype.putLocate = function(biomename, coord) {
         let name = this.makeName(biomename)
         this.map[nick] = new MapMaker(name, coord)
-    }
-    
-    Map.prototype.explore = function(coord) {
-
     }
 
     /**
@@ -157,87 +173,104 @@
     Map.prototype.setInstall = function(inven) {
         this.map[this.location].install = inven.inven
     }
+
+    /**
+     * 두 좌표간의 거리를 계산함
+     * @param {number[]} c1 
+     * @param {number[]} c2 
+     * @returns {number}
+     */
+    Map.prototype.distance = function(c1, c2) {
+        return Math.pow((c1[0] - c2[0]), 2) + Math.pow((c1[1] - c2[1]), 2)
+    }
+
+    /**
+     * 특정 좌표 근처 장소들을 가져옴
+     * @param {number[]} coord 
+     * @returns {map[]}
+     */
+    Map.prototype.nearPlace = function(coord) {
+        let result = []
+        for(let name in this.map) {
+            let c = this.map[name].coord
+            if(this.distance(coord, c) == 1) {
+                result.push(this.map[name])
+            }
+        }
+        return result
+    }
+
+    /**
+     * 시작 좌표에서 마지막 좌표로 움직일 때 지나가는 좌표들을 계산함
+     * @param {number[]} start 
+     * @param {number[]} end 
+     * @returns {number[][]}
+     */
+    Map.prototype.moveWay = function(start, end) {
+        if(start[0] === end[0]) {
+            return Array( Math.abs(start[1] - end[1])+1 ).fill()
+            .map((v, i) => [start[0], start[1]+(start[1] < end[1] ? i : -i)])
+        }
+
+        let isReverse = false
+        if(start[0] > end[0]) {
+            let temp = start
+            start = end
+            end = temp
+            isReverse = true
+        }
+
+        let dx = end[0] - start[0]
+        let dy = end[1] - start[1]
+        let ratio = dy/dx
+        let result = []
+        let lastY = 0
+
+        for(let i = 0; i <= dx; i++) {
+            let y = Math.round(ratio * Math.min((i+0.5), dx))
+            for(let j = lastY; dy > 0 ? j <= y : j >= y; dy > 0 ? j++ : j--) {
+                result.push([start[0]+i, start[1]+j])
+            }
+            lastY = y
+        }
+        return isReverse ? result.reverse() : result
+    }
+
+    /**
+     * 특정 좌표의 바이옴을 만듦
+     * @param {number[]} coord 
+     * @returns {string}
+     */
+    Map.prototype.makeBiome = function(coord) {
+        let near = this.nearPlace(coord)
+        let random = Math.random() * 2.5
+        if(random < near.length) {
+            let biomes = near.map(v => v.type)
+            return biomes[Math.random() * biomes.length | 0]
+        } else {
+            let biomes = BiomeRepository.getBiomeList()
+            return biomes[Math.random() * biomes.length | 0]
+        }
+    }
+
+    /**
+     * 특정 좌표까지 탐험함
+     * @param {number[]} coord 
+     * @returns {number}
+     */
+    Map.prototype.explore = function(coord) {
+        let coords = this.moveWay(this.location, coord)
+        let count = 0
+        for(let coord of coords) {
+            if(this.isExistCoord(coord)) {
+                continue
+            }
+            let biome = this.makeBiome(coord)
+            this.putLocate(biome, coord)
+            count++
+        }
+        return count
+    }
     
     module.exports = Map
 })()
-
-// let mapType = [1,2,3,4,5,6,7,8,9]
-
-// Map = function() {
-//     this.map = {}
-// }
-// Map.prototype.make = function(type, coord) {
-//     let name = this.name(type)
-//     this.map[name] = {coord : coord, type : type}
-// }
-// Map.prototype.name = function(type) {
-//     let i = 1
-//     while(this.map[String(type) + i]) {
-//         i++
-//     }
-//     return String(type) + i
-// }
-// Map.prototype.nearPlace = function(coord) {
-//     let result = []
-//     for(let name in this.map) {
-//         let c = this.map[name].coord
-//         if(this.distance(coord, c) == 1) {
-//         result.push(this.map[name])
-//         }
-//     }
-//     return result
-// }
-// Map.prototype.distance = function(c1, c2) {
-//     return Math.pow((c1[0] - c2[0]), 2) + Math.pow((c1[1] - c2[1]), 2)
-// }
-// Map.prototype.moveWay = function(start, end) {
-//     if(start[0] === end[0]) {
-//       return Array( Math.abs(start[1] - end[1])+1 ).fill()
-//             .map((v, i) => [start[0], start[1]+(start[1] < end[1] ? i : -i)])
-//     }
-//     let isReverse = false
-//     if(start[0] > end[0]) {
-//       let temp = start
-//       start = end
-//       end = temp
-//       isReverse = true
-//     }
-//     let dx = end[0] - start[0]
-//     let dy = end[1] - start[1]
-//     let ratio = dy/dx
-//     let result = []
-//     let lastY = 0
-//     for(let i = 0; i <= dx; i++) {
-//       let y = Math.round(ratio * Math.min((i+0.5), dx))
-//       for(let j = lastY; dy > 0 ? j <= y : j >= y; dy > 0 ? j++ : j--) {
-//         result.push([start[0]+i, start[1]+j])
-//       }
-//       lastY = y
-//     }
-//     return isReverse ? result.reverse() : result
-// }
-// Map.prototype.random = function() {
-//     return mapType[Math.random() * mapType.length | 0]
-// }
-// Map.prototype.selectType = function(coord) {
-//     let near = this.nearPlace(coord)
-//     let random = Math.random() * 2 | 0
-//     if(random < near.length) {
-//         return near[random].type
-//     } else {
-//         return this.random()
-//     }
-// }
-// Map.prototype.isExistCoord = function(coord) {
-//     return Object.keys(this.map).some(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
-// }
-// Map.prototype.explore = function(start, end) {
-//     let coords = this.moveWay(start, end)
-//     for(let coord of coords) {
-//         if(this.isExistCoord(coord)) {
-//             continue
-//         }
-//         let type = this.selectType(coord)
-//         this.make(type, coord)
-//     }
-// }

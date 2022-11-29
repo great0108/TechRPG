@@ -140,11 +140,15 @@
     }
 
     Presenter.prototype.Explore = function(bot) {
+        let user = new User(bot.hash)
+        let coord = bot.data.split(",").map(v => Number(v))
+        user.errorCheck(1)
 
+        
     }
 
     Presenter.prototype.MoveLocation = function(bot) {
-        
+
     }
 
     /**

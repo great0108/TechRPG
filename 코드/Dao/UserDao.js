@@ -6,7 +6,7 @@
     const Err = require("../Util/Err")
     /**
      * 유져 객체
-     * @typedef {object} User
+     * @typedef {object} user
      * @property {string} name
      * @property {object[]} inven
      * @property {string} location
@@ -25,7 +25,7 @@
         /**
          * 해당 해시의 유저 데이터를 가져옴
          * @param {number} hash 
-         * @returns {User}
+         * @returns {user}
          */
         read : function(hash) {
             if(!this.data[hash]) {
@@ -37,7 +37,7 @@
         /**
          * 해당 해시의 유저 데이터를 덮어 씀
          * @param {number} hash 
-         * @param {User} user 
+         * @param {user} user 
          */
         write : function(hash, user) {
             this.data[hash] = user

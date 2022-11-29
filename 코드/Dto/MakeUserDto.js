@@ -3,7 +3,7 @@
 
     /**
      * 유져 객체
-     * @typedef {object} User
+     * @typedef {object} user
      * @property {string} name
      * @property {object[]} inven
      * @property {string} location
@@ -17,7 +17,7 @@
     /**
      * 새로운 유저 정보를 담는 Dto 클래스
      * @param {number} hash 
-     * @param {User} user 
+     * @param {user} user 
      */
     const MakeUserDto = function(hash, user) {
         this.hash = hash
