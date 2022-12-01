@@ -1,5 +1,6 @@
 (function() {
     "use strict"
+    const Err = require("../Util/Err")
     const BiomeRepository = require("../Repository/BiomeRepository")
     const MapMaker = require("./MapMaker")
     const Inven = require("./Inven")
@@ -94,7 +95,7 @@
      */
     Map.prototype.getLocate = function(name) {
         if(!this.map[name]) {
-            throw new Error("이런 이름의 장소는 없습니다.")
+            Err.NotExistLocate()
         }
         return this.map[name]
     }
@@ -254,22 +255,35 @@
     }
 
     /**
-     * 특정 좌표까지 탐험함
+     * 특정 좌표까지 움직이면서 탐험함
      * @param {number[]} coord 
-     * @returns {number}
+     * @returns {array[]}
      */
     Map.prototype.explore = function(coord) {
         let coords = this.moveWay(this.location, coord)
-        let count = 0
+        let result = []
         for(let coord of coords) {
             if(this.isExistCoord(coord)) {
                 continue
             }
             let biome = this.makeBiome(coord)
             this.putLocate(biome, coord)
-            count++
+            result.push([biome, coord])
         }
-        return count
+        return result
+    }
+
+    /**
+     * 특정 좌표로 움직임
+     * @param {number[]} coord 
+     */
+    Map.prototype.move = function(coord) {
+        let place = Object.keys(this.map).find(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
+        if(!place) {
+            Err.NotExistLocate()
+        }
+        this.location = place
+        return place
     }
     
     module.exports = Map
