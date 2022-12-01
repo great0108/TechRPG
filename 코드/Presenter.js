@@ -139,16 +139,69 @@
         }
     }
 
+    /**
+     * 탐험 기능
+     * @param {bot} bot 
+     * @returns { {explore : object[], time : number, coord : number[]} }
+     */
     Presenter.prototype.Explore = function(bot) {
         let user = new User(bot.hash)
-        let coord = bot.data.split(",").map(v => Number(v))
+        let coord = bot.args.map(v => Number(v))
         user.errorCheck(1)
 
-        
+        if(isNaN(coord[0]) || isNaN(coord[1])) {
+            Err.NotNumber()
+        }
+
+        let map = user.getMap()
+        let tier = user.getBasicInfo().tier
+        let distance = map.distFromHere(coord)
+        if(distance > tier * 20) {
+            Err.TooFar()
+        }
+
+        let explore = map.explore(coord)
+        let time = Math.round(distance * 10) / 10 + explore.length * 3
+        return {
+            explore : explore,
+            time : time,
+            coord : coord
+        }
     }
 
+    /**
+     * 이동 기능
+     * @param {bot} bot 
+     * @returns { {time : number, place : string, coord : number[]} }
+     */
     Presenter.prototype.MoveLocation = function(bot) {
+        let user = new User(bot.hash)
+        let coord = null
+        if(bot.args.length === 1) {
+            coord = map.getLocate(bot.data).coord
+        } else {
+            coord = bot.args.map(v => Number(v))
+        }
+        user.errorCheck(1)
 
+        if(isNaN(coord[0]) || isNaN(coord[1])) {
+            Err.NotNumber()
+        }
+
+        let map = user.getMap()
+        let tier = user.getBasicInfo().tier
+        let distance = map.distFromHere(coord)
+        if(distance > tier * 20) {
+            Err.TooFar()
+        }
+
+        let place = map.move(coord)
+        let time = Math.round(distance * 10) / 10
+        return {
+           time : time,
+           place : place,
+           coord : coord
+        }
     }
 
     /**

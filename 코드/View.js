@@ -50,8 +50,8 @@
             "/맵정보 [위치] - 맵 정보를 보여줍니다\n" +
             "/아이템 정보 (아이템) - 아이템 정보를 보여줍니다\n" +
             "/제작 정보 (아이템) - 제작 정보를 보여줍니다\n" +
-            "/탐험 [좌표] - 맵을 탐험합니다(개발중)\n" +
-            "/이동 (장소 또는 좌표) - 다른 장소로 이동합니다(개발중)\n" +
+            "/탐험 [좌표] - 맵을 탐험합니다\n" +
+            "/이동 (장소 또는 좌표) - 다른 장소로 이동합니다\n" +
             "/아이템 수집 (아이템)/(개수)/[to 아이템] - 아이템을 수집합니다\n" +
             "/아이템 버리기 (아이템)/(개수)/[in 아이템] - 아이템을 버립니다\n" +
             "/아이템 회수 (아이템)/(개수)/[to 아이템] - 버린 아이템을 수집합니다\n" +
@@ -83,7 +83,7 @@
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
-            "좌표 : " + coord[0] + ", " + coord[1] + "\n" +
+            "좌표 : " + coord.join(", ") + "\n" +
             "바쁨 : " + (busy ? "예" : "아니오") + "\n" +
             "티어 : " + tier + "\n\n" +
             "인벤 정보\n" + Space + 
@@ -132,7 +132,18 @@
          * @returns {array[]}
          */
         Explore : function(bot) {
-            let {} = presenter.Explore(bot)
+            let {explore, time, coord} = presenter.Explore(bot)
+            return [
+                [
+                    coord.join(", ") + " (으)로 이동하면서 탐험합니다.\n" +
+                    "모두 탐험하는데 " + time + "초가 걸립니다."
+                ],
+                [
+                    "탐험 결과입니다.\n" + Space + 
+                    explore.map(v => "좌표 : " + v.coord.join(", ") + ", 이름 : " + v.name + ", 바이옴 : " + v.biome).join("\n"),
+                    time * 1000
+                ]
+            ]
         },
 
         /**
@@ -141,7 +152,14 @@
          * @returns {array[]}
          */
         MoveLocation : function(bot) {
-            let {} = presenter.MoveLocation(bot)
+            let {time, place, coord} = presenter.MoveLocation(bot)
+            return [
+                [
+                    coord.join(", ") + "에 있는 " + place + " (으)로 이동합니다.\n" +
+                    "이동하는데 " + time + "초가 걸립니다."
+                ],
+                [place + " 에 도착했습니다.", time * 1000]
+            ]
         },
 
         /**

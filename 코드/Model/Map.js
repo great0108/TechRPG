@@ -186,6 +186,16 @@
     }
 
     /**
+     * 현재 위치와 특정 좌표간의 거리를 계산함
+     * @param {number[]} coord 
+     * @returns {number}
+     */
+    Map.prototype.distFromHere = function(coord) {
+        let coord2 = this.getLocate(this.location).coord
+        return this.distance(coord, coord2)
+    }
+
+    /**
      * 특정 좌표 근처 장소들을 가져옴
      * @param {number[]} coord 
      * @returns {map[]}
@@ -257,7 +267,7 @@
     /**
      * 특정 좌표까지 움직이면서 탐험함
      * @param {number[]} coord 
-     * @returns {array[]}
+     * @returns {{biome : string, name : string, coord : number[]}[]}
      */
     Map.prototype.explore = function(coord) {
         let coords = this.moveWay(this.location, coord)
@@ -267,8 +277,8 @@
                 continue
             }
             let biome = this.makeBiome(coord)
+            result.push({biome : biome, name : this.makeName(biome), coord : coord})
             this.putLocate(biome, coord)
-            result.push([biome, coord])
         }
         return result
     }

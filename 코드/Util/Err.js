@@ -72,6 +72,9 @@
         CantInstallItem : function() {
             throw new Error("설치 할 수 없는 아이템입니다.")
         },
+        TooFar : function() {
+            throw new Error("너무 먼 거리입니다.")
+        },
         NowBusy : function() {
             throw new Error("다른 작업을 수행중 입니다.")
         },
