@@ -45,4 +45,8 @@ function sleep(ms) {
 // response([123456], "실험방", "/아이템 꺼내기 끈/1/상자1", "sender")
 // response([123456], "실험방", "/기구 회수 상자1", "sender")
 
-response([123456], "실험방", "/기구 회수 상자1", "sender")
+// response([123456], "실험방", "/이동 base", "sender")
+// response([123456], "실험방", "/탐험 1/2", "sender")
+// response([123456], "실험방", "/이동 0/0", "sender")
+
+response([123456], "실험방", "/맵정보 ", "sender")

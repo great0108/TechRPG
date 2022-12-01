@@ -153,10 +153,11 @@
             Err.NotNumber()
         }
 
+        console.log(coord)
         let map = user.getMap()
         let tier = user.getBasicInfo().tier
         let distance = map.distFromHere(coord)
-        if(distance > tier * 20) {
+        if(distance > 10 + tier * 5) {
             Err.TooFar()
         }
 
@@ -177,6 +178,7 @@
     Presenter.prototype.MoveLocation = function(bot) {
         let user = new User(bot.hash)
         let coord = null
+        let map = user.getMap()
         if(bot.args.length === 1) {
             coord = map.getLocate(bot.data).coord
         } else {
@@ -187,11 +189,10 @@
         if(isNaN(coord[0]) || isNaN(coord[1])) {
             Err.NotNumber()
         }
-
-        let map = user.getMap()
+        
         let tier = user.getBasicInfo().tier
         let distance = map.distFromHere(coord)
-        if(distance > tier * 20) {
+        if(distance > 10 + tier * 5) {
             Err.TooFar()
         }
 
@@ -216,7 +217,7 @@
         user.errorCheck(number)
 
         let userInfo = user.getBasicInfo()
-        if(number > userInfo.tier * 10 + 10) {
+        if(number > userInfo.tier * 5 + 10) {
             Err.OutOfRangeNumber()
         }
 
@@ -531,6 +532,9 @@
 
         let tier = user.getBasicInfo().tier
         let craftNumber = craft.getCraftNum(item, tier)
+        if(number > tier * 5 + 10) {
+            Err.OutOfRangeNumber()
+        }
 
         if(craftNum) {
             if(isNaN(craftNum)) {

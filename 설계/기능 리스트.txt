@@ -39,3 +39,4 @@ todo
 json 파일을 db로 바꾸기
 CommandRouter 만들기
 View 정리하기
+온도 업데이트에서 정글, 타이가 추가하기
