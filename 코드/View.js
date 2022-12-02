@@ -79,7 +79,7 @@
          * @returns {string}
          */
         MyInfo : function(bot) {
-            let {name, location, coord, busy, tier, invenSpace, invenLimit, invenInfo} = presenter.MyInfo(bot)
+            let {name, location, coord, busy, tier, invenSpace, invenLimit, invenInfo, mapList} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
@@ -88,8 +88,9 @@
             "티어 : " + tier + "\n\n" +
             "인벤 정보\n" + Space + 
             "현재 공간 : " + invenSpace + " / " + invenLimit + "\n\n" +
-            "아이템\n" + (invenInfo || "없음") + "\n\n" +
-            "맵과 기구는 맵정보 명령어로 정보를 확인할 수 있습니다."
+            "아이템\n" + (invenInfo || "없음") + "\n\n" + 
+            "맵 목록\n" + mapList.map(v => "좌표 : " + v.coord.join(", ") + ", 이름 : " + v.name + ", 바이옴 : " + v.biome).join("\n") + "\n\n" +
+            "맵과 기구 정보는 맵정보 명령어로 확인할 수 있습니다."
         },
 
         /**

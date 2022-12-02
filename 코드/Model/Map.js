@@ -89,6 +89,14 @@
     }
 
     /**
+     * 맵 목록을 가져옴
+     * @returns {string[]}
+     */
+    Map.prototype.mapList = function() {
+        return Object.keys(this.map).map(v => ({name : v, coord : this.map[v].coord, biome : this.map[v].type}))
+    }
+
+    /**
      * 맵에서 특정 이름의 장소를 가져옴
      * @param {string} name 
      * @returns {map}
@@ -100,6 +108,10 @@
         return this.map[name]
     }
 
+    Map.prototype.getLocateCoord = function(coord) {
+        return Object.keys(this.map).find(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
+    }
+
     /**
      * 맵에 특정 바이옴의 장소를 추가함
      * @param {string} biomename 
@@ -107,7 +119,7 @@
      */
     Map.prototype.putLocate = function(biomename, coord) {
         let name = this.makeName(biomename)
-        this.map[nick] = new MapMaker(name, coord)
+        this.map[name] = new MapMaker(biomename, coord)
     }
 
     /**
@@ -255,13 +267,14 @@
     Map.prototype.makeBiome = function(coord) {
         let near = this.nearPlace(coord)
         let random = Math.random() * 2.5
+        let biomes = null
         if(random < near.length) {
-            let biomes = near.map(v => v.type)
-            return biomes[Math.random() * biomes.length | 0]
+            biomes = near.map(v => v.type)
         } else {
-            let biomes = BiomeRepository.getBiomeList()
-            return biomes[Math.random() * biomes.length | 0]
+            biomes = BiomeRepository.getBiomeList().list
         }
+        console.log(biomes)
+        return biomes[Math.random() * biomes.length | 0]
     }
 
     /**
@@ -270,7 +283,8 @@
      * @returns {{biome : string, name : string, coord : number[]}[]}
      */
     Map.prototype.explore = function(coord) {
-        let coords = this.moveWay(this.location, coord)
+        let coord2 = this.getLocate(this.location).coord
+        let coords = this.moveWay(coord2, coord)
         let result = []
         for(let coord of coords) {
             if(this.isExistCoord(coord)) {
@@ -278,8 +292,10 @@
             }
             let biome = this.makeBiome(coord)
             result.push({biome : biome, name : this.makeName(biome), coord : coord})
+            console.log(biome, coord)
             this.putLocate(biome, coord)
         }
+        this.location = this.getLocateCoord(coord)
         return result
     }
 
@@ -288,7 +304,7 @@
      * @param {number[]} coord 
      */
     Map.prototype.move = function(coord) {
-        let place = Object.keys(this.map).find(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
+        let place = this.getLocateCoord(coord)
         if(!place) {
             Err.NotExistLocate()
         }

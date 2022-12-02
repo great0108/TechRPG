@@ -71,7 +71,8 @@
             coord : map.getLocate(userInfo.location).coord,
             invenInfo : inven.invenInfo(),
             invenLimit : inven.invenLimit,
-            invenSpace : inven.invenSpace()
+            invenSpace : inven.invenSpace(),
+            mapList : map.mapList()
         }
     },
 
@@ -153,7 +154,6 @@
             Err.NotNumber()
         }
 
-        console.log(coord)
         let map = user.getMap()
         let tier = user.getBasicInfo().tier
         let distance = map.distFromHere(coord)
