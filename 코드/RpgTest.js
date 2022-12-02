@@ -1,4 +1,8 @@
 const response = require("./main")
+const Map = require("./Model/Map")
+
+let map = new Map()
+console.log(map.distance([1,0], [0,0]))
 
 function sleep(ms) {
     const wakeUpTime = Date.now() + ms;
@@ -50,4 +54,4 @@ function sleep(ms) {
 // sleep(15000)
 // response([123456], "실험방", "/이동 0/0", "sender")
 
-response([123456], "실험방", "/맵정보 0/6", "sender")
+// response([123456], "실험방", "/맵정보 0/6", "sender")
