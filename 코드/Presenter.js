@@ -163,6 +163,12 @@
 
         let explore = map.explore(coord)
         let time = Math.round(distance * 10) / 10 + explore.length * 3
+
+        let userData = new UserData()
+                       .setMap(map.map)
+                       .setLocation(map.location)
+                       .setBusyTime(Date.now() + time * 1000)
+        user.setUser(userData)
         return {
             explore : explore,
             time : time,
@@ -198,6 +204,11 @@
 
         let place = map.move(coord)
         let time = Math.round(distance * 10) / 10
+
+        let userData = new UserData()
+                       .setLocation(map.location)
+                       .setBusyTime(Date.now() + time * 1000)
+        user.setUser(userData)
         return {
            time : time,
            place : place,

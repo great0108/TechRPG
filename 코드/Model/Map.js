@@ -33,8 +33,8 @@
     Map.prototype.mapInfo = function(location) {
         let inven = new Inven(this.map[location].items, this.invenSetting)
         let dumpInven = new Inven(this.map[location].dumpItems, this.invenSetting)
-        let install = this.getInstall()
-        return "아이템\n" + inven.invenInfo() + 
+        let install = this.getInstall(location)
+        return "아이템\n" + (inven.invenInfo() || "없음")+ 
         (this.location === location ? "\n\n버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "") + "\n\n" +
         "설치된 기구\n" + (install.invenInfo() || "없음")
     }
@@ -137,8 +137,8 @@
      * 현재 장소에 설치된 기구를 가져옴
      * @returns {Inven}
      */
-    Map.prototype.getInstall = function() {
-        return new Inven(this.map[this.location].install, this.installSetting)
+    Map.prototype.getInstall = function(location) {
+        return new Inven(this.map[location || this.location].install, this.installSetting)
     }
 
     /**
@@ -273,7 +273,6 @@
         } else {
             biomes = BiomeRepository.getBiomeList().list
         }
-        console.log(biomes)
         return biomes[Math.random() * biomes.length | 0]
     }
 
@@ -292,7 +291,6 @@
             }
             let biome = this.makeBiome(coord)
             result.push({biome : biome, name : this.makeName(biome), coord : coord})
-            console.log(biome, coord)
             this.putLocate(biome, coord)
         }
         this.location = this.getLocateCoord(coord)
