@@ -14,6 +14,7 @@
                     user.version = Setting.version
                     user.map.base.type = "평원"
                 }
+                UserDao.write(hash, user)
             }
             UserDao.save()
         }

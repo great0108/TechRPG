@@ -83,12 +83,18 @@
      */
     Presenter.prototype.MapInfo = function(bot) {
         let user = new User(bot.hash)
-        user.basicCheck()
-
+        let location = null
         let map = user.getMap()
-        let location = bot.data || map.location
+        if(bot.args.length === 2) {
+            let coord = bot.args.map(v => Number(v)) 
+            location = map.getLocateCoord(coord)
+        } else {
+            location = bot.data || map.location
+        }
+        user.errorCheck(1)
+
         if(!map.isExist(location)) {
-            return Err.NotExistMap()
+            return Err.NotExistLocate()
         }
 
         let locate = map.getLocate(location)

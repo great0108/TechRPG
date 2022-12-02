@@ -108,6 +108,11 @@
         return this.map[name]
     }
 
+    /**
+     * 맵에서 특정 좌표에 있는 장소 이름을 가져옴
+     * @param {number[]} coord 
+     * @returns {string}
+     */
     Map.prototype.getLocateCoord = function(coord) {
         return Object.keys(this.map).find(v => this.map[v].coord[0] === coord[0] && this.map[v].coord[1] === coord[1])
     }

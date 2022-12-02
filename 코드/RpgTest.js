@@ -50,4 +50,4 @@ function sleep(ms) {
 // sleep(15000)
 // response([123456], "실험방", "/이동 0/0", "sender")
 
-response([123456], "실험방", "/맵정보 사막1", "sender")
+response([123456], "실험방", "/맵정보 0/6", "sender")
