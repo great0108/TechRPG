@@ -24,8 +24,132 @@
      * @property {boolean} isBotOn
      */
 
+    function 받침(str) {
+        // 십(영), 일, 이, 삼, 사, 오, 육, 칠, 팔, 구
+        let number = [true, true, false, true, false, false, true, true, true, false]
+        str = str[str.length-1]
+        return isNaN(str) ? str.normalize("NFD").length === 3 : number[Number(str)]
+    }
+
+    function 와과(str) {
+        return 받침(str) ? "과" : "와"
+    }
+
+    function 을를(str) {
+        return 받침(str) ? "을" : "를"
+    }
+
+    function 이가(str) {
+        return 받침(str) ? "이가" : "가"
+    }
+
+    function 은는(str) {
+        return 받침(str) ? "은" : "는"
+    }
+
     /** 답장을 만드는 모듈 */
     const View = {
+        /**
+         * 인벤에 있는 아이템 정보 텍스트를 만듬
+         * @param {string} item 
+         * @param {number|undefined} space 
+         * @returns {string}
+         */
+        invenItemInfo : function(item, space) {
+            space = space === undefined ? "" : " ".repeat(space)
+            let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
+            if(item.type === "tool") {
+                result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + (item.meta.damage || "없음")
+            }
+            return result
+        },
+
+        /**
+         * 아이템 정보 텍스트를 만듬
+         * @param {string} item 
+         * @returns {string}
+         */
+        itemInfo : function(itemAllInfo) {
+            let {itemInfo, collectInfo, toolInfo, invenInfo} = itemAllInfo
+            let result = "종류 : " + itemInfo.type + ", 스택 : " + itemInfo.stack + ", 연료량 : " + (itemInfo.heat || "없음")
+
+            if(collectInfo.collectTime) {
+                result += "\n수집 시간 : " + collectInfo.collectTime + ", 티어 : " + collectInfo.tier + ", 수집 도구 : " + (collectInfo.effective || "없음")
+            }
+
+            if(itemInfo.type === "tool") {
+                result += "\n내구도 : " + toolInfo.durability + ", 티어 : " + toolInfo.tier + ", 속도 : " + toolInfo.speed + ", 데미지 : " + (toolInfo.damage || "없음")
+            } else if(itemInfo.type === "hold") {
+                result += "\n저장 공간 : " + invenInfo.invenLimit + ", 아이템 저장 여부 : " + (invenInfo.canItem ? "O" : "X") +
+                ", 액체 저장 여부 : " + (invenInfo.canLiquid ? "O" : "X") + "\n" + "아이템 스택 : " + (invenInfo.itemStack || "없음") + ", 액체 스택 : " + (invenInfo.liquidStack || "없음")
+            }
+            return result
+        },
+
+        /**
+         * 인벤 정보 텍스트를 만듬
+         * @param {number|undefined} space 
+         * @returns {string}
+         */
+        invenInfo : function(inven, invenSetting, space) {
+            space = space === undefined ? 0 : space
+            let result = []
+            for(let item of inven) {
+                result.push(this.itemInfo(item, invenSetting, space))
+            }
+            return result.join("\n")
+        },
+
+        /**
+         * 아이템 정보 텍스트를 만듬
+         * @param {string} item 
+         * @param {number|undefined} space 
+         * @returns {string}
+         */
+        itemInfo : function(item, space) {
+            let result = this.invenItemInfo(item, space)
+            if(item.type === "hold" || (item.type === "store" && invenSetting.isInstall)) {
+                let inven = item.meta.inven
+                result += "\n" + space + "아이템 인벤 공간 : " + item.meta.invenSpace + " / " + item.meta.invenLimit + "\n" +
+                        "  아이템\n" + this.invenInfo(inven, {}, space+2) || "  없음"
+            }
+            return result
+        },
+
+        /**
+         * 제작법 정보 텍스트를 만듬
+         * @param {string} item 
+         * @param {number} craftNum 
+         * @returns {string}
+         */
+        craftInfo : function(itemInfo, craftInfo) {
+            let {items, tools} = itemInfo
+            let {number, time, need} = craftInfo
+            return "만들어 지는 개수 : " + number + "\n" +
+                "필요 시간 : " + time + "초, 필요 기구 : " + (need ? need : "없음") + "\n" +
+                "사용 아이템\n" +
+                Object.keys(items).map(v => v + " : " + items[v] + "개 사용").join("\n") +
+                (tools.length === 0 ? "" : "\n" + tools.map(v => v.tier ?
+                    v.tier + "티어 이상 " + v.class + " 도구의 내구도 : " + v.durability + "만큼 사용" :
+                    v.name + "의 내구도 : " + v.durability + "만큼 사용"
+                ).join("\n"))
+        },
+
+        /**
+         * 여러 제작법 정보 텍스트를 만듬
+         * @param {string} item 
+         * @param {number} num 
+         * @returns {string}
+         */
+        craftInfos : function(craftAllInfos) {
+            let result = []
+            for(let craftAllInfo of craftAllInfos) {
+                let {itemInfo, craftInfo} = craftAllInfo
+                result.push(this.craftInfo(itemInfo, craftInfo))
+            }
+            return result.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
+        },
+
         /**
          * 회원가입 답장을 돌려줌
          * @param {bot} bot 
@@ -79,7 +203,18 @@
          * @returns {string}
          */
         MyInfo : function(bot) {
-            let {name, location, coord, busy, tier, invenSpace, invenLimit, invenInfo, mapList} = presenter.MyInfo(bot)
+            /**
+             * @property {string} name  유저 이름
+             * @property {string} location  현재 장소 이름
+             * @property {number[]} coord  현재 좌표(x, y)
+             * @property {boolean} busy  바쁜지 여부
+             * @property {number} tier  유저 티어
+             * @property {number} invenSpace  사용한 인벤 공간
+             * @property {number} invenLimit  최대 인벤 공간
+             * @property {inven} inven  유저 인벤토리
+             * @property {Array<{coord : number[], name : string, biome : string}>}  유저 맵 정보(coord : 좌표, name : 장소 이름, biome : 바이옴)
+             */
+            let {name, location, coord, busy, tier, invenSpace, invenLimit, inven, mapList} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
@@ -88,7 +223,7 @@
             "티어 : " + tier + "\n\n" +
             "인벤 정보\n" + Space + 
             "현재 공간 : " + invenSpace + " / " + invenLimit + "\n\n" +
-            "아이템\n" + (invenInfo || "없음") + "\n\n" + 
+            "아이템\n" + (this.invenInfo(inven) || "없음") + "\n\n" + 
             "맵 목록\n" + mapList.map(v => "좌표 : " + v.coord.join(", ") + ", 이름 : " + v.name + ", 바이옴 : " + v.biome).join("\n") + "\n\n" +
             "맵과 기구 정보는 맵정보 명령어로 확인할 수 있습니다."
         },
@@ -389,7 +524,8 @@
          */
         FindHash : function(bot) {
             let {name, userInfo} = presenter.FindHash(bot)
-            return name + "(으)로 검색한 결과입니다.\n" + Space + 
+            return "[어드민 명령어]\n" +
+            name + "(으)로 검색한 결과입니다.\n" + Space + 
             userInfo.map((v, i) => (i+1) + "번 유저\n" + 
             "해시 : " + v.hash + "\n" +
             "이름 : " + v.name + "\n" +

@@ -13,6 +13,9 @@
          */
         getInvenSetting : function(item) {
             let itemInfo = this.getBasicInfo(item)
+            if(!["store", "hold"].includes(itemInfo.type)) {
+                Err.NotHaveInven()
+            }
             return ItemRepository.getInvenInfo(new NameDto(item))
         },
 
@@ -41,6 +44,22 @@
          */
         getToolInfo : function(item) {
             return ItemRepository.getToolInfo(new NameDto(item))
+        },
+
+        /**
+         * 아이템의 모든 정보를 가져옴
+         * @param {string} item 
+         * @returns { {itemInfo : BasicItemDto, collectInfo : CollectItemDto|null, toolInfo : ToolItemDto|null, invenSetting : InvenSettingDto|null} }
+         */
+        getAllInfo : function(item) {
+            let nameDto = new NameDto(item)
+            let collectInfo = this.getCollectInfo(nameDto)
+            return {
+                itemInfo : this.getBasicInfo(nameDto),
+                collectInfo : collectInfo.collectTime ? collectInfo : null,
+                toolInfo : itemInfo.type === "tool" ? this.getToolInfo(nameDto) : null,
+                invenSetting : ["store", "hold"].includes(itemInfo.type) ? this.getInvenSetting(nameDto) : null
+            }
         },
 
         /**

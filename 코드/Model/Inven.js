@@ -2,7 +2,6 @@
     "use strict"
     const Setting = require("../Setting")
     const Copy = require("../Util/Copy")
-    const Err = require("../Util/Err")
     const ItemMaker = require("./ItemMaker")
     const Item = require("./Item")
     
