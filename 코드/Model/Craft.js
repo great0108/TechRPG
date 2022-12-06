@@ -84,9 +84,9 @@
     Craft.prototype.craftInfos = function(item, num) {
         let craftInfo = []
         for(let i = 0; i < num; i++) {
-            craftInfo.push(this.craftInfo(item, i+1))
+            craftInfo.push({itemInfo : this.getItems(item, i), craftInfo : this.getBasicInfo(item, i)})
         }
-        return craftInfo.map((v, i) => (i+1) + "번 조합법\n" + v).join("\n\n")
+        return craftInfo
     }
 
     /**

@@ -6,6 +6,13 @@
     const presenter = new Presenter()
 
     /**
+     * 좌표는 [x,y] 입니다.
+     * 함수가 필요하다면 만드셔도 됩니다. 
+     * view 전체적으로 사용하는 함수라면 View 선언 위에, 답장의 일부를 만드는 함수라면 회원가입 view 위에 선언해주세요
+     * 
+     */
+
+    /**
      * 채팅 객체
      * @typedef {object} bot
      * @property {string} frontPrefix
@@ -22,6 +29,25 @@
      * @property {boolean} isGroupChat
      * @property {boolean} isDebugRoom
      * @property {boolean} isBotOn
+     */
+
+    /**
+     * 아이템 객체
+     * @typedef {object} item
+     * @property {string} name  아이템 이름
+     * @property {number} number  아이템 개수
+     * @property {type} type  아이템 종류
+     * @property {number} stack  아이템이 겹쳐질 수 있는 개수
+     * @property {string|undefined} nick  아이템의 닉네임
+     * @property {object|undefined} meta  아이템의 특수 속성
+     */
+
+    /**
+     * 장소 객체
+     * @typedef {object} locate
+     * @property {number[]} coord  장소 좌표
+     * @property {string} name  장소 이름
+     * @property {string} biome  장소 바이옴
      */
 
     function 받침(str) {
@@ -151,6 +177,19 @@
         },
 
         /**
+         * 맵 정보 텍스트를 만듬
+         * @param {string} location 
+         * @returns {string}
+         */
+        mapInfo : function(items, dumpItems, installs) {
+            return "아이템\n" + (inven.invenInfo() || "없음")+ 
+            (this.location === location ? "\n\n버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "") + "\n\n" +
+            "설치된 기구\n" + (install.invenInfo() || "없음")
+        },
+
+        //추가적으로 만든 함수는 여기에
+
+        /**
          * 회원가입 답장을 돌려줌
          * @param {bot} bot 
          * @returns {string}
@@ -206,13 +245,13 @@
             /**
              * @property {string} name  유저 이름
              * @property {string} location  현재 장소 이름
-             * @property {number[]} coord  현재 좌표(x, y)
+             * @property {number[]} coord  현재 좌표
              * @property {boolean} busy  바쁜지 여부
              * @property {number} tier  유저 티어
              * @property {number} invenSpace  사용한 인벤 공간
              * @property {number} invenLimit  최대 인벤 공간
-             * @property {inven} inven  유저 인벤토리
-             * @property {Array<{coord : number[], name : string, biome : string}>}  유저 맵 정보(coord : 좌표, name : 장소 이름, biome : 바이옴)
+             * @property {item[]} inven  유저 인벤토리
+             * @property {locate[]}  유저 맵 정보
              */
             let {name, location, coord, busy, tier, invenSpace, invenLimit, inven, mapList} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
@@ -234,11 +273,19 @@
          * @returns {string}
          */
         MapInfo : function(bot) {
-            let {location, coord, biome, mapInfo} = presenter.MapInfo(bot)
+            /**
+             * @property {string} location  장소 이름
+             * @property {number[]} coord  장소 좌표
+             * @property {string} biome  장소 바이옴
+             * @property {item[]} items  장소에서 수집 가능한 아이템
+             * @property {item[]} dumpItems  장소에 버린 아이템
+             * @property {item[]} installs  장소에 설치한 기구
+             */
+            let {location, coord, biome, items, dumpItems, installs} = presenter.MapInfo(bot)
             return "맵 정보입니다.\n" + Space + 
             "장소 이름 : " + location + "\n" +
             "좌표 : " + coord + "\n" +
-            "바이옴 : " + biome + "\n\n" + mapInfo
+            "바이옴 : " + biome + "\n\n" + this.mapInfo(items, dumpItems, installs)
         },
 
         /**
@@ -247,8 +294,13 @@
          * @returns {string}
          */
         ItemInfo : function(bot) {
-            let {item, itemInfo, isCraft} = presenter.ItemInfo(bot)
-            return item + "의 정보입니다.\n" + Space + itemInfo + "\n" +
+            /**
+             * @property {string} item  아이템 이름
+             * @property {object} itemAllInfo  아이템 정보
+             * @property {boolean} isCraft  제작 가능 여부
+             */
+            let {item, itemAllInfo, isCraft} = presenter.ItemInfo(bot)
+            return item + "의 정보입니다.\n" + Space + this.itemInfo(itemAllInfo) + "\n" +
             "제작 가능 여부 : " + (isCraft ? "O" : "X")
         },
 
@@ -258,8 +310,12 @@
          * @returns {string}
          */
         CraftInfo : function(bot) {
-            let {item, craftInfo} = presenter.CraftInfo(bot)
-            return item + "의 조합법입니다.\n" + Space + craftInfo
+            /**
+             * @property {string} item  아이템 이름
+             * @property {Array<{itemInfo : object, craftInfo : object}>} craftAllInfos  제작 정보
+             */
+            let {item, craftAllInfos} = presenter.CraftInfo(bot)
+            return item + "의 조합법입니다.\n" + Space + this.craftInfo(craftAllInfos)
         },
 
         /**
@@ -268,6 +324,11 @@
          * @returns {array[]}
          */
         Explore : function(bot) {
+            /**
+             * @property {locate[]} explore  탐험한 맵 정보
+             * @property {number} time  탐험에 걸리는 시간
+             * @property {number[]} coord  목표 좌표
+             */
             let {explore, time, coord} = presenter.Explore(bot)
             return [
                 [
@@ -288,6 +349,11 @@
          * @returns {array[]}
          */
         MoveLocation : function(bot) {
+            /**
+             * @property {number} time  이동에 걸리는 시간
+             * @property {string} place  목표 장소 이름
+             * @property {number[]} coord  목표 좌표
+             */
             let {time, place, coord} = presenter.MoveLocation(bot)
             return [
                 [
@@ -304,6 +370,13 @@
          * @returns {array[]}
          */
         CollectItem : function(bot) {
+            /**
+             * @property {string} item  수집한 아이템 이름
+             * @property {number} number  수집한 아이템 개수
+             * @property {number} time  수집에 걸리는 시간
+             * @property {string|null} tool  수집에 사용한 도구
+             * @property {string|null} withItem  수집한 아이템을 담을 아이템
+             */
             let {item, number, time, tool, withItem} = presenter.CollectItem(bot)
             return [
                 [
@@ -320,6 +393,11 @@
          * @returns {string}
          */
         DumpItem : function(bot) {
+            /**
+             * @property {string} item  버린 아이템 이름
+             * @property {number} number  버린 아이템 개수
+             * @property {string|null} withItem  버릴 아이템을 담고 있던 아이템
+             */
             let {item, number, withItem} = presenter.DumpItem(bot)
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + number + "개 버립니다."
         },
@@ -330,6 +408,11 @@
          * @returns {string}
          */
         RetrieveItem : function(bot) {
+            /**
+             * @property {string} item  회수한 아이템 이름
+             * @property {number} number  회수한 아이템 개수
+             * @property {string|null} withItem  회수한 아이템을 담을 아이템
+             */
             let {item, number, withItem} = presenter.RetrieveItem(bot)
             return item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 회수합니다."
         },
@@ -340,6 +423,12 @@
          * @returns {string}
          */
         GetItem : function(bot) {
+            /**
+             * @property {string} item  꺼낸 아이템 이름
+             * @property {number} number  꺼낸 아이템 개수
+             * @property {string} store  꺼낸 아이템을 담고 있던 아이템 또는 기구
+             * @property {string|null} withItem  꺼낸 아이템을 담을 아이템
+             */
             let {item, number, store, withItem} = presenter.GetItem(bot)
             if(withItem) {
                 return store + " 에 있는 " + item + " 을(를) " + number + "개 꺼내서 " + withItem + " 에 넣습니다."
@@ -353,6 +442,12 @@
          * @returns {string}
          */
         PutItem : function(bot) {
+            /**
+             * @property {string} item  넣은 아이템 이름
+             * @property {number} number  넣은 아이템 개수
+             * @property {string} store  넣은 아이템을 담을 아이템 또는 기구
+             * @property {string|null} withItem  넣을 아이템을 담고 있던 아이템
+             */
             let {item, number, store, withItem} = presenter.PutItem(bot)
             return (withItem ? withItem + " 에다 " : "") + item + " 을(를) " + store + " 에다 " + number + "개 넣습니다."
         },
@@ -363,12 +458,20 @@
          * @returns {string|array[]}
          */
         CraftItem : function(bot) {
-            let {craftInfo, item, number, time, need, useItems} = presenter.CraftItem(bot)
+            /**
+             * @property {Array<{itemInfo : object, craftInfo : object}>} craftAllInfos  제작 정보
+             * @property {string} item  제작한 아이템 이름
+             * @property {number} number  제작한 아이템 개수
+             * @property {number} time  제작에 걸리는 시간
+             * @property {string} need  제작에 필요한 기구
+             * @property {Array<[string, number, string]>} useItems  제작에 들어간 아이템 정보
+             */
+            let {craftAllInfos, item, number, time, need, useItems} = presenter.CraftItem(bot)
 
-            if(craftInfo) {
+            if(craftAllInfos) {
                 return "조합법이 여러가지가 있습니다.\n" +
                    "/(숫자) 형식으로 조합법을 정해주세요.\n" + 
-                   "/0으로 취소할 수 있습니다.\n\n" + Space + craftInfo
+                   "/0으로 취소할 수 있습니다.\n\n" + Space + this.craftInfos(craftAllInfos)
             }
 
             return [
@@ -390,6 +493,10 @@
          * @returns {string}
          */
         InstallMachine : function(bot) {
+            /**
+             * @property {string} item  설치한 기구 이름
+             * @property {number} number  설치한 기구 개수
+             */
             let {item, number} = presenter.InstallMachine(bot)
             return item + "(을)를 " + number + "개 설치했습니다."
         },
@@ -400,6 +507,12 @@
          * @returns {array[]}
          */
         RetrieveMachine : function(bot) {
+            /**
+             * @property {string} item  회수한 기구 이름
+             * @property {number} number  회수한 기구 개수
+             * @property {number} time  회수에 필요한 시간
+             * @property {string} tool  회수에 사용한 도구
+             */
             let {item, number, time, tool} = presenter.RetrieveMachine(bot)
             return [
                 [
@@ -416,6 +529,10 @@
          * @returns {string}
          */
         SearchWriting : function(bot) {
+            /**
+             * @property {string} word  글 검색 단어
+             * @property {string[]} list  검색 결과로 나온 글 제목 목록
+             */
             let {word, list} = presenter.SearchWriting(bot)
             return word + "(으)로 검색한 결과입니다.\n" + Space + 
                    (list.length === 0 ? "없음" : list.join("\n"))
@@ -427,6 +544,9 @@
          * @returns {string}
          */
         ListWriting : function(bot) {
+            /**
+             * @property {string[]} list  모든 글 제목 목록
+             */
             let {list} = presenter.ListWriting(bot)
             return "글 목록입니다.\n" + Space + list.join("\n")
         },
@@ -437,6 +557,10 @@
          * @returns {string}
          */
         ReadWriting : function(bot) {
+            /**
+             * @property {string} title  읽을 글 제목
+             * @property {string} text  읽을 글 내용
+             */
             let {title, text} = presenter.ReadWriting(bot)
             return "제목 : " + title + "\n" + Space + "내용 : " + text
         },
@@ -447,6 +571,10 @@
          * @returns {string}
          */
         MakeWriting : function(bot) {
+            /**
+             * @property {string} title  쓸 글 제목
+             * @property {string} text  쓸 글 내용
+             */
             let {title, text} = presenter.MakeWriting(bot)
             return "글이 작성되었습니다.\n" + Space + 
                    "제목 : " + title + "\n내용 : " + text
@@ -458,6 +586,10 @@
          * @returns {string}
          */
         DeleteWriting : function(bot) {
+            /**
+             * @property {string} title  삭제할 글 제목
+             * @property {string} text  삭제한 글 내용
+             */
             let {title, text} = presenter.DeleteWriting(bot)
             return "글이 삭제되었습니다.\n" + Space +
                    "제목 : " + title + "\n내용 : " + text
@@ -469,6 +601,10 @@
          * @returns {string}
          */
         AppendWriting : function(bot) {
+            /**
+             * @property {string} title  내용을 추가할 글 제목
+             * @property {string} text  추가할 내용
+             */
             let {title, text} = presenter.AppendWriting(bot)
             return "글이 추가되었습니다.\n" + Space +
                    "제목 : " + title + "\n내용 : " + text
@@ -476,6 +612,7 @@
 
         /**
          * 선택에 맞게 메시지를 만듦
+         * (여기는 바꾸지 마세요)
          * @param {bot} bot 
          * @returns {string}
          */
@@ -490,6 +627,11 @@
          * @returns {string}
          */
         BringItem : function(bot) {
+            /**
+             * @property {string} item  가져올 아이템 이름
+             * @property {number} number  가져올 아이템 개수
+             * @property {string|null} withItem  가져온 아이템을 넣을 아이템
+             */
             let {item, number, withItem} = presenter.BringItem(bot)
             return "[어드민 명령어]\n" +
             item + " 을(를) " + (withItem ? withItem + " 에다 " : "") + number + "개 가져옵니다."
@@ -501,6 +643,9 @@
          * @returns {string}
          */
         ListItem : function(bot) {
+            /**
+             * @property {string[]} list  모든 아이템 이름 목록
+             */
             let {list} = presenter.ListItem(bot)
             return "[어드민 명령어]\n" +
             "아이템 목록입니다." + Space + "\n" + list.join("\n")
@@ -512,6 +657,10 @@
          * @returns {string}
          */
         ChangeHash : function(bot) {
+            /**
+             * @property {number} hash1  바꾸기 전 해시
+             * @property {number} hash2  바꾼 해시
+             */
             let {hash1, hash2} = presenter.ChangeHash(bot)
             return "[어드민 명령어]\n" +
             hash1 + "에서 " + hash2 + "로 해시를 변경했습니다."
@@ -523,6 +672,11 @@
          * @returns {string}
          */
         FindHash : function(bot) {
+            /**
+             * @property {string} name  찾는 유저 이름
+             * @property {Array<{hash : number, name : string, location : string, coord : number[], tier : number}>} userInfo  유저 정보
+             * hash : 유저 해시, name : 유저 이름, location : 현재 장소 이름, coord : 현재 좌표, tier : 유저 티어
+             */
             let {name, userInfo} = presenter.FindHash(bot)
             return "[어드민 명령어]\n" +
             name + "(으)로 검색한 결과입니다.\n" + Space + 
@@ -530,7 +684,7 @@
             "해시 : " + v.hash + "\n" +
             "이름 : " + v.name + "\n" +
             "위치 : " + v.location + "\n" +
-            "좌표 : " + v.coord[0] + ", " + v.coord[1] + "\n" +
+            "좌표 : " + v.coord.join(", ") + "\n" +
             "티어 : " + v.tier).join("\n\n")
         }
     }

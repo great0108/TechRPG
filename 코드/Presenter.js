@@ -69,7 +69,7 @@
             tier : userInfo.tier,
             busy : user.isBusy(),
             coord : map.getLocate(userInfo.location).coord,
-            invenInfo : inven.invenInfo(),
+            inven : inven.inven,
             invenLimit : inven.invenLimit,
             invenSpace : inven.invenSpace(),
             mapList : map.mapList()
@@ -102,7 +102,9 @@
             location : location,
             coord : locate.coord,
             biome : locate.type,
-            mapInfo : map.mapInfo(location),
+            items : locate.items,
+            dumpItems : locate.dumpItems,
+            installs : locate.install,
         }
     }
 
@@ -116,12 +118,12 @@
         let item = bot.data
         user.basicCheck()
 
-        let itemInfo = Item.itemInfo(item)
+        let itemAllInfo = Item.itemAllInfo(item)
         let craft = new Craft()
         let isCraft = craft.isExist(item)
         return {
             item : item,
-            itemInfo : itemInfo,
+            itemAllInfo : itemAllInfo,
             isCraft : isCraft
         }
     }
@@ -139,10 +141,10 @@
         let tier = user.getBasicInfo().tier
         let craft = new Craft()
         let craftNum = craft.getCraftNum(item, tier)
-        let craftInfo = craft.craftInfos(item, craftNum)
+        let craftAllInfo = craft.craftInfos(item, craftNum)
         return {
             item : item,
-            craftInfo : craftInfo
+            craftAllInfo : craftAllInfo
         }
     }
 
