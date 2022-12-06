@@ -7,8 +7,8 @@
 
     /**
      * 좌표는 [x,y] 입니다.
-     * 함수가 필요하다면 만드셔도 됩니다. 
-     * view 전체적으로 사용하는 함수라면 View 선언 위에, 답장의 일부를 만드는 함수라면 회원가입 view 위에 선언해주세요
+     * 함수가 필요하다면 만드셔도 됩니다. (카멜 케이스로 이름을 지어주세요)
+     * 전체적으로 사용하는 함수라면 View 선언부 위에, 답장의 일부를 만드는 함수라면 회원가입 view 함수 위에 선언해주세요
      * 
      */
 
@@ -40,6 +40,19 @@
      * @property {number} stack  아이템이 겹쳐질 수 있는 개수
      * @property {string|undefined} nick  아이템의 닉네임
      * @property {object|undefined} meta  아이템의 특수 속성
+     */
+
+    /**
+     * 인벤토리 설정값 객체
+     * @typedef {object} invenSetting
+     * @property {number} invenLimit
+     * @property {boolean} canItem 
+     * @property {boolean} canLiquid 
+     * @property {string[]} includeItem 
+     * @property {string[]} excludeItem 
+     * @property {number|undefined} itemStack 
+     * @property {number|undefined} liquidStack 
+     * @property {boolean} isInstall
      */
 
     /**
@@ -76,21 +89,6 @@
     /** 답장을 만드는 모듈 */
     const View = {
         /**
-         * 인벤에 있는 아이템 정보 텍스트를 만듬
-         * @param {string} item 
-         * @param {number|undefined} space 
-         * @returns {string}
-         */
-        invenItemInfo : function(item, space) {
-            space = space === undefined ? "" : " ".repeat(space)
-            let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
-            if(item.type === "tool") {
-                result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + (item.meta.damage || "없음")
-            }
-            return result
-        },
-
-        /**
          * 아이템 정보 텍스트를 만듬
          * @param {string} item 
          * @returns {string}
@@ -118,26 +116,32 @@
          * @returns {string}
          */
         invenInfo : function(inven, invenSetting, space) {
-            space = space === undefined ? 0 : space
+            space = space === undefined ? "" : space
             let result = []
             for(let item of inven) {
-                result.push(this.itemInfo(item, invenSetting, space))
+                result.push(this.invenItemInfo(item, invenSetting, space))
             }
             return result.join("\n")
         },
 
         /**
-         * 아이템 정보 텍스트를 만듬
+         * 인벤에 있는 아이템 정보 텍스트를 만듬
          * @param {string} item 
          * @param {number|undefined} space 
          * @returns {string}
          */
-        itemInfo : function(item, space) {
-            let result = this.invenItemInfo(item, space)
+        invenItemInfo : function(item, invenSetting, space) {
+            space = space === undefined ? "" : " ".repeat(space)
+            let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
+            if(item.type === "tool") {
+                result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + (item.meta.damage || "없음")
+            }
+
             if(item.type === "hold" || (item.type === "store" && invenSetting.isInstall)) {
                 let inven = item.meta.inven
-                result += "\n" + space + "아이템 인벤 공간 : " + item.meta.invenSpace + " / " + item.meta.invenLimit + "\n" +
-                        "  아이템\n" + this.invenInfo(inven, {}, space+2) || "  없음"
+                let setting = item.meta.invenSetting
+                result += "\n" + space + "아이템 인벤 공간 : " + item.meta.invenSpace + " / " + setting.invenLimit + "\n" +
+                        "  아이템\n" + this.invenInfo(inven, setting, space+"  ") || "  없음"
             }
             return result
         },
@@ -248,12 +252,12 @@
              * @property {number[]} coord  현재 좌표
              * @property {boolean} busy  바쁜지 여부
              * @property {number} tier  유저 티어
-             * @property {number} invenSpace  사용한 인벤 공간
-             * @property {number} invenLimit  최대 인벤 공간
              * @property {item[]} inven  유저 인벤토리
+             * @property {invenSetting} invenSetting  유저 인벤토리 설정값
+             * @property {number} invenSpace  사용한 인벤 공간
              * @property {locate[]}  유저 맵 정보
              */
-            let {name, location, coord, busy, tier, invenSpace, invenLimit, inven, mapList} = presenter.MyInfo(bot)
+            let {name, location, coord, busy, tier, inven, invenSetting, invenSpace, mapList} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
             "이름 : " + name + "\n" +
             "위치 : " + location + "\n" +
@@ -261,8 +265,8 @@
             "바쁨 : " + (busy ? "예" : "아니오") + "\n" +
             "티어 : " + tier + "\n\n" +
             "인벤 정보\n" + Space + 
-            "현재 공간 : " + invenSpace + " / " + invenLimit + "\n\n" +
-            "아이템\n" + (this.invenInfo(inven) || "없음") + "\n\n" + 
+            "현재 공간 : " + invenSpace + " / " + invenSetting.invenLimit + "\n\n" +
+            "아이템\n" + (this.invenInfo(inven, invenSetting) || "없음") + "\n\n" + 
             "맵 목록\n" + mapList.map(v => "좌표 : " + v.coord.join(", ") + ", 이름 : " + v.name + ", 바이옴 : " + v.biome).join("\n") + "\n\n" +
             "맵과 기구 정보는 맵정보 명령어로 확인할 수 있습니다."
         },

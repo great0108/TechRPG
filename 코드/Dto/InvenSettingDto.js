@@ -3,7 +3,7 @@
 
     /**
      * 인벤토리 세팅 정보를 담는 Dto 클래스
-     * @param {number} size 
+     * @param {number} invenLimit
      * @param {boolean} canItem 
      * @param {boolean} canLiquid 
      * @param {string[]} includeItem 
@@ -11,8 +11,8 @@
      * @param {number|undefined} itemStack 
      * @param {number|undefined} liquidStack 
      */
-    const InvenSettingDto = function(size, canItem, canLiquid, includeItem, excludeItem, itemStack, liquidStack) {
-        this.invenLimit = size
+    const InvenSettingDto = function(invenLimit, canItem, canLiquid, includeItem, excludeItem, itemStack, liquidStack) {
+        this.invenLimit = invenLimit
         this.canItem = canItem
         this.canLiquid = canLiquid
         this.includeItem = includeItem

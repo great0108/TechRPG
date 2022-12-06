@@ -28,7 +28,7 @@
          * @param { {items : object} } biome 
          */
         write : function(name, biome) {
-            this.data[name] = biome
+            this.data[name] = Copy.deepcopy(biome)
         },
 
         /**

@@ -69,7 +69,8 @@
             tier : userInfo.tier,
             busy : user.isBusy(),
             coord : map.getLocate(userInfo.location).coord,
-            inven : inven.inven,
+            inven : inven.invenInfo(),
+            invenSetting : inven.setting,
             invenLimit : inven.invenLimit,
             invenSpace : inven.invenSpace(),
             mapList : map.mapList()

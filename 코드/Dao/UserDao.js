@@ -40,7 +40,7 @@
          * @param {user} user 
          */
         write : function(hash, user) {
-            this.data[hash] = user
+            this.data[hash] = Copy.deepcopy(user)
         },
 
         /**

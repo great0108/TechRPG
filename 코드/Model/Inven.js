@@ -44,34 +44,20 @@
     }
 
     /**
-     * 인벤 정보 텍스트를 만듬
-     * @param {number|undefined} space 
-     * @returns {string}
+     * 정보를 추가한 인벤을 만듬
+     * @returns {object[]}
      */
-    Inven.prototype.invenInfo = function(space) {
-        space = space === undefined ? 0 : space
-        let result = []
+    Inven.prototype.invenInfo = function() {
         for(let item of this.inven) {
-            result.push(this.itemInfo(item, space))
+            if(["hold", "store"].includes(item.type)) {
+                let proto = {}
+                proto.invenSetting = Item.getInvenSetting(item.name)
+                let inven = new Inven(item.meta.inven, proto.invenSetting)
+                proto.invenSpace = inven.invenSpace()
+                item.meta.__proto__ = proto
+            }
         }
-        return result.join("\n")
-    }
-
-    /**
-     * 아이템 정보 텍스트를 만듬
-     * @param {string} item 
-     * @param {number|undefined} space 
-     * @returns {string}
-     */
-    Inven.prototype.itemInfo = function(item, space) {
-        let result = Item.invenItemInfo(item, space)
-        if(item.type === "hold" || (item.type === "store" && this.setting.isInstall)) {
-            let invenSetting = Item.getInvenSetting(item.name)
-            let itemInven = new Inven(item.meta.inven, invenSetting)
-            result += "\n" + "  아이템 인벤 공간 : " + itemInven.invenSpace() + " / " + itemInven.invenLimit + "\n" +
-                      "  아이템\n" + (itemInven.invenInfo(space+2) || "  없음")
-        }
-        return result
+        return this.inven
     }
 
     /**

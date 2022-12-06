@@ -28,7 +28,7 @@
          * @param {object[]} craft 
          */
         write : function(name, craft) {
-            this.data[name] = craft
+            this.data[name] = Copy.deepcopy(craft)
         },
 
         /**

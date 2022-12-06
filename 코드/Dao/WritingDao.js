@@ -28,7 +28,7 @@
          * @param {string} text
          */
         write : function(name, text) {
-            this.data[name] = text
+            this.data[name] = Copy.deepcopy(text)
         },
 
         /**
