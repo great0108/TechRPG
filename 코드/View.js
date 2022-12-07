@@ -97,7 +97,7 @@
             let {itemInfo, collectInfo, toolInfo, invenInfo} = itemAllInfo
             let result = "종류 : " + itemInfo.type + ", 스택 : " + itemInfo.stack + ", 연료량 : " + (itemInfo.heat || "없음")
 
-            if(collectInfo.collectTime) {
+            if(collectInfo) {
                 result += "\n수집 시간 : " + collectInfo.collectTime + ", 티어 : " + collectInfo.tier + ", 수집 도구 : " + (collectInfo.effective || "없음")
             }
 
@@ -127,11 +127,10 @@
         /**
          * 인벤에 있는 아이템 정보 텍스트를 만듬
          * @param {string} item 
-         * @param {number|undefined} space 
+         * @param {string} space 
          * @returns {string}
          */
         invenItemInfo : function(item, invenSetting, space) {
-            space = space === undefined ? "" : " ".repeat(space)
             let result = space + "이름 : " + (item.nick || item.name) + ", 개수 : " + item.number
             if(item.type === "tool") {
                 result += "\n" + space + "  내구도 : " + item.meta.durability + ", 속도 : " + item.meta.speed + ", 데미지 : " + (item.meta.damage || "없음")
@@ -140,8 +139,9 @@
             if(item.type === "hold" || (item.type === "store" && invenSetting.isInstall)) {
                 let inven = item.meta.inven
                 let setting = item.meta.invenSetting
+                space += "  "
                 result += "\n" + space + "아이템 인벤 공간 : " + item.meta.invenSpace + " / " + setting.invenLimit + "\n" +
-                        "  아이템\n" + this.invenInfo(inven, setting, space+"  ") || "  없음"
+                        space + "아이템\n" + (this.invenInfo(inven, setting, space) || space + "없음")
             }
             return result
         },
@@ -186,9 +186,9 @@
          * @returns {string}
          */
         mapInfo : function(items, dumpItems, installs) {
-            return "아이템\n" + (inven.invenInfo() || "없음")+ 
-            (this.location === location ? "\n\n버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "") + "\n\n" +
-            "설치된 기구\n" + (install.invenInfo() || "없음")
+            return "아이템\n" + (this.invenInfo(items.inven, items.invenSetting) || "없음") + "\n\n" +
+            "버린 아이템\n" + (this.invenInfo(dumpItems.inven, dumpItems.invenSetting) || "없음") + "\n\n" +
+            "설치된 기구\n" + (this.invenInfo(installs.inven, installs.invenSetting) || "없음")
         },
 
         //추가적으로 만든 함수는 여기에
@@ -255,7 +255,7 @@
              * @property {item[]} inven  유저 인벤토리
              * @property {invenSetting} invenSetting  유저 인벤토리 설정값
              * @property {number} invenSpace  사용한 인벤 공간
-             * @property {locate[]}  유저 맵 정보
+             * @property {locate[]} mapList  유저 맵 정보
              */
             let {name, location, coord, busy, tier, inven, invenSetting, invenSpace, mapList} = presenter.MyInfo(bot)
             return "내 정보입니다.\n" + Space + 
@@ -281,9 +281,9 @@
              * @property {string} location  장소 이름
              * @property {number[]} coord  장소 좌표
              * @property {string} biome  장소 바이옴
-             * @property {item[]} items  장소에서 수집 가능한 아이템
-             * @property {item[]} dumpItems  장소에 버린 아이템
-             * @property {item[]} installs  장소에 설치한 기구
+             * @property { {inven : inven, invenSetting : invenSetting} } items  수집 가능한 아이템
+             * @property { {inven : inven, invenSetting : invenSetting} } dumpItems  버린 아이템
+             * @property { {inven : inven, invenSetting : invenSetting} } installs  설치한 기구
              */
             let {location, coord, biome, items, dumpItems, installs} = presenter.MapInfo(bot)
             return "맵 정보입니다.\n" + Space + 
@@ -319,7 +319,7 @@
              * @property {Array<{itemInfo : object, craftInfo : object}>} craftAllInfos  제작 정보
              */
             let {item, craftAllInfos} = presenter.CraftInfo(bot)
-            return item + "의 조합법입니다.\n" + Space + this.craftInfo(craftAllInfos)
+            return item + "의 조합법입니다.\n" + Space + this.craftInfos(craftAllInfos)
         },
 
         /**

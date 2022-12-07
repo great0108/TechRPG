@@ -28,15 +28,17 @@
     /**
      * 맵 정보 텍스트를 만듬
      * @param {string} location 
-     * @returns {string}
+     * @returns { {items : object, dumpItems : object, installs : object} }
      */
     Map.prototype.mapInfo = function(location) {
         let inven = new Inven(this.map[location].items, this.invenSetting)
         let dumpInven = new Inven(this.map[location].dumpItems, this.invenSetting)
         let install = this.getInstall(location)
-        return "아이템\n" + (inven.invenInfo() || "없음")+ 
-        (this.location === location ? "\n\n버린 아이템\n" + (dumpInven.invenInfo() || "없음") : "") + "\n\n" +
-        "설치된 기구\n" + (install.invenInfo() || "없음")
+        return {
+            items : {inven : inven.invenInfo(), invenSetting : inven.setting},
+            dumpItems : {inven : dumpInven.invenInfo(), invenSetting : dumpInven.setting},
+            installs : {inven : install.invenInfo(), invenSetting : install.setting}
+        }
     }
 
     /** 맵 인벤 기본 세팅 */
@@ -128,6 +130,14 @@
     }
 
     /**
+     * 현재 장소에 설치된 기구를 가져옴
+     * @returns {Inven}
+     */
+     Map.prototype.getInstall = function(location) {
+        return new Inven(this.map[location || this.location].install, this.installSetting)
+    }
+
+    /**
      * 현재 장소에 있는 아이템을 수집함
      * @param {string[]} names 
      * @param {number[]} nums 
@@ -136,14 +146,6 @@
     Map.prototype.getItems = function(names, nums) {
         let inven = new Inven(this.map[this.location].items, this.invenSetting)
         return inven.getItems(names, nums)
-    }
-
-    /**
-     * 현재 장소에 설치된 기구를 가져옴
-     * @returns {Inven}
-     */
-    Map.prototype.getInstall = function(location) {
-        return new Inven(this.map[location || this.location].install, this.installSetting)
     }
 
     /**

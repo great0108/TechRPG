@@ -51,4 +51,4 @@ function sleep(ms) {
 // sleep(15000)
 // response([123456], "실험방", "/이동 0/0", "sender")
 
-response([123456], "실험방", "/내정보", "sender")
+response([123456], "실험방", "/제작 정보 나무 판자", "sender")

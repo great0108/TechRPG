@@ -99,13 +99,14 @@
         }
 
         let locate = map.getLocate(location)
+        let {items, dumpItems, installs} = map.mapInfo(location)
         return {
             location : location,
             coord : locate.coord,
             biome : locate.type,
-            items : locate.items,
-            dumpItems : locate.dumpItems,
-            installs : locate.install,
+            items : items,
+            dumpItems : dumpItems,
+            installs : installs,
         }
     }
 
@@ -119,7 +120,7 @@
         let item = bot.data
         user.basicCheck()
 
-        let itemAllInfo = Item.itemAllInfo(item)
+        let itemAllInfo = Item.getAllInfo(item)
         let craft = new Craft()
         let isCraft = craft.isExist(item)
         return {
@@ -142,10 +143,10 @@
         let tier = user.getBasicInfo().tier
         let craft = new Craft()
         let craftNum = craft.getCraftNum(item, tier)
-        let craftAllInfo = craft.craftInfos(item, craftNum)
+        let craftAllInfos = craft.craftInfos(item, craftNum)
         return {
             item : item,
-            craftAllInfo : craftAllInfo
+            craftAllInfos : craftAllInfos
         }
     }
 

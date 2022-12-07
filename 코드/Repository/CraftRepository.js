@@ -44,7 +44,7 @@
          * @returns {CraftItemDto}
          */
         getItems : function(craftNameDto) {
-            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
+            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum]
             return new CraftItemDto(craft.items, craft.tools || [])
         },
 
@@ -54,7 +54,7 @@
          * @returns {BasicCraftDto}
          */
         getBasicInfo : function(craftNameDto) {
-            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum-1]
+            let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum]
             return new BasicCraftDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
         }
     }
