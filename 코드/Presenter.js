@@ -565,20 +565,21 @@
             }
         } else {
             if (craftNumber > 1) {
-                let craftInfo = craft.craftInfos(item, craftNumber)
+                let craftAllInfos = craft.craftInfos(item, craftNumber)
 
                 let userData = new UserData()
                                 .setMessage(bot.content)
 
                 user.setUser(userData)
                 return {
-                    craftInfo : craftInfo
+                    craftAllInfos : craftAllInfos
                 }
             } else {
                 craftNum = 1
             }
         }
 
+        craftNum -= 1
         let craftInfo = craft.getBasicInfo(item, craftNum)
         let install = map.getInstall()
         if(craftInfo.need && !install.findItem(craftInfo.need)) {

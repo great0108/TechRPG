@@ -12,7 +12,6 @@
                 let user = UserDao.read(hash)
                 if(user.version != Setting.version) {
                     user.version = Setting.version
-                    user.map.base.type = "평원"
                 }
                 UserDao.write(hash, user)
             }

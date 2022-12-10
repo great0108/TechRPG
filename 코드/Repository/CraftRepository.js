@@ -55,7 +55,7 @@
          */
         getBasicInfo : function(craftNameDto) {
             let craft = CraftDao.read(craftNameDto.name)[craftNameDto.craftNum]
-            return new BasicCraftDto(craft.number || 1, craft.time, craft.need || "", craft.tier || 0)
+            return new BasicCraftDto(craft.number || 1, craft.time, craft.need || null, craft.tier || 0)
         }
     }
 

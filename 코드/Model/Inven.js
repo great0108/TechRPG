@@ -209,7 +209,7 @@
                 return [false]
             }
 
-            if(findItem.stack === 1) {
+            if(findItem.stack === 1 || (findItem.type === "store" && this.setting.isInstall)) {
                 for(let j = 0; j < nums[i]; j++) {
                     let item = inven.removeItem(names[i])
                     if(item === null) {

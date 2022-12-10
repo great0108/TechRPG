@@ -51,6 +51,7 @@
          */
         deleteWriting : function(nameDto) {
             WritingDao.delete(nameDto.name)
+            WritingDao.save()
         }
     }
 

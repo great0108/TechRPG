@@ -7,9 +7,19 @@
 
     /**
      * 좌표는 [x,y] 입니다.
-     * 함수가 필요하다면 만드셔도 됩니다. (카멜 케이스로 이름을 지어주세요)
-     * 전체적으로 사용하는 함수라면 View 선언부 위에, 답장의 일부를 만드는 함수라면 회원가입 view 함수 위에 선언해주세요
      * 
+     * 아이템 종류는 아래와 같습니다.
+     * item : 일반 아이템(ex 모래)
+     * liquid : 액체 아이템(ex 물)
+     * hold : 저장공간이 있는 아이템(ex 세라믹 항아리)
+     * tool : 도구 아이템(ex 돌 도끼)
+     * wear : 입을 수 있는 아이템(ex 가죽 갑옷) - 미구현
+     * store : 아이템을 저장 가능한 기구 아이템(ex 상자)
+     * use : 직접 사용하는 기구 아이템(ex 조합대)
+     * auto : 연료를 사용하는 기구 아이템(ex 모닥불) - 미구현
+     * 
+     * 도구 종류는 아래와 같습니다.
+     * pickaxe : 곡괭이, axe : 도끼, shovel : 삽, sword : 칼
      */
 
     /**
@@ -39,20 +49,34 @@
      * @property {type} type  아이템 종류
      * @property {number} stack  아이템이 겹쳐질 수 있는 개수
      * @property {string|undefined} nick  아이템의 닉네임
-     * @property {object|undefined} meta  아이템의 특수 속성
+     * @property {meta|undefined} meta  아이템의 특수 속성
+     * 
+     * 아이템 종류가 tool, hold, store(실치된 기구일 때만) 일 때 nick과 meta 속성을 가집니다.
+     * 
+     * @typedef {object} meta
+     * @property {number|undefined} durability  도구 내구도 - tool
+     * @property {string|undefined} class  도구 종류 - tool
+     * @property {number|undefined} speed  도구 속도 - tool
+     * @property {number|undefined} damage  도구 데미지(없으면 0) - tool
+     * @property {number|undefined} tier  도구 티어 - tool
+     * @property {item[]|undefined} inven  인벤토리 - hold, store(설치된 기구일 때)
+     * @property {invenSetting|undefined} invenSetting  인벤토리 설정값 - hold, store(설치된 기구일 때)
+     * @property {number|undefined} invenSpace  인벤토리 차지한 공간 - hold, store(설치된 기구일 때)
+     * 
+     * '-' 뒤에 써놓은 종류의 아이템만 해당 속성을 가지고 있습니다.
      */
 
     /**
      * 인벤토리 설정값 객체
      * @typedef {object} invenSetting
-     * @property {number} invenLimit
-     * @property {boolean} canItem 
-     * @property {boolean} canLiquid 
-     * @property {string[]} includeItem 
-     * @property {string[]} excludeItem 
-     * @property {number|undefined} itemStack 
-     * @property {number|undefined} liquidStack 
-     * @property {boolean} isInstall
+     * @property {number} invenLimit  인벤토리 공간
+     * @property {boolean} canItem  고체를 담을 수 있는지 여부
+     * @property {boolean} canLiquid  액체를 담을 수 있는지 여부
+     * @property {string[]} includeItem  추가적으로 담을 수 있는 아이템 목록
+     * @property {string[]} excludeItem  추가적으로 담을 수 없는 아이템 목록
+     * @property {number|undefined} itemStack  고체가 몇개까지 겹쳐지는지
+     * @property {number|undefined} liquidStack  액체가 몇개까지 겹쳐지는지
+     * @property {boolean} isInstall  맵에 설치된 기구 인벤 여부
      */
 
     /**
@@ -90,10 +114,19 @@
     const View = {
         /**
          * 아이템 정보 텍스트를 만듬
-         * @param {string} item 
+         * @param { {itemInfo : object, collectInfo : object|null, toolInfo : object|null, invenInfo : object|null} } itemAllInfo  모든 아이템 정보
          * @returns {string}
          */
         itemInfo : function(itemAllInfo) {
+            /**
+             * @property { {type : string, stack : number, heat : number} } itemInfo  기본 아이템 정보
+             * type : 아이템 종류, stack : 아이템 겹쳐지는 개수, heat : 연료량(연료로 사용할 수 없다면 0)
+             * @property { {collectTime : number, tier : number, effective : string|null} | null } collectInfo  아이템 수집 관련 정보
+             * collectTime : 아이템 수집에 걸리는 시간, tier : 수집에 필요한 최소 도구의 티어, effective : 어떤 종류의 도구를 써야 빠르게 수집하는가(없다면 null)
+             * @property { {durability : number, tier : number, speed : number, damage : number|null} | null} toolInfo  도구 아이템 정보
+             * durability : 도구 내구도, tier : 도구 티어, speed : 얼마나 빠른지(기본값 : 1(배)), damage : 데미지(없다면 0)
+             * @property {invenSetting|null} invenInfo  아이템이 가진 인벤토리 정보
+             */
             let {itemInfo, collectInfo, toolInfo, invenInfo} = itemAllInfo
             let result = "종류 : " + itemInfo.type + ", 스택 : " + itemInfo.stack + ", 연료량 : " + (itemInfo.heat || "없음")
 
@@ -112,7 +145,9 @@
 
         /**
          * 인벤 정보 텍스트를 만듬
-         * @param {number|undefined} space 
+         * @param {item[]} inven  인벤토리
+         * @param {invenSetting} invenSetting  인벤토리 설정값
+         * @param {string|undefined} space  답장 들여쓰기
          * @returns {string}
          */
         invenInfo : function(inven, invenSetting, space) {
@@ -126,8 +161,9 @@
 
         /**
          * 인벤에 있는 아이템 정보 텍스트를 만듬
-         * @param {string} item 
-         * @param {string} space 
+         * @param {item} item  아이템
+         * @param {invenSetting} invenSetting  인벤토리 설정값
+         * @param {string} space  답장 들여쓰기
          * @returns {string}
          */
         invenItemInfo : function(item, invenSetting, space) {
@@ -148,12 +184,22 @@
 
         /**
          * 제작법 정보 텍스트를 만듬
-         * @param {string} item 
-         * @param {number} craftNum 
+         * @param { {items : object, tools : object[]}} itemInfo  필요한 아이템 정보
+         * @param { {number : number, time : number, need : string|null} } craftInfo  기본 제작 정보
          * @returns {string}
          */
         craftInfo : function(itemInfo, craftInfo) {
+            /**
+             * @property {object<string:number>} items  제작에 필요한 아이템 정보(아이템 이름 : 필요 개수 쌍으로 저장되어 있음)
+             * @property {Array<{tier : number, class : string|null, durability : number, name : string|null}>} tools  제작에 필요한 도구 정보
+             * tier : 필요한 최소 도구 티어, class : 도구 종류, durability : 필요 내구도, name : 도구 이름
+             */
             let {items, tools} = itemInfo
+            /**
+             * @property {number} number  제작 한번에 만들어지는 개수
+             * @property {number} time  제작에 걸리는 시간
+             * @property {string|null} need  제작에 필요한 기구
+             */
             let {number, time, need} = craftInfo
             return "만들어 지는 개수 : " + number + "\n" +
                 "필요 시간 : " + time + "초, 필요 기구 : " + (need ? need : "없음") + "\n" +
@@ -167,8 +213,7 @@
 
         /**
          * 여러 제작법 정보 텍스트를 만듬
-         * @param {string} item 
-         * @param {number} num 
+         * @param { {itemInfo : object, craftInfo : object} } craftAllInfos 
          * @returns {string}
          */
         craftInfos : function(craftAllInfos) {
@@ -182,7 +227,9 @@
 
         /**
          * 맵 정보 텍스트를 만듬
-         * @param {string} location 
+         * @param { {inven : item[], invenSetting : invenSetting} } items  수집 가능한 아이템
+         * @param { {inven : item[], invenSetting : invenSetting} } dumpItems  버린 아이템
+         * @param { {inven : item[], invenSetting : invenSetting} } installs  설치한 기구
          * @returns {string}
          */
         mapInfo : function(items, dumpItems, installs) {
@@ -190,8 +237,6 @@
             "버린 아이템\n" + (this.invenInfo(dumpItems.inven, dumpItems.invenSetting) || "없음") + "\n\n" +
             "설치된 기구\n" + (this.invenInfo(installs.inven, installs.invenSetting) || "없음")
         },
-
-        //추가적으로 만든 함수는 여기에
 
         /**
          * 회원가입 답장을 돌려줌
