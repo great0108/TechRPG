@@ -110,6 +110,21 @@
         return 받침(str) ? "은" : "는"
     }
 
+    Object.defineProperty(String.prototype, "format", {
+        value : function() {
+            let last = 0;
+            return this.replace(/{(.*?)}/g, (matched, p1) => {
+                if (p1 === '') {
+                    last++;
+                    return arguments[last-1];
+                }
+                else {
+                    return (arguments[p1] || matched);
+                }
+            });
+        }
+    })
+
     /** 답장을 만드는 모듈 */
     const View = {
         /**
@@ -281,7 +296,7 @@
             "\n[어드민 명령어]\n" +
             "/아이템 가져오기 (아이템)/(개수)/[to 아이템] - 아이템을 가져옵니다\n" +
             "/아이템 목록 - 전체 아이템 목록을 가져옵니다\n" +
-            "/해시 변경 (기존해시)/(바꿀해시) - 해시코드를 바꿉니다\n" +
+            "/해시 변경 (기존해시)/(바꿀해시)/[바꿀이름] - 해시코드를 바꿉니다\n" +
             "/해시 찾기 (이름) - 해당 이름을 가진 유저의 해시코드를 찾습니다"
         },
 
