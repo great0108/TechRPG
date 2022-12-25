@@ -138,9 +138,9 @@
              * type : 아이템 종류, stack : 아이템 겹쳐지는 개수, heat : 연료량(연료로 사용할 수 없다면 0)
              * @property { {collectTime : number, tier : number, effective : string|null} | null } collectInfo  아이템 수집 관련 정보
              * collectTime : 아이템 수집에 걸리는 시간, tier : 수집에 필요한 최소 도구의 티어, effective : 어떤 종류의 도구를 써야 빠르게 수집하는가(없다면 null)
-             * @property { {durability : number, tier : number, speed : number, damage : number|null} | null} toolInfo  도구 아이템 정보
+             * @property { {durability : number, tier : number, speed : number, damage : number|null} | null} toolInfo  도구 아이템 정보(도구가 아니면 null)
              * durability : 도구 내구도, tier : 도구 티어, speed : 얼마나 빠른지(기본값 : 1(배)), damage : 데미지(없다면 0)
-             * @property {invenSetting|null} invenInfo  아이템이 가진 인벤토리 정보
+             * @property {invenSetting|null} invenInfo  아이템이 가진 인벤토리 정보(아이템을 담을 수 없는 아이템이면 null)
              */
             let {itemInfo, collectInfo, toolInfo, invenInfo} = itemAllInfo
             let result = "종류 : " + itemInfo.type + ", 스택 : " + itemInfo.stack + ", 연료량 : " + (itemInfo.heat || "없음")
