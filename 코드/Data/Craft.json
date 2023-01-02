@@ -7,36 +7,135 @@
         {"items" : {"나무" : 1}, "tools" : [{"class" : "axe", "tier" : 1, "durability" : 1}], "number" : 4, "time" : 1, "need" : "", "tier" : 0}
     ],
     "돌" : [
-
+        {"items" : {"조약돌" : 1}, "tools" : [], "number" : 1, "time" : 5, "need" : "가마", "tier" : 0}
     ],
     "돌맹이" : [
-
+        {"items" : {"조약돌" : 1}, "tools" : [], "number" : 4, "time" : 1, "need" : "", "tier" : 0}
     ],
     "막대기" : [
         {"items" : {"나무 판자" : 2}, "time" : 1, "number" : 2, "tier" : 0}
     ],
     "밧줄" : [
-
+        {"items" : {"끈" : 3}, "time" : 1, "number" : 1, "need" : "", "tier" : 0}
     ],
     "부싯돌" : [
         {"items" : {"자갈" : 1}, "tools" : [{"name" : "섬유 망", "durability" : 1}], "time" : 1, "tier" : 0}
     ],
-    "섬유 망" : [
-        {"items" : {"끈" : 4}, "time" : 5, "tier" : 0}
+    "점토 곡괭이 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
     ],
-    "조합대" : [
-        {"items" : {"나무 판자" : 4}, "time" : 5, "tier" : 0}
+    "점토 괭이 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 도끼 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 망치 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 병" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 삽 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 주괴 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 칼 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 탐사 곡괭이 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 톱 거푸집" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "점토 항아리" : [
+        {"items" : {"점토" : 5}, "tools" : [], "time" : 2, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "지지대" : [
+        {"items" : {"나무" : 4}, "tools" : [{"class" : "axe", "tier" : 1, "durability" : 1}], "time" : 1, "number" : 2, "need" : "조합대", "tier" : 0}
+    ],
+    "세라믹 곡괭이 거푸집" : [
+        {"items" : {"점토 곡괭이 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 괭이 거푸집" : [
+        {"items" : {"점토 괭이 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 도끼 거푸집" : [
+        {"items" : {"점토 도끼 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 망치 거푸집" : [
+        {"items" : {"점토 망치 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 병" : [
+        {"items" : {"점토 병" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 삽 거푸집" : [
+        {"items" : {"점토 삽 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 주괴 거푸집" : [
+        {"items" : {"점토 주괴 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 칼 거푸집" : [
+        {"items" : {"점토 칼 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 탐사 곡괭이 거푸집" : [
+        {"items" : {"점토 탐사 곡괭이 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 톱 거푸집" : [
+        {"items" : {"점토 톱 거푸집" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "세라믹 항아리" : [
+        {"items" : {"점토 항아리" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "가마", "tier" : 0}
+    ],
+    "섬유 망" : [
+        {"items" : {"끈" : 4}, "tools" : [], "time" : 5, "number" : 1, "tier" : 0}
     ],
     "돌 도끼" : [
-        {"items" : {"막대기" : 1, "끈" : 1, "돌맹이" : 1}, "time" : 5, "tier" : 0}
+        {"items" : {"막대기" : 1, "끈" : 1, "돌맹이" : 1}, "tools" : [], "time" : 5, "number" : 1, "tier" : 0}
     ],
-    "돌 곡괭이" : [
-        {"items" : {"막대기" : 2, "끈" : 1, "돌맹이" : 2}, "time" : 5, "need" : "조합대", "tier" : 0}
+    "돌 삽" : [
+        {"items" : {"막대기" : 2, "끈" : 1, "돌맹이" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
     ],
-    "상자" : [
-        {"items" : {"나무 판자" : 8}, "time" : 5, "need" : "조합대", "tier" : 0}
+    "돌 칼" : [
+        {"items" : {"막대기" : 1, "끈" : 1, "돌맹이" : 2}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "돌 망치" : [
+        {"items" : {"막대기" : 1, "끈" : 2, "돌맹이" : 2}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
     ],
     "가방" : [
-        {"items" : {"가죽" : 7, "상자" : 1}, "time" : 5, "need" : "조합대", "tier" : 0}
+        {"items" : {"가죽" : 7, "상자" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "가죽 갑옷" : [
+        {"items" : {"가죽" : 8}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "가죽 모자" : [
+        {"items" : {"가죽" : 5}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "가죽 바지" : [
+        {"items" : {"가죽" : 7}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "가죽 신발" : [
+        {"items" : {"가죽" : 4}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "상자" : [
+        {"items" : {"나무 판자" : 8}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "통" : [
+        {"items" : {"나무 판자" : 7}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "맷돌" : [
+        {"items" : {"돌" : 4, "막대기" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "조합대" : [
+        {"items" : {"나무 판자" : 4}, "tools" : [], "time" : 5, "number" : 1, "need" : "", "tier" : 0}
+    ],
+    "모닥불" : [
+        {"items" : {"돌맹이" : 3, "막대기" : 3}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
+    ],
+    "가마" : [
+        {"items" : {"점토" : 7, "조약돌" : 1}, "tools" : [], "time" : 5, "number" : 1, "need" : "조합대", "tier" : 0}
     ]
 }
